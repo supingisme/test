@@ -1,7 +1,9 @@
 # test
 
 1. [https://github.com/Rtoax/test](https://github.com/Rtoax/test) "自2021年9月14日停更"
-2. [https://gitee.com/rtoax/test](https://gitee.com/rtoax/test) "自2021年9月14日继续更新"
+2. [https://gitee.com/rtoax/test](https://gitee.com/rtoax/test) "自2021年9月14日停更"
+3. [https://gitee.com/rtoax/test2](https://gitee.com/rtoax/test2) "new repo 自2021年9月14日创建"
+
 
 ```
         _____________
