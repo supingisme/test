@@ -1,0 +1,21 @@
+# 为 git 设置网络代理
+
+设置http、https代理
+
+git config --global http.proxy socks5://127.0.0.1:1080
+git config --global https.proxy socks5://127.0.0.1:1080
+
+查看http、https代理配置情况
+
+git config --global --get http.proxy
+git config --global --get https.proxy
+
+取消http、https代理配置
+
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+
+作者：水门
+链接：https://www.jianshu.com/p/426f8e42b1f5
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。

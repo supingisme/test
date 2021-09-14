@@ -1,0 +1,33 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:11 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 13日 星期三 08:53:54 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:07:31 CST. 
+/**
+ *	file control
+ */
+#include <fcntl.h>
+
+int fcntl(int fd, int cmd, .../*int arg*/);
+
+/**
+ *	fcntl函数提供了与网络编程相关的如下特性：
+ *
+ *		1.非阻塞式IO：通过使用F_SETFL命令设置O_NONBLOCK文件状态标识，
+ *						我们可以把一个套接字设置为非阻塞型。
+ *		2.信号驱动式IO：通过使用F_SETFL命令设置O_ASYNC文件状态标识，
+ *						我们可以把一个套接字设置成一但其状态发生变化，
+ *						内核就产生一个SIGIO信号。
+ *
+ * 	O_NONBLOCK：非阻塞式IO
+ *	O_ASYNC：信号驱动式IO
+ *
+ *
+ *	成功返回：取决于cmd
+ *	出错返回：-1
+ */
+
+/** 百度百科 **
+ *
+ *	fcntl()用来操作文件描述符的一些特性。
+ *	fcntl不仅可以施加建议性锁，还可以施加强制性锁。
+ *	fcntl还能对文件的某一记录进行上锁，也就是记录锁。
+ */

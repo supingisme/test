@@ -1,0 +1,28 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 20日 星期四 08:47:53 CST. 
+
+
+
+B.5 Other File Operations
+A few other operations on files and directories come in handy:
+• getcwd obtains the current working directory. It takes two arguments, a char buffer and the
+length of the buffer. It copies the path of the current working directory into the buffer.
+• chdir changes the current working directory to the path provided as its argument.
+• mkdir creates a new directory. Its first argument is the path of the new directory. Its second
+argument is the access permissions to use for the new file. The interpretation of the
+permissions are the same as that of the third argument to open and are modified by the
+process's umask.
+• rmdir deletes a directory. Its argument is the directory's path.
+• unlink deletes a file. Its argument is the path to the file. This call can also be used to delete
+other file system objects, such as named pipes (see Section 5.4.5, "FIFOs") or devices (see
+		Chapter 6).
+Actually, unlink doesn't necessarily delete the file's contents. As its name implies, it
+unlinks the file from the directory containing it. The file is no longer listed in that directory,
+		but if any process holds an open file descriptor to the file, the file's contents are not removed
+		from the disk. Only when no process has an open file descriptor are the file's contents
+		deleted. So, if one process opens a file for reading or writing and then a second process
+		unlinks the file and creates a new file with the same name, the first process sees the old
+		contents of the file rather than the new contents (unless it closes the file and reopens it).
+		• rename renames or moves a file. Its two arguments are the old path and the new path for the
+		file. If the paths are in different directories, rename moves the file, as long as both are on
+		the same file system. You can use rename to move directories or other file system objects as
+		well.

@@ -1,0 +1,15 @@
+IOVA：IO Virtual Address space   IO虚拟地址空间
+CTP：Context-table pointer   上下文表指针
+GPA：Guest Phyical Address   客人的实际地址
+GVA：Guest Virtual Address   访客虚拟地址
+HPA：Host Phyical Address    主机物理地址
+IPA：Intermediate Phyical Address    中间物理地址
+VT-d：Virtualization Technology for Direct I/O 直接I/O虚拟化技术
+SMMU：System MMU 系统MMU
+EPT：Extended Page Table 扩展页表
+NPT：Nested Page Table   嵌套页表
+ASID：Address Space ID   地址空间标识符
+PCID：Process context identifier 进程上下文标识符
+CD：Context Descriptor；  上下文描述符；
+S2TTB：Stage 2 Translate Table Base  第二阶段翻译表库
+PMCG：Performance Monitor Counter Groups 性能监控计数器组

@@ -1,0 +1,10 @@
+
+
+cat /home/rongtao/rongtao.txt
+	  ^		^		^
+	  |		|		|
+	  |		|		+---- dentry  inode  file
+	  |		|	
+	  |		+------------ dentry
+	  |
+	  +------------------ dentry

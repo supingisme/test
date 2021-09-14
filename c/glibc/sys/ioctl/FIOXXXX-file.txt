@@ -1,0 +1,57 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:26 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 13日 星期三 08:54:02 CST. 
+### File Operations
+The next group of requests begin with FIO and may apply to certain types of files, in addition to sockets. We cover only the requests that apply to sockets (p. 553 of TCPv2). The following five requests all require that the third argument to ioctl point to an integer:
+
+FIONBIO
+The nonblocking flag for the socket is cleared or turned on, depending on whether the third argument to ioctl points to a zero or nonzero value, respectively. This request has the same effect as the O_NONBLOCK file status flag, which can be set and cleared with the F_SETFL command to the fcntl function.
+
+FIOASYNC
+The flag that governs the receipt of asynchronous I/O signals (SIGIO) for the socket is cleared or turned on, depending on whether the third argument to ioctl points to a zero or nonzero value, respectively. This flag has the same effect as the O_ASYNC file status flag, which can be set and cleared with the F_SETFL command to the fcntl function.
+
+FIONREAD
+Return in the integer pointed to by the third argument to ioctl the number of bytes currently in the socket receive buffer. This feature also works for files, pipes, and terminals. We said more about this request in Section 14.7(See 9.3.7).
+
+FIOSETOWN
+Equivalent to SIOCSPGRP for a socket.
+
+FIOGETOWN
+Equivalent to SIOCGPGRP for a socket.
+
+ 
+
+ 
+
+FIONBIN
+
+FIOASYNC
+
+FIONREAD
+
+FIOSETOWN
+
+FIOGETOWN
+
+ 
+
+设置/清除非阻塞I/O标志
+
+设置/清除信号驱动异步I/O标志
+
+获取接收缓存区中的字节数
+
+设置文件的进程ID或进程组ID
+
+获取文件的进程ID或进程组ID
+
+int
+
+int
+
+int
+
+int
+
+int
+
+

@@ -1,0 +1,25 @@
+
+OBJ_NAME_add
+OBJ_NAME_cleanup
+OBJ_NAME_get
+OBJ_NAME_init
+OBJ_NAME_remove
+OBJ_NAME_new_index
+OBJ_NAME_do_all
+OBJ_NAME_do_all_sorted
+
+OBJ_NAME 函数用于根据名字获取对称算法或者摘要算法，主要涉及到函数有:
+
+int EVP_add_cipher(const EVP_CIPHER *c);
+int EVP_add_digest(const EVP_MD *md);
+const EVP_CIPHER *EVP_get_cipherbyname(const char *name);
+const EVP_MD *EVP_get_digestbyname(const char *name);
+void EVP_cleanup(void);
+
+这些函数在evp/names.c 中实现，他们调用了OBJ_NAME 函数。
+
+EVP_add_cipher 和EVP_add_digest 函数调用OBJ_NAME_init 和OBJ_NAME_add函数，将EVP_CIPHER 和EVP_MD 信息放入哈希表，
+EVP_get_cipherbyname 和EVP_get_digestbyname 函数调用OBJ_NAME_get 函数从哈希表中查询需要的信息，
+EVP_cleanup 函数清除存放到EVP_CIPHER 和EVP_MD 信息。
+
+另外，程序可以通过调用OpenSSL_add_all_ciphers 和OpenSSL_add_all_digests 函数将所有的对称算法和摘要算法放入哈希表。

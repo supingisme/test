@@ -1,0 +1,81 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:26 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 13日 星期三 08:54:02 CST. 
+### Socket Operations
+Three ioctl requests are explicitly used for sockets (pp. 551–553 of TCPv2). All three require that the third argument to ioctl be a pointer to an integer.
+
+
+SIOCATMARK
+Return through the integer pointed to by the third argument a nonzero value if the socket's read pointer is currently at the out-of-band mark, or a zero value if the read pointer is not at the out-of-band mark. We will describe out-of-band data in more detail in Chapter 24(See 9.13). POSIX replaces this request with the sockatmark function, and we will show an implementation of this new function using ioctl in Section 24.3(See 9.13.3).
+
+SIOCGPGRP
+Return through the integer pointed to by the third argument either the process ID or the process group ID that is set to receive the SIGIO or SIGURG signal for this socket. This request is identical to an fcntl of F_GETOWN, and we note in Figure 7.20(See 8.5.11) that POSIX standardizes the fcntl.
+
+SIOCSPGRP
+Set either the process ID or process group ID to receive the SIGIO or
+
+SIOCATMARK
+Return through the integer pointed to by the third argument a nonzero value if the socket's read pointer is currently at the out-of-band mark, or a zero value if the read pointer is not at the out-of-band mark. We will describe out-of-band data in more detail in Chapter 24(See 9.13). POSIX replaces this request with the sockatmark function, and we will show an implementation of this new function using ioctl in Section 24.3(See 9.13.3).
+SIGURG signal for this socket from the integer pointed to by the third argument. This request is identical to an fcntl of F_SETOWN, and we note in Figure 7.20(See 8.5.11) that POSIX standardizes the fcntl.
+
+SIOCGIFADDR
+Return the unicast address in the ifr_addr member.
+
+SIOCSIFADDR
+Set the interface address from the ifr_addr member. The initialization function for the interface is also called.
+
+SIOCGIFFLAGS
+Return the interface flags in the ifr_flags member. The names of the various flags are IFF_xxx and are defined by including the <net/if.h> header. The flags indicate, for example, if the interface is up (IFF_UP), if the interface is a point-to-point interface (IFF_POINTOPOINT), if the interface supports broadcasting (IFF_BROADCAST), and so on.
+
+SIOCSIFFLAGS
+Set the interface flags from the ifr_flags member.
+
+SIOCGIFDSTADDR
+Return the point-to-point address in the ifr_dstaddr member.
+
+SIOCSIFDSTADDR
+Set the point-to-point address from the ifr_dstaddr member.
+
+SIOCGIFADDR
+Return the unicast address in the ifr_addr member.
+
+SIOCGIFBRDADDR
+Return the broadcast address in the ifr_broadaddr member. The application must first fetch the interface flags and then issue the correct request: SIOCGIFBRDADDR for a broadcast interface or SIOCGIFDSTADDR for a point-to-point interface.
+
+SIOCSIFBRDADDR
+Set the broadcast address from the ifr_broadaddr member.
+
+SIOCGIFNETMASK
+Return the subnet mask in the ifr_addr member.
+
+SIOCSIFNETMASK
+Set the subnet mask from the ifr_addr member.
+
+SIOCGIFMETRIC
+Return the interface metric in the ifr_metric member. The interface metric is maintained by the kernel for each interface but is used by the routing daemon routed. The interface metric is added to the hop count (to make an interface less favorable).
+
+SIOCSIFMETRIC
+Set the interface routing metric from the ifr_metric member.
+
+### ARP
+
+SIOCSARP
+Add a new entry to the ARP cache or modify an existing entry. arp_pa is an Internet socket address structure containing the IP address, and arp_ha is a generic socket address structure with sa_family set to AF_UNSPEC and sa_data containing the hardware address (e.g., the 6-byte Ethernet address). The two flags, ATF_PERM and ATF_PUBL, can be specified by the application. The other two flags, ATF_INUSE and ATF_COM, are set by the kernel.
+
+SIOCDARP
+Delete an entry from the ARP cache. The caller specifies the Internet address for the entry to be deleted.
+
+SIOCGARP
+Get an entry from the ARP cache. The caller specifies the Internet address, and the corresponding Ethernet address is returned along with the flags.
+
+
+### Routing Table Operations
+On some systems, two ioctl requests are provided to operate on the routing table. These two requests require that the third argument to ioctl be a pointer to an rtentry structure, which is defined by including the <net/route.h> header. These requests are normally issued by the route program. Only the superuser can issue these requests. On systems with routing sockets (Chapter 18(See 9.7)), these requests use routing sockets instead of ioctl.
+
+SIOCADDRT
+Add an entry to the routing table.
+
+SIOCDELRT
+Delete an entry from the routing table.
+
+
+

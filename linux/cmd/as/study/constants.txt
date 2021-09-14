@@ -1,0 +1,38 @@
+3.6.1 Character Constants
+There are two kinds of character constants. A character stands for one character in one
+byte and its value may be used in numeric expressions. String constants (properly called
+		string literals) are potentially many bytes and their values may not be used in arithmetic
+expressions.
+3.6.1.1 Strings
+A string is written between double-quotes. It may contain double-quotes or null characters.
+The way to get special characters into a string is to escape these characters: precede them
+with a backslash ‘\’ character. For example ‘\\’ represents one backslash: the first \ is
+an escape which tells as to interpret the second character literally as a backslash (which
+		prevents as from recognizing the second \ as an escape character). The complete list of
+escapes follows.
+\b Mnemonic for backspace; for ASCII this is octal code 010.
+\f Mnemonic for FormFeed; for ASCII this is octal code 014.
+\n Mnemonic for newline; for ASCII this is octal code 012.
+\r Mnemonic for carriage-Return; for ASCII this is octal code 015.
+\t Mnemonic for horizontal Tab; for ASCII this is octal code 011.
+\ digit digit digit
+An octal character code. The numeric code is 3 octal digits. For compatibility
+with other Unix systems, 8 and 9 are accepted as digits: for example, \008 has
+the value 010, and \009 the value 011.
+\x hex-digits...
+A hex character code. All trailing hex digits are combined. Either upper or
+lower case x works.
+\\ Represents one ‘\’ character.
+\" Represents one ‘"’ character. Needed in strings to represent this character,
+	because an unescaped ‘"’ would end the string.
+	\ anything-else
+	Any other character when escaped by \ gives a warning, but assembles as if the
+	‘\’ was not present. The idea is that if you used an escape sequence you clearly
+	didn’t want the literal interpretation of the following character. However as
+	has no other interpretation, so as knows it is giving you the wrong code and
+	warns you of the fact.
+	Which characters are escapable, and what those escapes represent, varies widely among
+	assemblers. The current set is what we think the BSD 4.2 assembler recognizes, and is
+	a subset of what most C compilers recognize. If you are in doubt, do not use an escape
+	sequence.
+

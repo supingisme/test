@@ -1,0 +1,2 @@
+DMI是指Direct Media Interface(直接媒体接口)。
+DMI是Intel(英特尔)公司开发用于连接主板南北桥的总线，取代了以前的Hub-Link总线。DMI采用点对点的连接方式，时钟频率为100MHz，由于它是基于PCI-Express总线，同样采用8bit/10bit（有效位宽8bit）编码因此具有PCI-E总线的优势。

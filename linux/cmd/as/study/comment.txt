@@ -1,0 +1,18 @@
+Comments
+There are two ways of rendering comments to as. In both cases the comment is equivalent
+to one space.
+Anything from ‘/*’ through the next ‘*/’ is a comment. This means you may not nest
+these comments.
+/*
+   The only way to include a newline (’\n’) in a comment
+   is to use this sort of comment.
+   */
+/* This sort of comment does not nest. */
+
+‘#’ on the i386 and x86-64;
+
+# This is an ordinary comment.
+# 42-6 "new_file_name" # New logical file name
+# This is logical line # 36.
+
+

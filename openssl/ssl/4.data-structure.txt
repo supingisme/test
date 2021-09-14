@@ -1,0 +1,12 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:07:20 CST. 
+31.4 数据结构
+
+	ssl的主要数据结构定义在ssl.h 中。主要的数据结构有 SSL_CTX 、SSL 和SSL_SESSION。
+	SSL_CTX 数据结构主要用于SSL 握手前的环境准备，设置CA 文件和目录、设置SSL 握手
+	中的证书文件和私钥、设置协议版本以及其他一些 SSL 握手时的选项。SSL 数据结构主要
+	用于SSL 握手以及传送应用数据。SSL_SESSION 中保存了主密钥、session id、读写加解密
+	钥、读写 MAC 密钥等信息。SSL_CTX 中缓存了所有 SSL_SESSION 信息，SSL 中包含
+	SSL_CTX。一般SSL_CTX 的初始化在程序最开始调用，然后再生成SSL 数据结构。由于
+	SSL_CTX 中缓存了所有的SESSION，新生成的SSL 结构又包含SSL_CTX 数据，所以通过
+	SSL 数据结构能查找以前用过的SESSION id，实现SESSION 重用。
+

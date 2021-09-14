@@ -1,0 +1,38 @@
+enable                              enable节点
+└── du                              DU模块根节点
+    ├── cell                        小区业务控制
+    │   ├── cell ctrl               小区控制
+    │   ├── cell delete             小区删除
+    │   └── cell setup              小区建立
+    ├── ctrl                        控制
+    │   ├── ctrl db                 数据库控制
+    │   └── ctrl log                日志管理控制
+    │       ├── ctrl log off        日志关闭
+    │       ├── ctrl log on         日志开启
+    │       └── ctrl log status     查看日志
+    ├── debug                       调试节点（开发人员使用）
+    └── show                        查询
+        ├── show cell               显示小区
+        ├── show db                 消失数据库
+        │   └── show db cell        消失数据库中的小区
+        ├── show register           消失注册内容
+        │   ├── show register all       显示全部注册内容
+        │   ├── show register module    显示注册的模块信息
+        │   └── show register rru       显示注册的RRU信息
+        └── show status             显示状态
+            ├── show status all     全部
+            ├── show status cucp    CUCP状态
+            ├── show status cuup    CUUP状态
+            ├── show status du      DU状态
+            ├── show status e1      E1口状态（CUCP和CUUP之间接口）
+            ├── show status f1      F1空状态（CU和DU之间接口）
+            ├── show status fecfpga FEC-FPGA状态
+            ├── show status fhfpga  FH-FPGA状态
+            ├── show status ng      NG口状态（CUCP与核心网之间接口）
+            └── show status phy     物理层状态
+
+
+
+
+
+

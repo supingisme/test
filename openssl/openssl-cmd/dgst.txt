@@ -1,0 +1,59 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:06:53 CST. 
+32.3 dgst
+	
+	dgst 用于数据摘要。
+	
+用法：
+	openssl dgst [-md5|-md4|-md2|-sha1|-sha|-mdc2|-ripemd160|-dss1 ] [-c] [-d ] [-hex]
+ 				[-binary] [-out filename] [-sign filename] [-passin arg] [-verify filename] [-prverify filename]
+ 				[-signature filename ] [file...]
+ 				
+选项：
+	-d
+	打印调试信息。
+	-sign privatekeyfile
+	用 privatekeyfile 中的私钥签名。
+	-verify publickeyfile
+	用 publickeyfile 中的公钥验证签名。
+	-prverify privatekeyfile
+	用 privatekeyfile 中的私钥验证签名。
+	-keyform PEM | ENGINE
+	密钥格式，PEM 格式或者采用Engine。
+	-hex
+	显示 ASCII 编码的十六进制结果，默认选项。
+	-binary
+	显示二进制数据。
+	-engine e
+	采用引擎 e 来运算。
+	-md5
+	默认选项，用md5 进行摘要。
+	-md4
+	用md4 摘要。
+	-md2
+	用 md2 摘要。
+	-sha1
+	用 sha1 摘要。
+	-sha
+	用 sha 摘要。
+	-sha256
+	用-sha256 摘要。
+	-sha512
+	用 sha512 摘要。
+	-mdc2
+	用 mdc2 摘要。
+	-ripemd160
+	用 ripemd160 摘要。
+
+示例：
+
+	openssl dgst c:\server.pem
+	运行此命令后文件的md5 值摘要结果会在屏幕打印出来，此结果为摘要结果转换
+	为ASCII 码后的值：
+	MD5(c:\server.cer)= 4ace36445f5ab4bbcc2b9dd55e2f0e3a
+	openssl dgst –binary c:\server.pem
+	结果为二进制乱码。
+	openssl dgst –hex –c c:\server.pem
+	结果由：分开，如下：
+	MD5(c:\server.cer)= 4a:ce:36:44:5f:5a:b4:bb:cc:2b:9d:d5:5e:2f:0e:3a
+	openssl dgst –sign privatekey.pem –sha1 –keyform PEM –c c:\server.pem
+	将文件用sha1 摘要，并用privatekey.pem 中的私钥签名。

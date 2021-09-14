@@ -1,0 +1,4 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:43 CST. 
+#include <arpa/inet.h>
+char *inet_ntoa(struct in_addr inaddr);
+Returns: pointer to dotted-decimal string

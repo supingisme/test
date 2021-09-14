@@ -1,0 +1,4 @@
+procinfo
+功能说明：process information，显示系统状态。
+语 法：procinfo [-abdDfhimsSv][-F <输出文件>][-n <间隔秒数>]
+补充说明：procinfo 指令从/proc 目录里读相关数据，将数据妥善整理过后输出到标准输出设备。

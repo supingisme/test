@@ -1,0 +1,19 @@
+
+kcore 为 elf 文件
+
+下面给出 使用 gdb 调试 内核的方法
+
+```
+$ sudo gdb -q vmlinux /proc/kcore
+
+(gdb) print &sys_call_table
+$1 = (<data variable, no debug info> *) 0xffffffff82402ec0 <sys_call_table>
+(gdb) x/gx &sys_call_table
+0xffffffff82402ec0 <sys_call_table>:	0xffffffff814a8170
+(gdb) x/5i 0xffffffff814a8170
+0xffffffff814a8170 <__x64_sys_read>:	callq  0xffffffff8109cc30 <__fentry__>
+0xffffffff814a8175 <__x64_sys_read+5>:	push   %r12
+0xffffffff814a8177 <__x64_sys_read+7>:	push   %rbp
+0xffffffff814a8178 <__x64_sys_read+8>:	push   %rbx
+0xffffffff814a8179 <__x64_sys_read+9>:	mov    %rdi,%rbx
+```

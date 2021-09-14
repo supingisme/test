@@ -1,0 +1,7 @@
+OMP_NUM_THREADS – Specifies the number of threads to use
+Description:
+Specifies the default number of threads to use in parallel regions. The value of
+this variable shall be positive integer. If undefined one thread per CPU online
+is used.
+See also: Section 2.18 [omp set num threads], page 11
+Reference: OpenMP specifications v3.0, section 4.2

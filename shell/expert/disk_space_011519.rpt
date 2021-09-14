@@ -1,0 +1,26 @@
+Top Ten Disk Space Usage
+for  /var/log /home Directories
+
+The /var/log Directory:
+1:	7468	/var/log
+2:	7416	/var/log/sa
+3:	3120	/var/log/anaconda
+4:	184	/var/log/tuned
+5:	16	/var/log/cups
+6:	8	/var/log/gdm
+7:	4	/var/log/tomcat
+8:	4	/var/log/pki
+9:	0	/var/log/sssd
+10:	0	/var/log/speech-dispatcher
+
+The /home Directory:
+1:	35056	/home/rongtao/test/c/glibc
+2:	10916	/home/rongtao/.mozilla/firefox/x0o8chcg.default
+3:	8996	/home/Wallpaper/Scenes
+4:	7724	/home/Wallpaper/Nature
+5:	7676	/home/Wallpaper/Characters
+6:	7404	/home/Wallpaper/Architecture
+7:	7376	/home/Wallpaper/Landscapes
+8:	5184	/home/rongtao/.cache/tracker
+9:	3420	/home/Wallpaper/Dell
+10:	3320	/home/rongtao/test/c/gcc

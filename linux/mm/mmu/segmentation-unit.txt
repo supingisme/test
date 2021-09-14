@@ -1,0 +1,5 @@
+The Memory Management Unit (MMU) transforms a logical address into a linear address by means
+of a hardware circuit called a segmentation unit ;
+
+subsequently, a second hardware circuit called a
+paging unit transforms the linear address into a physical address

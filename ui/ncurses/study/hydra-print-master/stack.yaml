@@ -1,0 +1,14 @@
+flags: {}
+packages:
+ - hydra-print-base/
+ - hydra-print-ncurses/
+# - hydra-print-ansi/
+
+extra-deps:
+ - io-streams-1.3.1.0
+ - ncurses-0.2.11
+resolver: lts-2.20
+
+# Don't turn this on.  It will break travis:
+# docker:
+#   enable: true

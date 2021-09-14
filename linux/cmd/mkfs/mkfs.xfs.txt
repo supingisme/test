@@ -1,0 +1,4 @@
+创建文件系统
+
+mkfs.xfs /dev/centos/home 
+

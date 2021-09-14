@@ -1,0 +1,47 @@
+Openssl 的ASN.1 库定义了asn.1 对应的基本数据结构和大量用于DER 编码的宏。比如
+
+整型定义如下：
+
+typedef struct asn1_string_st ASN1_INTEGER;
+
+另外，还用相同的数据结构 asn1_string_st 定义了：
+
+	ASN1_ENUMERATED；
+	ASN1_BIT_STRING；
+	ASN1_OCTET_STRING；
+	ASN1_PRINTABLESTRING；
+	ASN1_T61STRING；
+	ASN1_IA5STRING；
+	ASN1_GENERALSTRING；
+	ASN1_UNIVERSALSTRING；
+	ASN1_BMPSTRING；
+	ASN1_UTCTIME；
+	ASN1_TIME；
+	ASN1_GENERALIZEDTIME；
+	ASN1_VISIBLESTRING；
+	ASN1_UTF8STRING；
+	ASN1_TYPE;
+
+
+这些都是定义基本数据结构的必要元素。
+对于每种类型，均有四种最基本的函数：new、free、i2d 和d2i。
+
+	new 函数用于生成一个新的数据结构；
+	free 用于释放该结构； 
+	i2d 用于将该内部数据结构转换成 DER 编码；
+	d2i 用于将 DER 编码转换成内部数据结构。
+
+另外，大部分类型都有set 和get 函数，用于给内部数据结构赋值和从中取值。以ASN1_INTEGER 为例，它有如下
+
+###### 基本函数：
+
+	ASN1_INTEGER ASN1_INTEGER_new(void);
+	void *ASN1_INTEGER_free(ASN1_INTEGER *a);
+	ASN1_INTEGER *d2i_ASN1_INTEGER(ASN1_INTEGER **a,unsigned char **in,long len);
+	int i2d_ASN1_INTEGER(ASN1_INTEGER *a,unsigned char **out);
+	long ASN1_INTEGER_get(ASN1_INTEGER *a)
+	int ASN1_INTEGER_set(ASN1_INTEGER *a, long v)；
+
+前面的四个函数由 DECLARE_ASN1_FUNCTIONS(ASN1_INTEGER)声明，并由IMPLEMENT_ASN1_FUNCTIONS(ASN1_INTEGER)实现。
+
+采用 ASN.1 定义的复杂的结构都是由基本的类型构造的，因此可以用这些基本的数据来实现对复杂结构的编码。

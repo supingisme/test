@@ -1,0 +1,97 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:26 CST. 
+strings(1)                              GNU Development Tools                             strings(1)
+
+
+
+NAME
+       strings - 显示文件中的可打印字符
+
+
+总
+       strings
+              [-a|-|--all] [-f|--print-file-name] [-o] [--help] [-v|--version] [-n
+              min-len|-min-len|--bytes=min-len] [-t {o,x,d}[--target=bfdname] |--radix={o,x,d}] file
+
+描
+       For each file given, GNU strings 显示 每个 指定的 file 文件里 包含的 所有  有  4个  (或者  用
+       选项  指定  的  数字) 以上 连续 可打印 字符 的 字符串, 在 之后 紧跟着 一个 不可 打印 的 字符.
+       默认 情况 下, 它 只显示 目标 文件 初始化 和 装载 段 的 字符串; 对于 其它 类型 的 文件 它 显示
+       整个 文件 里 包含 的 所有 字符串.
+
+       strings 一般 用来 查看 非 文本 文件 的 内容.
+
+
+选
+       在 这里 并列 的 长选项 和 短选项 都是 等价的.
+
+       -a
+
+       --all
+
+       -      不 只是 扫描 目标 文件 初始化 和 装载 段, 而是 扫描 整个 文件.
+
+       -f
+
+       --print-file-name
+              在 显示 字符串 之前 先 显示 文件名.
+
+       --help 在 标准 输出 打印 strings 命令 的 选项
+
+              列表
+
+
+              然后 退出.
+
+       -v
+
+       --version
+              在 标准 输出 打印 strings 命令 的 版本号 然后 退出.
+
+       -n min-len
+
+       -min-len
+
+       -bytes=min-len
+              打印 至少 min-len 字符 长 的 字符串. 默认的 是 4.
+
+       -t {o,x,d}
+
+       --radix={o,x,d}
+              在  字符串  前面 显示 其在 文件 中 的 偏移量. 选项 中 的 单个 字符 指定 偏移量 的 进制
+              是 八进制, 十六进制 还是 十进制.
+
+       --target=bfdname
+              指定 一种 目标 代码 格式 来 代替 你的 系统的 默认 格式. 关于 可用的 目标 代码 格式  请
+              参见 objdump(1).
+
+       -o     同 -t o.
+
+参
+       info;  The GNU Binary Utilities, Roland H. Pesch (October 1991) 里的 `binutils' 节点.  ar(1),
+       nm(1), objdump(1), ranlib(1).
+
+
+版
+       版权所有 © 1993 自由软件基金会
+
+       我们 允许 对本手册的 完全 复制, 前提 是 在所有 副本中 保留 本版权声明 和 本权益声明.
+
+       我们 允许 对本手册的 修改版本 进行 复制 和 再分发, 前提是 遵守  上面  逐字复制的  条款,  以及
+       确保 因此 所衍生出 成果 也是 使用 和这里 声明的 所有条款 相同的 版权 和/或 权限声明 发布的.
+
+       我们  允许  复制 和 分发 本手册的 其它语言的 译文版本, 前提是 遵守 上面 修改版本 的条款, 区别
+       是可以 使用 由自由 软件 基金会 批准的 本版权 和/或 权限 条款的 译文版 代替 其英文 原文．
+
+
+[中
+       唐
+
+[中
+       2001/10/31
+
+[中
+       http://cmpp.linuxforum.net
+
+
+
+cygnus support                              25 June 1993                                  strings(1)

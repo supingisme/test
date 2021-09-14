@@ -1,0 +1,84 @@
+BADBLOCKS(8)                                   System Manager's Manual                                   BADBLOCKS(8)
+
+
+
+NAME
+       badblocks - 查询设备的坏区块
+
+语
+       badblocks  [  -svwnf  ]  [  -b  block-size  ]  [ -c blocks_at_once ] [ -i input_file ] [ -o output_file ] [ -p
+       num_passes ] device [ blocks-count ] [ start-block ]
+
+（
+       badblocks 被用来在设备（通常是磁盘分区）中检测坏区块。 device 参数是设备的名字(例如 /dev/hdc1).   blocks-count
+       参数是设备上总的区块数目；如果没有指定这个参数，默认值就是设备的容量大小。                              start-
+       block参数是一个可选参数，它指定从多少区块号开始进行检测。因此，检测允许从磁盘的中间部分开始。
+
+选
+       -b block-size
+              以字节为单位，指定区块的大小。
+
+       -c number of blocks
+              每一次检测区块的数目。默认值是16。增加这个数目可以增加检测 坏
+              blocks
+              命令在只读模式下需要花费与每一次检测的区块相同数目的内存容量。在读写模式下，这个比例是两倍而在非破坏性的读写模式下，这个比例是三倍。
+              如果你将参数“num-of-blocks”设置太大的话，                                                     badblocks
+              将会在分派缓存时会因为一个内存溢出错误而立即退出。当然如果你在非破坏性的读写模式下将该值设置得过低，那么在一个不稳定的磁盘上的有问题
+              的区块也许会因为磁盘的磁道缓冲的作用而不被检测出来。
+
+       -f     正常情况下，bad‐
+              blocks命令不会在一个已经激活的设备上读写模式或者是非破坏性的读写模式的检测，因为这可能会导致系统的崩溃。
+              使用                                                                                                 -f
+              标志可以使这种情况强制执行，但是最好不要在正常的情况下使用它。如果/etc/mtab文件发生了错误，而设备实际上并没有被激活的时候，这个
+              参数才会是安全的。
+
+       -i input_file
+              读入一个已知的坏块列表。      Badblocks     命令将会跳过对这些已知是坏块的区块检查。如果     input_file
+              参数是“-”，则列表从标准输入读入。                  在这个列表中列举出的区块也会在                  新的
+              坏道记录文件或者坏道记录输出时被忽略掉。                dumpe2fs(8)                的                -b
+              选项能够在一个已有的文件系统中得到被标记为坏块的列表，而且已经做成了符合这个选项的格式。
+
+       -o output_file
+              将坏块的列表写到指定的文件中。如果没有这个选项，  badblocks  命令会在标准输出中输出这个列表。其格式是与
+              e2fsck(8) 或者 mke2fs(8).  的 -l 选项的要求相适应的。
+
+       -p num_passes
+              重复的扫描磁盘，直到重复“num_passes”遍磁盘扫描后也没有发现新的区块后结束。   默认值是0。表示  badblocks
+              命令成功执行一遍扫描后就会结束。
+
+       -n     使用非破坏性的读写模式。默认值是非破坏性的只读模式测试。这个选项不能与                               -w
+              选项一起使用，因为它们是互斥的。
+
+       -s     通过输出正在被检测的区块的号码以表示检测进程。
+
+       -v     混杂模式检测。
+
+       -w     使用写模式测试。通过使用这个选项                                                              badblocks
+              通过往每个区块上写入一些特定的字符（0xaa，0x55，0xff，0x00），读出来后再比较其内容，决定是否为坏块。
+              这个选项不能与 -n 选项一起使用，因为它们是互斥的。
+
+警
+       千万不要将               -w               选项用在一个已经包含了文件系统的设备上。这个选项会删除掉原有的数据！
+       如果你想要在已经有文件系统的设备上执行读写模式检测，请使用 -n 选项。虽然慢点，可是它能够保护你的数据不受伤害。
+
+作
+       badblocks   作者是Remy   Card   <Remy.Card@linux.org>.     维护人    Theodore    Ts'o    <tytso@alum.mit.edu>.
+       非破坏性的读写模式测试由David Beattie <dbeattie@softhome.net>进行.
+
+有
+       badblocks                 是e2fsprogs套件的一部分。能够从支持匿名访问的ftp站点tsx-11.mit.edu的/pub/linux/pack‐
+       ages/ext2fs目录下取得。
+
+另
+       e2fsck(8), mke2fs(8)
+
+
+中
+       Bill Pan <billpan@netease.com>
+
+中
+       http://cmpp.linuxforum.net
+
+
+
+E2fsprogs version 1.19                                July 2000                                          BADBLOCKS(8)

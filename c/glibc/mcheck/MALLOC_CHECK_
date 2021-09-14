@@ -1,0 +1,29 @@
+#include <stdio.h>
+ 
+int main(int argc, char * argv[])
+{
+    const char * src = "mcheck test";
+    char * ptr = (char *)malloc(sizeof(char) * 32);
+    memcpy(ptr, src, strlen(src));
+    ptr[32] = '\0';  // 这里在堆内存块尾部越界
+    printf("*ptr=%s\n", ptr);
+        
+    free(ptr);
+    ptr = NULL;
+    printf("process end\n");
+ 
+    return 0;
+}
+
+PS: *** 查看mallopt ***
+PS: *** 查看mallopt ***
+
+a. 直接运行时，不报错，进程"正常"退出；
+b. export MALLOC_CHECK_=1后，运行结果：
+	malloc: using debugging hooks
+	*ptr=mcheck test
+	*** glibc detected *** free(): invalid pointer: 0x0000000000501010 ***
+	process end
+c. export MALLOC_CHECK_=2后，运行结果：
+	*ptr=mcheck test
+	Aborted (core dumped)  

@@ -1,0 +1,5 @@
+dprc.1/dpni.3 (interface: eth0, end point: dpmac.5)
+dprc.1/dpni.2 (interface: eth1, end point: dpmac.3)
+dprc.1/dpni.1 (interface: eth2)
+dprc.1/dpni.0 (interface: eth3, end point: dpmac.17)
+

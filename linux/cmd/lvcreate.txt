@@ -1,0 +1,4 @@
+重新创建home lv
+
+lvcreate -L 310G -n home centos （/home 剩余的磁盘大小 811G-500=311G,分配的值不能大于311G）
+

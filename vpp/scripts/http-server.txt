@@ -1,0 +1,14 @@
+comment {
+	文档描述：搭建HTTP服务器
+	作者：荣涛
+	日期：2020年9月2日
+	参考网址：https://docs.fd.io/vpp/20.05/d9/d3e/clicmd_src_plugins_http_static_static_server_c.html
+}
+
+comment { 清理缓存 }
+clear http server cache
+
+comment { 建立服务 }
+http static server www-root /var/www/html uri tcp://0.0.0.0/80 cache-size 2m
+
+

@@ -1,0 +1,63 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:24 CST. 
+$ sudo du -s /home/*
+					 [sudo] password for Christine:
+					 4204 /home/Christine
+					 56 /home/Consultant
+					 52 /home/Development
+					 4 /home/NoSuchUser
+					 96 /home/Samantha
+					 36 /home/Timothy
+					 1024 /home/user1
+					 $
+
+$ sudo du -s /var/log/*
+4 /var/log/anaconda.ifcfg.log
+20 /var/log/anaconda.log
+32 /var/log/anaconda.program.log
+108 /var/log/anaconda.storage.log
+40 /var/log/anaconda.syslog
+56 /var/log/anaconda.xlog
+116 /var/log/anaconda.yum.log
+4392 /var/log/audit
+4 /var/log/boot.log
+[...]
+$
+
+$ sudo du -S /var/log/
+4 /var/log/ppp
+4 /var/log/sssd
+3020 /var/log/sa
+80 /var/log/prelink
+4 /var/log/samba/old
+4 /var/log/samba
+4 /var/log/ntpstats
+4 /var/log/cups
+4392 /var/log/audit
+420 /var/log/gdm
+4 /var/log/httpd
+152 /var/log/ConsoleKit
+2976 /var/log/
+$
+
+$ sudo du -S /var/log/ | sort -rn
+4392 /var/log/audit
+3020 /var/log/sa
+2976 /var/log/
+420 /var/log/gdm
+152 /var/log/ConsoleKit
+80 /var/log/prelink
+4 /var/log/sssd
+4 /var/log/samba/old
+4 /var/log/samba
+4 /var/log/ppp
+4 /var/log/ntpstats
+4 /var/log/httpd
+4 /var/log/cups
+$
+
+
+$ sudo du -S /var/log/ |
+ sort -rn |
+ sed '{11,$D; =}' |
+ sed 'N; s/\n/ /' |
+ gawk '{printf $1 ":" "\t" $2 "\t" $3 "\n"}'

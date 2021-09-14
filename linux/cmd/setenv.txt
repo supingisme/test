@@ -1,0 +1,5 @@
+setenv
+功能说明：set environment variable，查询或显示环境变量。
+语 法：setenv [变量名称变量值]
+补充说明：setenv 为tsch shall 中查询或设置环境变量的命令。若不加上[变量名称变量值]，则会显示当前所
+有的环境变量。

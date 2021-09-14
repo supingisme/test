@@ -1,0 +1,28 @@
+calc
+├─ bin
+│ ├─ makefile
+│ ├─ objects.mk
+│ ├─ soap
+│ │ └─ subdir.mk
+│ ├─ sources.mk
+│ └─ subdir.mk
+├─ calc.h
+├─ client.cpp
+├─ server.cpp
+├─ soap
+│ ├─ calc.nsmap
+│ ├─ calc.wsdl
+│ ├─ ns.xsd
+│ ├─ soapC.cpp
+│ ├─ soapH.h
+│ ├─ soapStub.h
+│ ├─ soapcalcProxy.cpp
+│ ├─ soapcalcProxy.h
+│ ├─ soapcalcService.cpp
+│ └─ soapcalcService.h
+
+————————————————
+
+版权声明：本文为CSDN博主「一个假的程序媛」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+
+原文链接：https://blog.csdn.net/ellieyaya/article/details/82116850

@@ -1,0 +1,2 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:50 CST. 
+n1=30001 file=file1111 n2=12 n1=12

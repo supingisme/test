@@ -1,0 +1,4 @@
+groupadd
+功能说明：add group，建立组。
+语 法：groupadd [-fr] [-g<组识别码> <-o>] [组名称]
+补充说明：需要在系统上建立组时，可用groupadd 命令完成。

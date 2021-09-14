@@ -1,0 +1,11 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:26 CST. 
+1. 需要的功能
+Linux中归档数据的主要工具是tar命令（参见第4章）。 tar命令可以将整个目录归档到单个
+文件中。下面的例子是用tar命令来创建工作目录归档文件。
+
+$ tar -cf archive.tar /home/Christine/Project/*.*
+
+$ tar -zcf archive.tar.gz /home/Christine/Project/*.* 2>/dev/null
+
+#解压
+$ tar -xvf untar.tar.xz

@@ -1,0 +1,5 @@
+KVM currently supports savevm/loadvm and
+offline or live migration Migration commands
+are given when in qemu-monitor (Alt-Ctrl-2).
+Upon successful completion, the migrated VM
+continues to run on the destination host.

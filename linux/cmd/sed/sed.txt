@@ -1,0 +1,68 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:25 CST. 
+19.1.1 sed 编辑器
+sed编辑器被称作流编辑器（stream editor），和普通的交互式文本编辑器恰好相反。在交互式
+文本编辑器中（比如vim），你可以用键盘命令来交互式地插入、删除或替换数据中的文本。流编
+辑器则会在编辑器处理数据之前基于预先提供的一组规则来编辑数据流。
+sed编辑器可以根据命令来处理数据流中的数据，这些命令要么从命令行中输入，要么存储
+在一个命令文本文件中。 sed编辑器会执行下列操作。
+(1) 一次从输入中读取一行数据。
+(2) 根据所提供的编辑器命令匹配数据。
+(3) 按照命令修改流中的数据。
+(4) 将新的数据输出到STDOUT。
+在流编辑器将所有命令与一行数据匹配完毕后，它会读取下一行数据并重复这个过程。在流
+编辑器处理完流中的所有数据行后，它就会终止。
+由于命令是按顺序逐行给出的， sed编辑器只需对数据流进行一遍处理就可以完成编辑操作。
+这使得sed编辑器要比交互式编辑器快得多，你可以快速完成对数据的自动修改。
+sed命令的格式如下。
+sed options script file
+选项允许你修改sed命令的行为，可以使用的选项已在表19-1中列出。
+
+
+表19-1 sed命令选项
+选 项 描 述
+-e script 在处理输入时，将script中指定的命令添加到已有的命令中
+-f file 在处理输入时，将file中指定的命令添加到已有的命令中
+-n 不产生命令输出，使用print命令来完成输出
+
+
+script参数指定了应用于流数据上的单个命令。如果需要用多个命令，要么使用-e选项在
+命令行中指定，要么使用-f选项在单独的文件中指定。有大量的命令可用来处理数据。我们将会
+在本章后面介绍一些sed编辑器的基本命令，然后在第21章中会看到另外一些高级命令。
+在命令行定义编辑器命令
+
+
+重要的是，要记住， sed编辑器并不会修改文本文件的数据。它只会将修改后的数据发送到
+STDOUT。如果你查看原来的文本文件，它仍然保留着原始数据。
+
+2. 在命令行使用多个编辑器命令
+要在sed命令行上执行多个命令时，只要用-e选项就可以了。
+$ sed -e 's/brown/green/; s/dog/cat/' data1.txt
+The quick green fox jumps over the lazy cat.
+The quick green fox jumps over the lazy cat.
+The quick green fox jumps over the lazy cat.
+The quick green fox jumps over the lazy cat.
+$
+
+
+
+
+3. 从文件中读取编辑器命令
+最后，如果有大量要处理的sed命令，那么将它们放进一个单独的文件中通常会更方便一些。
+可以在sed命令中用-f选项来指定文件。
+$ cat script1.sed
+s/brown/green/
+s/fox/elephant/
+s/dog/cat/
+$
+$ sed -f script1.sed data1.txt
+The quick green elephant jumps over the lazy cat.
+The quick green elephant jumps over the lazy cat.
+The quick green elephant jumps over the lazy cat.
+The quick green elephant jumps over the lazy cat.
+$
+
+
+
+
+
+

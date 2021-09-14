@@ -1,0 +1,6 @@
+# 查找历史指令
+
+键盘按 ctrl+r, 并输入 m
+(reverse-i-search)`m': ./usage_Sales_item_avg_price < data/book_sales 
+再按ctrl+r进行切换，
+

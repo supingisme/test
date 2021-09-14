@@ -1,0 +1,10 @@
+#!/usr/bin/env stap
+
+probe oneshot { println("Hello.") }
+
+# 编译成 ko
+# sudo stap -m hello.ko hello.stp
+# 插入
+# insmod hello.ko
+# 运行
+# staprun hello.ko

@@ -1,0 +1,9 @@
+GOMP_STACKSIZE – Set default thread stack size
+Description:
+Set the default thread stack size in kilobytes. This is different from pthread_
+attr_setstacksize which gets the number of bytes as an argument. If the
+stacksize can not be set due to system constraints, an error is reported and
+the initial stacksize is left unchanged. If undefined, the stack size is system
+dependent.
+See also: Section 3.10 [GOMP STACKSIZE], page 19
+Reference: GCC Patches Mailinglist, GCC Patches Mailinglist

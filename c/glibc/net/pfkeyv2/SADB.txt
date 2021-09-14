@@ -1,0 +1,7 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:16 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 13日 星期三 08:53:57 CST. 
+Dumping the Security Association Database (SADB)
+
+To dump the current SADB, a process uses the SADB_DUMP message. This is the simplest message to send since the message does not require any extensions, simply the 16-byte sadb_msg header. After the process sends the SADB_DUMP message to the kernel on a key management socket, the kernel replies with a series of SADB_DUMP messages back to the same socket, each with one entry from the SADB. The end of the list is indicated by a message with a value of 0 for the sadb_msg_seq field.
+The type of SA can be limited by setting the sadb_msg_satype field in the request to one of the values in Figure 19.3(See 9.8.2). If it is set to SADB_SATYPE_UNSPEC, then all SAs in the database are returned. Otherwise, only SAs of the specified type are returned. Not all types of security associations are supported by all implementations. The KAME implementation only supports IPsec SAs (SADB_SATYPE_AH and SADB_SATYPE_ESP), so an attempt to dump SADB_SATYPE_RIPV2 SADB entries will get an error reply with errno EINVAL. When requesting a specific type whose table is empty, the errno ENOENT is returned.
+

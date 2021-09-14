@@ -1,0 +1,4 @@
+docker export 0692f88ead94 > /work/workspace/centos7-everything.tar
+
+
+Usage: docker export [OPTIONS] CONTAINER Export a container's filesystem as a tar archive Options: -o, --output string Write to a file, instead of STDOUT

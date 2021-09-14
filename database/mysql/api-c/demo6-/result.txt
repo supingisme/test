@@ -1,0 +1,13 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:54 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 19:49:12 CST. 
+Have 2 rows are fetched, as following: 
+---The row 1:
+Field name: pen
+Field price: 0.40
+Field number: 38
+
+---The row 2:
+Field name: books
+Field price: 3.20
+Field number: 98
+

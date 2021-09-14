@@ -1,0 +1,57 @@
+########### DSA 简介
+
+Digital Signature Algorithm (DSA)算法是一种公钥算法
+
+################ 主要函数
+
+1） DSA_do_sign
+数据签名。
+2) DSA_do_verify
+签名验证。
+3) DSA_dup_DH
+将DSA 密钥转换为DH 密钥。
+4） DSA_new
+生成一个DSA 数据结构， 一般情况下，DSA_METHOD 采用默认的
+openssl_dsa_meth 方法。
+5) DSA_free
+释放DSA 数据结构。
+6) DSA_generate_key
+根据密钥参数生成公私钥。
+7) DSA_generate_parameters
+生成密钥参数。
+8） DSA_get_default_method
+获取默认的DSA_METHOD。
+9) DSA_get_ex_data
+获取扩展数据。
+10) DSA_new_method
+生成一个DSA 结构。
+11）DSA_OpenSSL
+获取 openssl_dsa_meth 方法。
+12）DSA_print
+将 DSA 密钥信息输出到BIO 中。
+13）DSA_print_fp
+将 DSA 密钥信息输出到FILE 中。
+14）DSA_set_default_method
+设置默认的 DSA_METHOD。
+15) DSA_set_ex_data
+设置扩展数据。
+16）DSA_set_method
+获取当前DSA 的DSA_METHOD 方法。
+17）DSA_SIG_new
+生成一个 DSA_SIG 签名值结构。
+18）DSA_SIG_free
+释放 DSA_SIG 结构。
+19）DSA_sign
+DSA 签名。
+20）DSA_sign_setup
+根据密钥参数生成公私钥。
+21）DSA_size
+获取 DSA 密钥长度的字节数。
+22）DSA_up_ref
+给 DSA 结构添加一个引用。
+23）DSA_verify
+签名验证。
+24）DSAparams_print
+将 DSA 密钥参数输出到bio。
+25）DSAparams_print_fp
+将 DSA 密钥参数输出到FILE。

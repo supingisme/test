@@ -1,0 +1,1567 @@
+
+man7.org > Linux > man-pages
+
+Linux/UNIX system programming training
+
+NAME | SYNOPSIS | DESCRIPTION | RETURN VALUE | ERRORS | CONFORMING TO | NOTES | BUGS | SEE ALSO | COLOPHON
+
+
+ 
+PTRACE(2)                 Linux Programmer's Manual                PTRACE(2)
+NAME         top
+       ptrace - process trace
+SYNOPSIS         top
+       #include <sys/ptrace.h>
+
+       long ptrace(enum __ptrace_request request, pid_t pid,
+                   void *addr, void *data);
+说明         顶部
+       所述的ptrace（）系统调用提供了一种手段，通过该一个进程（
+       “示踪剂”）可以观察并控制另一个进程的执行
+       （“跟踪”），并检查和更改跟踪的内存，以及
+       寄存器。它主要用于实现断点调试
+       和系统调用跟踪。
+
+       首先需要将示踪剂连接到示踪剂。附件和
+       每个线程的后续命令：在多线程进程中，每个
+       线程可以单独连接到（可能不同）
+       示踪剂，或者未连接，因此未调试。因此，
+       “ tracee”始终表示“（一个）线程”，从不表示“一个（可能
+       多线程）进程”。Ptrace命令始终发送到
+       使用表单调用的特定跟踪
+
+           ptrace（PTRACE_foo，pid，...）
+
+       其中pid是相应Linux线程的线程ID。
+
+       （请注意，在此页面中，“多线程进程”是指一个线程
+       组由使用clone（2） CLONE_THREAD创建的线程组成
+       旗。）
+
+       进程可以通过调用fork（2）并让
+       结果孩子执行PTRACE_TRACEME，然后（通常）执行
+        execve（2）。或者，一个过程可以开始追踪另一个过程
+       使用PTRACE_ATTACH或PTRACE_SEIZE处理。
+
+       被追踪时，每次信号被追踪时，追踪都会停止
+       即使忽略了信号，也可以传送。（一个例外是
+       SIGKILL，它具有通常的效果。）将在以下位置通知示踪剂
+       下一次对waitpid（2）（或相关“ wait”系统之一）的调用
+       电话）; 该调用将返回一个包含信息的状态值
+       指示在tracee中停止的原因。虽然示踪
+       停止后，跟踪器可以使用各种ptrace请求来检查和
+       修改示踪。然后，追踪器使追踪继续，
+       （可选）忽略传递的信号（甚至传递
+       相反）。
+
+       如果PTRACE_O_TRACEEXEC选项无效，则所有成功被跟踪进程
+       对execve（2）的调用将导致它被发送
+        SIGTRAP信号，从而使父级有机会在
+       新程序开始执行。
+
+       跟踪程序完成跟踪时，可能会导致跟踪
+       继续通过PTRACE_DETACH以正常的无跟踪模式执行。
+request 
+       的值确定要执行的操作：
+
+       PTRACE_TRACEME
+              指示此进程将由其父进程跟踪。一种
+              如果它的父进程可能不应该发出此请求
+              没想到要追踪它。（pid，addr和data是
+              忽略。）
+
+              所述PTRACE_TRACEME请求仅由tracee使用; 的
+              其余请求仅由跟踪器使用。在里面
+              在请求之后，pid指定被跟踪的线程ID
+              采取行动。对于除PTRACE_ATTACH，
+               PTRACE_SEIZE，PTRACE_INTERRUPT和PTRACE_KILL之外的请求，跟踪
+              必须停止。
+
+       PTRACE_PEEKTEXT，PTRACE_PEEKDATA在被追踪者的内存
+              中的地址地址读取一个单词，
+              作为ptrace（）调用的结果返回单词。的Linux
+              没有单独的文本和数据地址空间，因此这些
+              目前有两个请求是等效的。（数据被忽略；但是
+              请参阅注释。）
+
+       PTRACE_PEEKUSER在Tracee的USER区域的
+              offset addr处读取一个单词，
+              保留有关过程的寄存器和其他信息
+              （请参阅<sys / user.h>）。该字作为ptrace（）调用的结果返回
+               。通常，偏移量必须字对齐，
+              尽管这可能会因架构而异。请参阅注释。（数据是
+              忽略 但请参阅注释。）
+
+       PTRACE_POKETEXT，PTRACE_POKEDATA 
+              将字数据复制到示踪内存中的地址addr。
+              至于PTRACE_PEEKTEXT和PTRACE_PEEKDATA，这两个请求
+              目前等效。
+
+       PTRACE_POKEUSER 
+              将字数据复制到Tracee的USER区域中的offset addr。
+              对于PTRACE_PEEKUSER，偏移量通常必须为word-
+              对齐。为了维护内核的完整性，
+              禁止对USER区域进行某些修改。
+
+       PTRACE_GETREGS，PTRACE_GETFPREGS
+              复制示踪的通用或浮点寄存器，
+              分别到跟踪器中的地址数据。有关此数据格式的信息，请参见
+               <sys / user.h>。
+              （addr被忽略。）请注意，SPARC系统具有以下含义：
+              的数据和地址扭转; 也就是说，数据将被忽略，
+              寄存器被复制到地址addr。  PTRACE_GETREGS和
+               PTRACE_GETFPREGS并非在所有体系结构上都存在。
+
+       PTRACE_GETREGSET（从Linux 2.6.34开始）
+              读取示踪的寄存器。  addr在
+              与体系结构有关的方式，即要读取的寄存器的类型。
+              NT_PRSTATUS（数值为1）通常会导致
+              读取通用寄存器。如果CPU有
+              例如浮点和/或向量寄存器，它们可以是
+              通过将addr设置为相应的NT_foo 
+              常量来检索。  数据指向结构iovec，该结构描述了
+              目标缓冲区的位置和长度。返回时，
+              内核修改iov.len以指示实际的字节数
+              回到。
+
+       PTRACE_SETREGS，PTRACE_SETFPREGS
+              修改示踪的通用或浮点
+              从跟踪器中的地址数据分别注册。
+              至于PTRACE_POKEUSER，一些通用寄存器
+              不允许修改。（addr被忽略。）注意
+              该SPARC系统具有的意义的数据和地址扭转;
+              也就是说，将忽略数据，并从寄存器中复制寄存器。
+              地址地址。  PTRACE_SETREGS和PTRACE_SETFPREGS不是
+              存在于所有架构上。
+
+       PTRACE_SETREGSET（从Linux 2.6.34开始）
+              修改示踪的寄存器。addr和data的含义
+              类似于PTRACE_GETREGSET。
+
+       PTRACE_GETSIGINFO（自Linux 2.3.99-pre6起）
+              检索有关引起停止的信号的信息。
+              从示踪复制一个siginfo_t结构（请参见sigaction（2））
+              到跟踪器中的地址数据。（addr被忽略。）
+
+       PTRACE_SETSIGINFO（自Linux 2.3.99-pre6起）
+              设置信号信息：从以下位置复制siginfo_t结构将跟踪器中的数据 
+              寻址到被跟踪器。这会影响
+              仅通常会传递给示踪物的信号
+              并被示踪剂捕获。可能很难分辨
+              这些正常信号来自于由
+              ptrace（）本身。（addr被忽略。）
+
+       PTRACE_PEEKSIGINFO（从Linux 3.10开始）
+              检索siginfo_t结构，而不会从
+              队列。  addr指向ptrace_peeksiginfo_args结构
+              指定要复制的顺序位置
+              信号应该开始，并复制信号的数量。
+              siginfo_t结构被复制到data指向的缓冲区中
+               。返回值包含复制信号的数量
+              （零表示没有信号对应于
+              指定的顺序位置）。在返回的siginfo 
+              结构中，si_code字段包含未向用户公开的信息（__SI_CHLD，
+               __SI_FAULT等）
+              空间。
+
+           struct ptrace_peeksiginfo_args {
+               u64关闭; / *队列中的顺序位置
+                              开始复制信号* /
+               u32标志；/ * PTRACE_PEEKSIGINFO_SHARED或0 * /
+               s32 nr; / *要复制的信号数* /
+           };
+
+              当前，只有一个标志PTRACE_PEEKSIGINFO_SHARED，
+              用于从整个过程的信号队列中转储信号。如果
+              未设置此标志，从每个线程读取信号
+              指定线程的队列。
+
+       PTRACE_GETSIGMASK（从Linux 3.11开始）
+              放置屏蔽信号掩码的副本（请参阅
+              sigprocmask（2））在data指向的缓冲区中，应该
+              是指向sigset_t类型的缓冲区的指针。该地址参数
+              包含数据指向的缓冲区的大小（即
+               sizeof（sigset_t））。
+
+       PTRACE_SETSIGMASK（从Linux 3.11开始）
+              将阻塞信号的掩码（请参见sigprocmask（2））更改为
+              由data指向的缓冲区中指定的值，应
+              是指向sigset_t类型的缓冲区的指针。该地址参数
+              包含数据指向的缓冲区的大小（即
+               sizeof（sigset_t））。
+
+       PTRACE_SETOPTIONS（从Linux 2.4.6开始；请参见BUGS的警告）
+              从data设置ptrace选项。（addr被忽略。）   数据为
+              解释为选项的位掩码，由
+              以下标志：
+
+              PTRACE_O_EXITKILL（从Linux 3.8开始）如果示踪剂
+                     发送SIGKILL信号给示踪剂
+                     退出。此选项对
+                     想要确保痕迹永远无法逃脱
+                     示踪剂的控制。
+
+              PTRACE_O_TRACECLONE（从Linux 2.5.46开始）
+                     在下一个克隆（2）上自动停止跟踪
+                     开始跟踪新克隆的过程，该过程将
+                     先从SIGSTOP，或PTRACE_EVENT_STOP如果
+                      PTRACE_SEIZE使用。甲waitpid函数（2）由所述示踪剂
+                     返回一个状态值，使得
+
+                       状态>> 8 ==（SIGTRAP |（PTRACE_EVENT_CLONE << 8））
+
+                     可以使用以下命令检索新进程的PID
+                     PTRACE_GETEVENTMSG。
+
+                     此选项可能无法在所有情况下都捕获clone（2）调用。
+                     如果tracee调用克隆（2）与CLONE_VFORK标志，
+                      PTRACE_EVENT_VFORK将被代替交付，如果
+                      PTRACE_O_TRACEVFORK设置; 否则，如果示踪
+                     呼叫克隆（2）与所述出口信号集合到SIGCHLD，
+                      PTRACE_EVENT_FORK如果将被传递PTRACE_O_TRACE- 
+                     FORK被设置。
+
+              PTRACE_O_TRACEEXEC（从Linux 2.5.46开始）
+                     在下一个execve（2）处停止跟踪。一个waitpid（2）由
+                     跟踪器将返回状态值，以便
+
+                       状态>> 8 ==（SIGTRAP |（PTRACE_EVENT_EXEC << 8））
+
+                     如果执行线程不是线程组负责人，则
+                     之前将线程ID重置为线程组组长的ID
+                     此站。从Linux 3.0开始，以前的线程ID可以
+                     使用PTRACE_GETEVENTMSG检索。
+
+              PTRACE_O_TRACEEXIT（从Linux 2.5.60开始）
+                     在出口处停止追迹。甲waitpid函数（2）由所述示踪剂
+                     将返回一个状态值，使得
+
+                       状态>> 8 ==（SIGTRAP |（PTRACE_EVENT_EXIT << 8））
+
+                     可以使用以下方法检索示踪物的退出状态
+                     PTRACE_GETEVENTMSG。
+
+                     示踪在过程退出期间的早期停止，此时
+                     寄存器仍然可用，从而使跟踪器能够
+                     查看退出发生在哪里，而正常退出
+                     流程完成后，通知完成
+                     退出。即使上下文可用，跟踪器
+                     无法阻止此时发生退出。
+
+              PTRACE_O_TRACEFORK（从Linux 2.5.46开始）
+                     在下一个fork（2）处自动停止追迹
+                     开始跟踪新的分叉过程，这将
+                     先从SIGSTOP，或PTRACE_EVENT_STOP如果
+                      PTRACE_SEIZE使用。甲waitpid函数（2）由所述示踪剂
+                     返回一个状态值，使得
+
+                       状态>> 8 ==（SIGTRAP |（PTRACE_EVENT_FORK << 8））
+
+                     可以使用以下命令检索新进程的PID
+                     PTRACE_GETEVENTMSG。
+
+              PTRACE_O_TRACESYSGOOD（从Linux 2.4.6开始）
+                     传递系统调用陷阱时，请在
+                     信号编号（即，传递SIGTRAP | 0x80）。这使得
+                     示踪剂很容易区分正常陷阱与
+                     由系统调用引起的。
+
+              PTRACE_O_TRACEVFORK（从Linux 2.5.46开始）
+                     在下一个vfork（2）处自动停止跟踪
+                     开始跟踪新的vforked过程，该过程将
+                     先从SIGSTOP，或PTRACE_EVENT_STOP如果
+                      PTRACE_SEIZE使用。甲waitpid函数（2）由所述示踪剂
+                     返回一个状态值，使得
+
+                       状态>> 8 ==（SIGTRAP |（PTRACE_EVENT_VFORK << 8））
+
+                     可以使用以下命令检索新进程的PID
+                     PTRACE_GETEVENTMSG。
+
+              PTRACE_O_TRACEVFORKDONE（从Linux 2.5.60开始）
+                     在下一个vfork（2）完成时停止跟踪。
+                     甲waitpid函数（2）由所述示踪剂将返回一个状态值
+                     这样
+
+                       状态>> 8 ==（SIGTRAP |（PTRACE_EVENT_VFORK_DONE << 8））
+
+                     自Linux 2.6.18起，新进程的PID可以为
+                     使用PTRACE_GETEVENTMSG检索。
+
+              PTRACE_O_TRACESECCOMP（从Linux 3.5开始）
+                     触发seccomp（2） SECCOMP_RET_TRACE规则
+                     时，停止跟踪。甲waitpid函数（2）由所述示踪剂
+                     返回一个状态值，使得
+
+                       状态>> 8 ==（SIGTRAP |（PTRACE_EVENT_SECCOMP << 8））
+
+                     虽然这触发了PTRACE_EVENT停止，但它类似于
+                     到syscall-enter-stop。有关详细信息，请参见
+                     下方为PTRACE_EVENT_SECCOMP。seccomp事件消息
+                     数据（来自seccomp的SECCOMP_RET_DATA部分
+                     过滤规则）可以使用PTRACE_GETEVENTMSG检索。
+
+              PTRACE_O_SUSPEND_SECCOMP（从Linux 4.3开始）
+                     暂停示踪的seccomp保护。这适用
+                     不论模式如何，都可以在示踪具有
+                     尚未安装seccomp过滤器。即有效
+                     用例是暂停示踪的seccomp保护
+                     在被窗框安装之前，让窗框
+                     安装过滤器，然后在
+                     过滤器应恢复使用。设定这个选项
+                     要求跟踪器具有CAP_SYS_ADMIN功能
+                     能力，未安装任何seccomp保护，并且本身
+                     未设置PTRACE_O_SUSPEND_SECCOMP。
+
+       PTRACE_GETEVENTMSG（从Linux 2.5.46开始）
+              检索有关ptrace 的消息（作为unsigned long）
+              发生的事件，将其放置在地址数据中
+              示踪剂。对于PTRACE_EVENT_EXIT，这是跟踪的出口
+              状态。对于PTRACE_EVENT_FORK，PTRACE_EVENT_VFORK，
+               PTRACE_EVENT_VFORK_DONE和PTRACE_EVENT_CLONE，这是
+              新流程的PID。对于PTRACE_EVENT_SECCOMP，这是与trig-关联的
+               seccomp（2）过滤器的SECCOMP_RET_DATA。
+              愚蠢的规则。（addr被忽略。）
+
+       PTRACE_CONT 
+              重新启动已停止的跟踪过程。如果数据不为零，则为
+              解释为要传送到
+              tracee; 否则，不会传递任何信号。因此，例如
+              示踪剂可以控制发送到示踪剂的信号是否为
+              是否交付。（addr被忽略。）
+
+       PTRACE_SYSCALL，PTRACE_SINGLESTEP 
+              与PTRACE_CONT一样重新启动已停止的跟踪，但是要安排
+              在下一个进入或退出一个跟踪时停止的跟踪
+              系统调用，或执行完一条指令后，
+              分别。（示踪也将照常停止
+              从示踪剂的角度来看，
+              tracee会出现已被收到的停止SIG- 
+              TRAP。因此，例如对于PTRACE_SYSCALL，想法是
+              在第一站检查系统调用的参数，
+              然后执行另一个PTRACE_SYSCALL并检查的返回值
+              在第二站的系统调用。该数据参数是
+              被视为PTRACE_CONT。（addr被忽略。）
+
+       PTRACE_SYSEMU，PTRACE_SYSEMU_SINGLESTEP（从Linux 2.6.14开始）
+              对于PTRACE_SYSEMU，继续并在进入下一个系统时停止
+              tem调用，将不会执行。请参阅说明文件
+              在下面的syscall-stops上。对于PTRACE_SYSEMU_SINGLESTEP，请执行
+              同样，如果不是系统调用，也可以单步执行。这个电话是
+              由要模拟所有功能的用户模式Linux之类的程序使用
+              示踪的系统调用。该数据参数被视为
+              对于PTRACE_CONT。该地址参数将被忽略。这些
+              当前仅在x86上支持请求。
+
+       PTRACE_LISTEN（从Linux 3.4开始）
+              重新启动已停止的跟踪，但阻止其执行。
+              示踪的结果状态类似于过程
+              已由SIGSTOP（或其他停止信号）停止
+              nal）。有关更多信息，请参见“组停止”小节。
+              tion。  PTRACE_LISTEN仅适用于PTRACE_SEIZE附加的
+               跟踪。
+
+       PTRACE_KILL 
+              向跟踪发送一个SIGKILL来终止它。（addr和data是
+              忽略。）
+
+              不建议使用此操作；不要使用它！  而是直接使用kill（2）或tgkill（2）发送
+               SIGKILL。PTRACE_KILL的问题
+               在于，它要求被检体处于信号状态，
+              停止投放，否则可能无法正常运行（即可能已完成）
+              成功但不会杀死示踪剂）。相比之下，发送
+              一个SIGKILL直接没有这样的限制。
+
+       PTRACE_INTERRUPT（从Linux 3.4开始）
+              停止示踪。如果跟踪正在内核中运行或休眠
+              空间，PTRACE_SYSCALL有效，系统调用为
+              中断并报告syscall-exit-stop。（
+              重新启动跟踪时，重新启动了中断的系统调用。）
+              如果tracee已经由一个信号停止PTRACE_LIS- 
+              TEN发送给它的tracee与停止PTRACE_EVENT_STOP 
+              和WSTOPSIG（状态）返回停止信号。如果有其他
+              ptrace-stop是同时生成的（例如，如果
+              信号发送到示踪），此ptrace-stop发生。如果
+              以上都不适用（例如，如果Tracee运行-
+              在用户空间中），它会以PTRACE_EVENT_STOP和
+               WSTOPSIG（status） == SIGTRAP停止。  PTRACE_INTERRUPT仅适用于
+              由PTRACE_SEIZE附加的跟踪。
+
+       PTRACE_ATTACH 
+              附加到pid中指定的进程，使其成为
+              调用过程。跟踪被发送给SIGSTOP，但是会
+              不一定已因完成此通话而停止；
+              使用waitpid（2）等待示踪停止。见
+              “附加和分离”小节以获取更多信息-
+              tion。（addr和data被忽略。）
+
+              执行PTRACE_ATTACH的权限由ptrace控制
+              访问模式PTRACE_MODE_ATTACH_REALCREDS检查；见下文。
+
+       PTRACE_SEIZE（从Linux 3.4开始）
+              附加到pid中指定的进程，使其成为
+              调用过程。与PTRACE_ATTACH不同，PTRACE_SEIZE可以
+              不停止该过程。团体停留报告为
+              PTRACE_EVENT_STOP和WSTOPSIG（status）返回停止信号
+              纳尔。自动连接的孩子停下来
+              PTRACE_EVENT_STOP和WSTOPSIG（状态）返回SIGTRAP代替
+              具有SIGSTOP信号发送给他们。  execve（2）确实
+              不提供额外的SIGTRAP。仅PTRACE_SEIZE d进程
+              可以接受PTRACE_INTERRUPT和PTRACE_LISTEN命令。的
+              刚刚描述的“扣押”行为是由孩子们继承的，
+              使用PTRACE_O_TRACEFORK，
+               PTRACE_O_TRACEVFORK和PTRACE_O_TRACECLONE自动附加。  地址必须是
+              零。  数据包含要激活的ptrace选项的位掩码
+              立即。
+
+              执行PTRACE_SEIZE的权限由ptrace控制
+              访问模式PTRACE_MODE_ATTACH_REALCREDS检查；见下文。
+
+       PTRACE_SECCOMP_GET_FILTER（从Linux 4.4开始）
+              该操作允许示踪剂转储示踪剂的经典
+              BPF过滤器。
+
+              addr是一个整数，指定要作为过滤器的索引
+              甩了。最近安装的过滤器的索引为0。
+              如果addr大于已安装的过滤器的数量，则
+              操作失败，错误为ENOENT。
+
+              data是指向结构sock_filter数组的指针，该数组是
+              足够大以存储BPF程序；如果程序足够，则为NULL
+              不被存储。
+
+              成功后，返回值为指令数
+              在BPF程序中。如果数据为NULL，则此返回值
+              可用于正确调整struct sock_filter数组的大小
+              在后续通话中传递。
+如果调用者执行
+              此操作，则错误为EACCES失败
+              不具备CAP_SYS_ADMIN功能，或者呼叫者在
+              严格或过滤seccomp模式。如果过滤器由
+              addr不是经典的BPF过滤器，操作失败，
+              错误EMEDIUMTYPE。
+
+              如果将内核配置为
+              无论是CONFIG_SECCOMP_FILTER和CONFIG_CHECK- 
+              POINT_RESTORE选项。
+
+       PTRACE_DETACH 
+              与PTRACE_CONT一样，重新启动已停止的跟踪，但是首先
+              脱离它。在Linux下，可以在其中分离示踪
+              不管使用哪种方法来启动跟踪。
+              （addr被忽略。）
+
+       PTRACE_GET_THREAD_AREA（从Linux 2.6.0开始）
+              此操作执行与get_thread_area（2）类似的任务。
+              它读取GDT中的TLS条目，其索引在
+              地址，将所述条目的副本到所述结构user_desc 
+              指向数据。（通过与对比get_thread_area（2） ，该
+               入口号的的结构user_desc被忽略。）
+
+       PTRACE_SET_THREAD_AREA（从Linux 2.6.0开始）
+              此操作执行与set_thread_area（2）类似的任务。
+              它在GDT中设置TLS条目，其索引在addr中给出，
+              为其分配在struct user_desc指向中提供的数据
+              以数据为准。（通过与对比set_thread_area（2） ，该
+               入口号的的结构user_desc被忽略;在其它
+              字，此ptrace操作不能用于分配空闲
+              TLS条目。）
+
+       PTRACE_GET_SYSCALL_INFO（从Linux 5.3开始）
+              检索有关导致
+              停。信息放置在由指向的缓冲区中
+              的数据参数，它应该是指向的缓冲器
+              键入struct ptrace_syscall_info。该地址参数包含数据参数
+              指向的缓冲区的大小（即
+               sizeof（struct ptrace_syscall_info））。返回值con
+              保留内核可写的字节数
+              内尔。如果要写入的数据大小由内核
+              超过addr参数指定的大小，输出
+              数据被截断。
+
+              该ptrace_syscall_info结构包含以下
+              领域：
+
+                struct ptrace_syscall_info {
+                    __u8 op; / *系统呼叫停止的类型* /
+                    __u32拱；/ * AUDIT_ARCH_ *值；参见seccomp（2）* /
+                    __u64struction_pointer; / * CPU指令指针* /
+                    __u64 stack_pointer; / * CPU堆栈指针* /
+                    工会{
+                        结构{/ * op == PTRACE_SYSCALL_INFO_ENTRY * /
+                            __u64 nr; / *系统呼叫号码* /
+                            __u64 args [6]; / *系统调用参数* /
+                        }条目；
+                        结构{/ * op == PTRACE_SYSCALL_INFO_EXIT * /
+                            __s64 rval; / *系统调用返回值* /
+                            __u8 is_error; / *系统调用错误标志；
+                                                  布尔值：rval是否包含
+                                                  错误值（-ERRCODE）或
+                                                  非错误的返回值？* /
+                        } 出口;
+                        struct {/ * op == PTRACE_SYSCALL_INFO_SECCOMP * /
+                            __u64 nr; / *系统呼叫号码* /
+                            __u64 args [6]; / *系统调用参数* /
+                            __u32 ret_data; / * SECCOMP_RET_DATA部分
+                                                  的SECCOMP_RET_TRACE
+                                                  返回值* /
+                        } seccomp;
+                    };
+                };
+
+              该运算，拱，instruction_pointer和stack_pointer领域
+              为各种ptrace系统调用停止定义。的
+              结构的其余部分是一个联合体；一个人应该只读那些
+              对于系统调用停止类型有意义的字段
+              由op字段指定。
+
+              在运算字段具有下列值中的一个（在限定
+               在<linux / ptrace.h>）表示在发生了什么停止类型和
+              工会的哪一部分被填补：
+
+              PTRACE_SYSCALL_INFO_ENTRY联合 
+                     的入口组件包含信息
+                     与系统调用输入停止有关。
+
+              PTRACE_SYSCALL_INFO_EXIT联合 
+                     的退出组件包含信息
+                     与系统调用出口停止有关。
+
+              PTRACE_SYSCALL_INFO_SECCOMP联合 
+                     的退出组件包含信息
+                     与PTRACE_EVENT_SECCOMP止损有关。
+
+              PTRACE_SYSCALL_INFO_NONE
+                     工会的任何组成部分均不包含相关信息
+                     tion。
+
+   ptrace下的死亡
+       当（可能是多线程的）进程收到终止信号时
+       （将其处置设置为SIG_DFL且其默认操作为
+       （杀死进程），所有线程退出。痕迹报告他们的死亡
+       给他们的示踪剂。该事件的通知通过
+       waitpid（2）。
+
+       请注意，终止信号将首先导致信号传递停止
+       （仅在一个示踪上），并且仅在示踪剂注入之后（或
+       在将其分派到未跟踪的线程之后），将会死亡
+       信号发生在多线程进程中的所有迹线上。
+       （下面将解释术语“信号传递停止”。）
+
+       SIGKILL不会产生信号传递停止，因此
+       示踪剂无法抑制它。  SIGKILL即使在系统调用中也会杀死
+       （SIGKILL在死之前不会生成syscall-exit-stop ）。的
+       最终结果是SIGKILL总是终止该进程（所有
+       线程），即使已跟踪该进程的某些线程。
+
+       当跟踪调用_exit（2）时，它将其死亡报告给跟踪器。
+       其他线程不受影响。
+
+       当任何线程执行exit_group（2）时，其线程中的每个跟踪
+       该组织将其死亡报告给其追踪器。
+
+       如果PTRACE_O_TRACEEXIT选项打开，则将发生PTRACE_EVENT_EXIT
+       在实际死亡之前。这适用于通过exit（2），
+        exit_group（2）退出和信号死亡（SIGKILL除外，具体取决于
+       内核版本；请参阅下面的“错误”），以及何时拆除线程
+       execve（2）在多线程进程中。
+
+       跟踪器无法假定存在ptrace停止的跟踪。
+       在许多情况下，示踪可能会在停止时死亡（例如
+       作为SIGKILL）。因此，跟踪器必须准备好在任何ptrace操作上处理
+        ESRCH错误。不幸的是，同样的错误
+       如果tracee存在但未ptrace停止，则返回（对于com-
+       要求停止追踪的指令），或者
+       发出ptrace调用的进程。跟踪器需要跟踪
+       跟踪的停止/运行状态，并将ESRCH解释为
+       “ tracee意外死亡”仅在知道该tracee已被
+       观察到进入ptrace-stop。请注意，无法保证
+       如果出现以下情况，waitpid（WNOHANG）将可靠地报告示踪剂的死亡状态：
+       ptrace操作返回ESRCH。  waitpid（WNOHANG）可能返回0
+       代替。换句话说，示踪可能是“尚未完全死亡”，但
+       已经拒绝了ptrace请求。
+
+       示踪剂不能假定示踪物总是通过以下方式终止其寿命
+       报告WIFEXITED（状态）或WIFSIGNALED（状态）；有情况
+       不会发生这种情况。例如，如果线程不是
+       线程组负责人执行execve（2），它消失了；它的PID将
+       永远不会再次出现，并且将报告任何后续的ptrace停止
+       在线程组负责人的PID下。
+
+   停止状态
+       示踪可以处于两种状态：运行或停止。出于目的
+       ptrace，在系统调用（例如
+       read（2），pause（2）等）仍被视为正在运行，
+       即使示踪物被长时间封锁。的状态
+       PTRACE_LISTEN之后的走线有点是灰色区域：它不在
+       任何ptrace-stop（ptrace命令将无法在其上运行，并且它将
+       传递waitpid（2）通知），但也可以考虑
+       “已停止”，因为它未执行指令（未调度-
+       uled），如果它在PTRACE_LISTEN之前处于组停止状态，则不会
+       响应信号，直到收到SIGCONT。
+
+       停止跟踪时，有多种状态
+       ptrace讨论通常将它们混为一谈。因此，这很重要
+       不能使用精确的术语。
+
+       在本手册页中，示踪已准备就绪的任何停止状态
+       接受来自跟踪器的ptrace命令称为ptrace-stop。
+       Ptrace-stops可以进一步细分为signal-delivery-stop，
+        group-stop，syscall-stop，PTRACE_EVENT stop等。这些
+       停止状态将在下面详细说明。
+
+       当正在运行的跟踪进入ptrace-stop时，它将通知其跟踪
+       使用waitpid（2）（或其他“等待”系统调用之一）。大多数
+       本手册页假定跟踪器等待：
+
+           pid = waitpid（pid_or_minus_1，＆status，__WALL）;
+
+       Ptrace停止的迹线被报告为pid大于
+       0，且WIFSTOPPED（status）为 true。
+
+       该__WALL标志不包括WSTOPPED和WEXITED标志，但
+       暗示其功能。
+不建议在调用waitpid（2）时
+       设置WCONTINUED标志
+       修补：“持续”状态是按进程使用的，可以消耗它
+       混淆示踪的真正父母。
+
+       使用WNOHANG标志可能会导致waitpid（2）返回0（“不等待
+       结果可用”），即使跟踪器知道应该有一个
+       通知。例：
+
+           errno = 0;
+           ptrace（PTRACE_CONT，pid，0L，0L）;
+           如果（errno == ESRCH）{
+               / *示踪已死* /
+               r = waitpid（tracee，＆status，__WALL | WNOHANG）;
+               / * r在这里仍然可以是0！* /
+           }
+
+       存在以下类型的ptrace停止点：信号传递停止点，
+       组停止，PTRACE_EVENT停止，系统调用停止。他们都是
+       由waitpid（2）报告且WIFSTOPPED（status）为 true。他们可能是
+       通过检查值状态>> 8和是否存在来区分
+       通过查询PTRACE_GETSIGINFO来确定该值的歧义。（请注意：
+        WSTOPSIG（status）宏不能用于执行此检查，
+       因为它返回值（status >> 8）和0xff。）
+
+   信号传递停止
+       当（可能是多线程的）进程接收到任何信号时，除了
+       SIGKILL，内核选择一个任意线程来处理
+       信号。（如果信号是使用tgkill（2）生成的，则目标
+       线程可以由调用方显式选择。）如果选中
+       跟踪线程，进入信号传递停止状态。此时，
+       信号尚未传递到过程，可以通过以下方式抑制
+       示踪剂。如果跟踪器没有抑制信号，它将通过
+       在下一个ptrace重新启动请求中向示踪信号。这第二
+       信号传递的步骤在本手册中称为信号注入
+       页。请注意，如果信号被阻止，则信号传递停止
+       直到信号畅通无阻，然后才会发生
+       针对这样SIGSTOP不能被阻止。
+
+       跟踪器将信号传递停止视为waitpid（2）返回-
+       荷兰国际集团与WIFSTOPPED（状态）为真，与通过返回的信号WSTOP- 
+       SIG（状态）。如果信号是SIGTRAP，则可能是另一种
+       ptrace-stop; 请参阅下面的“系统调用停止”和“执行”部分
+       有关详细信息。如果WSTOPSIG（status）返回停止信号，则可能
+       站起来 见下文。
+
+   信号注入与抑制
+       在跟踪器观察到信号传递停止之后，该跟踪器
+       应该通过调用重新启动跟踪
+
+           ptrace（PTRACE_restart，pid，0，sig）
+
+       其中PTRACE_restart是重新启动的ptrace请求之一。如果
+        sig为0，则不传送信号。否则，将发送信号信号 
+       。此操作在本手册中称为信号注入
+       手册页，以区别于信号传递停止。
+
+       该SIG值可以是来自不同WSTOPSIG（状态）值：该
+       示踪剂可能导致注入不同的信号。
+
+       请注意，抑制信号仍然会导致系统调用返回
+       过早地。在这种情况下，系统调用将重新启动：
+       示踪剂将观察示踪剂以重新执行被中断的系统
+       调用（或restart_syscall（2）系统调用，进行一些系统调用，其中
+       使用不同的重启机制）（如果跟踪程序使用
+       PTRACE_SYSCALL。甚至不是的系统调用（例如poll（2））
+       在抑制信号后重启信号后可重启；
+       但是，存在内核错误，这些错误会导致某些系统调用失败并
+       EINTR，即使没有可观察到的信号被注入到tracee。
+
+       重新启动在ptrace-stop中发出的ptrace命令，而不是signal-
+       即使信号为，也无法保证传递停止会注入信号
+       非零。没有错误的报告；非零信号可以简单地被忽略。
+       Ptrace用户不应尝试通过以下方式“创建新信号”：使用
+       tgkill（2）代替。
+
+       重新启动时可以忽略信号注入请求的事实-
+       在ptrace停止（不是信号传递停止）之后检查示踪
+       是ptrace用户之间混乱的原因。一种典型的情况是
+       示踪剂观察到组停止，将其误认为是信号传递，
+       停止，重新启动跟踪
+
+           ptrace（PTRACE_restart，pid，0，stopsig）
+
+       旨在注入stopig，但stopig被忽略，并且
+       跟踪继续运行。
+
+       该SIGCONT信号具有唤醒（的所有线程）的副作用的
+       小组停止的过程。这种副作用发生在信号传送之前
+       急停。示踪剂不能抑制这种副作用（只能
+       抑制信号注入，这只会导致SIGCONT处理程序
+       如果已安装此类处理程序，则不会在跟踪中执行）。在
+       事实上，从群发中醒来之后可能会发出信号
+       停止信号（S）比其他 SIGCONT时，如果他们被挂起SIGCONT交付。换句话说，SIGCONT
+       可能不是第一个
+       示踪物发送后观察到的信号。
+
+       停止信号导致进程（的所有线程）进入组-
+       停。这种副作用发生在信号注入之后，因此
+       可以被示踪剂抑制。
+
+       在Linux 2.4和更早版本中，不能注入SIGSTOP信号。
+
+       PTRACE_GETSIGINFO可用于检索siginfo_t结构，该结构
+       对应于传递的信号。  可以使用PTRACE_SETSIGINFO
+       修改它。如果PTRACE_SETSIGINFO已被用于改变siginfo_t，重启命令中
+       的si_signo字段和sig参数
+       必须匹配，否则结果不确定。
+
+   群停
+       当（可能是多线程的）进程收到停止信号时，
+       所有线程停止。如果跟踪到某些线程，它们将进入一个组-
+       停。请注意，停止信号将首先导致信号传递-
+       急停（​​仅在一种示踪上），并且仅在由
+       跟踪程序（或在将其分派到未跟踪的线程之后），
+       将在所有群组上发起群组停止在多线程内的跟踪
+       处理。像往常一样，每个跟踪都将其组停止报告给
+       相应的跟踪器。
+
+       跟踪器将组停止视为waitpid（2），并且返回
+        WIFSTOPPED（status） true，并且可以通过WSTOPSIG（status）获得停止信号
+        。其他一些类返回相同的结果
+       的ptrace-stops，因此建议的做法是执行
+       呼叫
+
+           ptrace（PTRACE_GETSIGINFO，pid，0，＆siginfo）
+
+       如果信号不是SIGSTOP，SIGTSTP，SIGT‐ 
+       TIN或SIGTTOU，则可以避免该呼叫；只有这四个信号是停止信号。如果
+       示踪剂看到了其他东西，这不可能是一团糟。除此以外，
+       跟踪器需要调用PTRACE_GETSIGINFO。如果PTRACE_GETSIGINFO 
+       以EINVAL失败，那么那肯定是一个团体停留。（其他失败-
+       可能的代码是可能的，例如，如果SIGKILL杀死了示踪符，则为ESRCH（“没有这样的过程”）
+        。
+
+       如果使用PTRACE_SEIZE附加了跟踪，则组停止由PTRACE_EVENT_STOP指示
+        ：status >> 16 == PTRACE_EVENT_STOP。这允许
+       无需额外的PTRACE_GETSIGINFO即可检测组停止
+       呼叫。
+
+       从Linux 2.6.38开始，在示踪剂看到示踪剂ptrace-stop和
+       直到重新启动或杀死它，示踪将不会运行，并且不会
+       将通知（SIGKILL死亡除外）发送到跟踪器，即使
+       示踪剂进入另一个waitpid（2）调用。
+
+       上一段中描述的内核行为会导致
+       透明处理停止信号的问题。如果示踪剂
+       停止组后重启示踪，停止信号有效
+       故意被忽略-跟踪不会保持停止，而是运行。如果
+       示踪剂在进入下一个之前不会重新启动示踪
+       waitpid（2），将来的SIGCONT信号将不会报告给
+       示踪剂 这会导致SIGCONT信号对
+       示踪。
+
+       从Linux 3.4开始，有一种方法可以解决此问题：
+       在PTRACE_CONT中，可以使用PTRACE_LISTEN命令重新启动
+       跟踪以不执行但等待新事件的方式进行
+       它可以通过waitpid（2）报告（例如，当它由SIGCONT重新启动时
+        ）。
+
+   PTRACE_EVENT停止 
+       如果跟踪器设置了PTRACE_O_TRACE_ *选项，则跟踪器将进入
+       ptrace-stops称为PTRACE_EVENT停止。
+
+       跟踪器观察到PTRACE_EVENT停止，因为waitpid（2）返回
+       使用WIFSTOPPED（status）和WSTOPSIG（status）返回SIGTRAP。一个
+       在状态字的高字节中设置了附加位：
+       值状态>> 8将是
+
+           （SIGTRAP | PTRACE_EVENT_foo << 8）。
+
+       存在以下事件：
+
+       PTRACE_EVENT_VFORK 
+              在从vfork（2）或带有
+               CLONE_VFORK标志的克隆（2）返回之前停止。在此之后继续描写
+              停止，它将等待孩子退出/执行，然后继续
+              它的执行（换句话说，
+              vfork（2））。
+
+       PTRACE_EVENT_FORK 
+              在带有出口sig-的fork（2）或clone（2）返回之前停止
+              nal设置为SIGCHLD。
+
+       PTRACE_EVENT_CLONE 
+              在从clone（2）返回之前停止。
+
+       PTRACE_EVENT_VFORK_DONE 
+              在从vfork（2）或带有
+               CLONE_VFORK标志的克隆（2）返回之前停止，但在子进程取消对此跟踪的阻塞之后，停止
+              退出或执行。
+
+       对于上述所有四个停靠点，该停靠点发生在父对象中
+       （即示踪），而不是在新创建的线程中。
+       PTRACE_GETEVENTMSG可用于检索新线程的ID。
+
+       PTRACE_EVENT_EXEC 
+              在从execve（2）返回之前停止。从Linux 3.0开始，
+               PTRACE_GETEVENTMSG返回以前的线程ID。
+
+       PTRACE_EVENT_EXIT 
+              退出前停止（包括exit_group（2）的死亡），发出信号execve（2）在多线程进程中
+              导致死亡或退出。
+              PTRACE_GETEVENTMSG返回退出状态。寄存器可以是
+              已检查（与“真实”退出发生时不同）。示踪是
+              还活着; 它需要PTRACE_CONT ED或PTRACE_DETACH编
+              完成退出。
+
+       PTRACE_EVENT_STOP 
+              由PTRACE_INTERRUPT命令或组停止引起的停止，或者
+              附加新孩子时的初始ptrace-stop（仅当
+              使用PTRACE_SEIZE附加）。
+
+       PTRACE_EVENT_SECCOMP 
+              由tracee syscall条目上的seccomp（2）规则触发的停止跟踪器已设置PTRACE_O_TRACESECCOMP 
+              时。的
+              seccomp事件消息数据（来自SECCOMP_RET_DATA部分
+              可以使用seccomp过滤规则的
+              PTRACE_GETEVENTMSG。描述了此停止的语义
+              在下面的单独部分中进行了详细介绍。
+
+       PTRACE_GETSIGINFO上PTRACE_EVENT停止回报SIGTRAP在si_signo，
+       与si_code设置为（事件<< 8）| SIGTRAP。
+
+   Syscall-stops 
+       如果通过PTRACE_SYSCALL或PTRACE_SYSEMU重新启动了跟踪，则
+       Tracee在进入任何系统之前进入syscall-enter-stop
+       调用（如果重新启动正在使用，则不会执行
+       PTRACE_SYSEMU，无论对此寄存器进行任何更改
+       点或在此停止之后如何重新启动追迹）。不管
+       如果跟踪程序重新启动，则哪种方法导致syscall-entry-stop
+       PTRACE_SYSCALL的跟踪，跟踪进入syscall-exit-stop
+       系统调用完成时或被信号中断时
+       纳尔。（也就是说，信号传递停止永远不会在syscall-
+       Enter-stop和syscall-exit-stop; 它发生在 syscall-exit-之后
+       停。）。如果使用任何其他方法继续描写（包括
+       PTRACE_SYSEMU），不会发生syscall-exit-stop。请注意，所有提及的
+        PTRACE_SYSEMU同样适用于PTRACE_SYSEMU_SINGLESTEP。
+
+       但是，即使使用PTRACE_SYSCALL来继续跟踪，也可以
+       不保证下一站将是syscall-exit-stop。其他
+       示踪可能会停止在PTRACE_EVENT中停止中
+       （包括seccomp停止），退出（如果它输入_exit（2）或
+        exit_group（2）），被SIGKILL杀死或默默地死掉（如果它是一个
+       线程组负责人，execve（2）发生在另一个线程中，并且
+       该线程不是由同一跟踪器跟踪的；这种情况是不
+       稍后再讨论）。
+
+       跟踪器观察到syscall-enter-stop和syscall-exit-stop
+       作为waitpid函数（2）与返回的WIFSTOPPED（状态）真，WSTOP- 
+       SIG（状态）给予SIGTRAP。如果PTRACE_O_TRACESYSGOOD选项为
+       由跟踪器设置，则WSTOPSIG（status）将给出值（SIG‐ 
+       TRAP | 0x80）。
+
+       Syscall停止可以通过以下方式与信号传递停止区分开：
+       通过查询PTRACE_GETSIGINFO的以下情况来进行SIGTRAP：
+
+       si_code <= 0
+               SIGTRAP是由于用户空间操作而传递的，对于
+              例如，系统调用（tgkill（2），kill（2），sigqueue（3），
+              等等），POSIX计时器到期，POSIX上的状态更改
+              消息队列或异步I / O请求的完成。
+
+       si_code == SI_KERNEL（0x80）
+               SIGTRAP由内核发送。
+
+       si_code == SIGTRAP或si_code ==（SIGTRAP | 0x80）
+              这是系统调用停止。
+
+       但是，系统调用停止非常频繁（每个系统调用两次），并且对每个系统调用停止
+       执行PTRACE_GETSIGINFO可能有点
+       昂贵。
+
+       一些架构允许通过检查来区分案例
+       寄存器。例如，在x86上，rax ==- syscall- enter-中的ENOSYS
+       停。由于SIGTRAP（像其他信号一样）总是在 
+       syscall-exit-stop 之后发生，因此rax几乎从不包含
+       - ENOSYS的SIGTRAP看起来像“系统调用停止这是不syscall-
+       enter-stop”；换句话说，它看起来像是“ stray syscall-exit-
+       停止”，并且可以通过这种方式进行检测。但是这种检测非常脆弱
+       最好避免。
+建议
+       使用PTRACE_O_TRACESYSGOOD选项
+       区分syscall-stop和其他类型的ptrace-stop，因为它
+       可靠，不会造成性能损失。
+
+       Syscall-enter-stop和syscall-exit-stop与
+       示踪剂相互之间。跟踪器需要跟踪
+       为了不误解syscall-enter-，ptrace-stops的顺序
+       作为syscall-exit-stop停止，反之亦然。通常，系统调用-
+       enter-stop总是跟着syscall-exit-stop，PTRACE_EVENT
+       停止，或示踪者死亡；没有其他类型的ptrace-stop
+       在两者之间。但是，请注意seccomp停止（请参阅下文）可能会导致
+       syscall-exit-stops，没有前面的syscall-entry-stops。如果秒
+       使用comp时，请注意不要误解此类停止
+       作为syscall-entry-stops。
+
+       If after syscall-enter-stop, the tracer uses a restarting command
+       other than PTRACE_SYSCALL, syscall-exit-stop is not generated.
+
+       PTRACE_GETSIGINFO on syscall-stops returns SIGTRAP in si_signo, with
+       si_code set to SIGTRAP or (SIGTRAP|0x80).
+
+   PTRACE_EVENT_SECCOMP stops (Linux 3.5 to 4.7)
+       The behavior of PTRACE_EVENT_SECCOMP stops and their interaction with
+       other kinds of ptrace stops has changed between kernel versions.
+       This documents the behavior from their introduction until Linux 4.7
+       (inclusive).  The behavior in later kernel versions is documented in
+       the next section.
+
+       一个PTRACE_EVENT_SECCOMP停发生每当SECCOMP_RET_TRACE规则
+       被触发。这与使用哪种方法无关
+       重新启动系统调用。值得注意的是，即使
+       使用PTRACE_SYSEMU重新启动了Tracee，此系统调用为
+       无条件地跳过。
+
+       从此停靠点重新启动将表现为停靠点已正确发生
+       在有问题的系统调用之前。特别是两者
+       PTRACE_SYSCALL和PTRACE_SYSEMU通常会导致后续
+       syscall-entry-stop。但是，如果以后PTRACE_EVENT_SECCOMP的
+       系统调用号为负，syscall-entry-stop和
+       system call itself will be skipped.  This means that if the system
+       call number is negative after a PTRACE_EVENT_SECCOMP and the tracee
+       is restarted using PTRACE_SYSCALL, the next observed stop will be a
+       syscall-exit-stop, rather than the syscall-entry-stop that might have
+       been expected.
+
+   PTRACE_EVENT_SECCOMP stops (since Linux 4.8)
+       Starting with Linux 4.8, the PTRACE_EVENT_SECCOMP stop was reordered
+       to occur between syscall-entry-stop and syscall-exit-stop.  Note that
+       seccomp no longer runs (and no PTRACE_EVENT_SECCOMP will be reported)
+       if the system call is skipped due to PTRACE_SYSEMU.
+
+       Functionally, a PTRACE_EVENT_SECCOMP stop functions comparably to a
+       syscall-entry-stop (i.e., continuations using PTRACE_SYSCALL will
+       cause syscall-exit-stops, the system call number may be changed and
+       any other modified registers are visible to the to-be-executed system
+       call as well).  Note that there may be, but need not have been a pre‐
+       ceding syscall-entry-stop.
+
+       After a PTRACE_EVENT_SECCOMP stop, seccomp will be rerun, with a SEC‐
+       COMP_RET_TRACE rule now functioning the same as a SECCOMP_RET_ALLOW.
+       Specifically, this means that if registers are not modified during
+       the PTRACE_EVENT_SECCOMP stop, the system call will then be allowed.
+
+   PTRACE_SINGLESTEP stops
+       [Details of these kinds of stops are yet to be documented.]
+
+   Informational and restarting ptrace commands
+       Most ptrace commands (all except PTRACE_ATTACH, PTRACE_SEIZE,
+       PTRACE_TRACEME, PTRACE_INTERRUPT, and PTRACE_KILL) require the tracee
+       to be in a ptrace-stop, otherwise they fail with ESRCH.
+
+       When the tracee is in ptrace-stop, the tracer can read and write data
+       to the tracee using informational commands.  These commands leave the
+       tracee in ptrace-stopped state:
+
+           ptrace(PTRACE_PEEKTEXT/PEEKDATA/PEEKUSER, pid, addr, 0);
+           ptrace(PTRACE_POKETEXT/POKEDATA/POKEUSER, pid, addr, long_val);
+           ptrace(PTRACE_GETREGS/GETFPREGS, pid, 0, &struct);
+           ptrace(PTRACE_SETREGS/SETFPREGS, pid, 0, &struct);
+           ptrace(PTRACE_GETREGSET, pid, NT_foo, &iov);
+           ptrace(PTRACE_SETREGSET, pid, NT_foo, &iov);
+           ptrace(PTRACE_GETSIGINFO, pid, 0, &siginfo);
+           ptrace(PTRACE_SETSIGINFO, pid, 0, &siginfo);
+           ptrace(PTRACE_GETEVENTMSG, pid, 0, &long_var);
+           ptrace(PTRACE_SETOPTIONS, pid, 0, PTRACE_O_flags);
+
+       Note that some errors are not reported.  For example, setting signal
+       information (siginfo) may have no effect in some ptrace-stops, yet
+       the call may succeed (return 0 and not set errno); querying
+       PTRACE_GETEVENTMSG may succeed and return some random value if cur‐
+       rent ptrace-stop is not documented as returning a meaningful event
+       message.
+
+       The call
+
+           ptrace(PTRACE_SETOPTIONS, pid, 0, PTRACE_O_flags);
+
+       affects one tracee.  The tracee's current flags are replaced.  Flags
+       are inherited by new tracees created and "auto-attached" via active
+       PTRACE_O_TRACEFORK, PTRACE_O_TRACEVFORK, or PTRACE_O_TRACECLONE
+       options.
+
+       Another group of commands makes the ptrace-stopped tracee run.  They
+       have the form:
+
+           ptrace(cmd, pid, 0, sig);
+
+       where cmd is PTRACE_CONT, PTRACE_LISTEN, PTRACE_DETACH,
+       PTRACE_SYSCALL, PTRACE_SINGLESTEP, PTRACE_SYSEMU, or
+       PTRACE_SYSEMU_SINGLESTEP.  If the tracee is in signal-delivery-stop,
+       sig is the signal to be injected (if it is nonzero).  Otherwise, sig
+       may be ignored.  (When restarting a tracee from a ptrace-stop other
+       than signal-delivery-stop, recommended practice is to always pass 0
+       in sig.)
+
+   Attaching and detaching
+       A thread can be attached to the tracer using the call
+
+           ptrace(PTRACE_ATTACH, pid, 0, 0);
+
+       or
+
+           ptrace(PTRACE_SEIZE, pid, 0, PTRACE_O_flags);
+
+       PTRACE_ATTACH sends SIGSTOP to this thread.  If the tracer wants this
+       SIGSTOP to have no effect, it needs to suppress it.  Note that if
+       other signals are concurrently sent to this thread during attach, the
+       tracer may see the tracee enter signal-delivery-stop with other sig‐
+       nal(s) first!  The usual practice is to reinject these signals until
+       SIGSTOP is seen, then suppress SIGSTOP injection.  The design bug
+       here is that a ptrace attach and a concurrently delivered SIGSTOP may
+       race and the concurrent SIGSTOP may be lost.
+
+       Since attaching sends SIGSTOP and the tracer usually suppresses it,
+       this may cause a stray EINTR return from the currently executing sys‐
+       tem call in the tracee, as described in the "Signal injection and
+       suppression" section.
+
+       Since Linux 3.4, PTRACE_SEIZE can be used instead of PTRACE_ATTACH.
+       PTRACE_SEIZE does not stop the attached process.  If you need to stop
+       it after attach (or at any other time) without sending it any sig‐
+       nals, use PTRACE_INTERRUPT command.
+
+       The request
+
+           ptrace(PTRACE_TRACEME, 0, 0, 0);
+
+       turns the calling thread into a tracee.  The thread continues to run
+       (doesn't enter ptrace-stop).  A common practice is to follow the
+       PTRACE_TRACEME with
+
+           raise(SIGSTOP);
+
+       and allow the parent (which is our tracer now) to observe our signal-
+       delivery-stop.
+
+       If the PTRACE_O_TRACEFORK, PTRACE_O_TRACEVFORK, or PTRACE_O_TRACE‐
+       CLONE options are in effect, then children created by, respectively,
+       vfork(2) or clone(2) with the CLONE_VFORK flag, fork(2) or clone(2)
+       with the exit signal set to SIGCHLD, and other kinds of clone(2), are
+       automatically attached to the same tracer which traced their parent.
+       SIGSTOP is delivered to the children, causing them to enter signal-
+       delivery-stop after they exit the system call which created them.
+
+       Detaching of the tracee is performed by:
+
+           ptrace(PTRACE_DETACH, pid, 0, sig);
+
+       PTRACE_DETACH is a restarting operation; therefore it requires the
+       tracee to be in ptrace-stop.  If the tracee is in signal-delivery-
+       stop, a signal can be injected.  Otherwise, the sig parameter may be
+       silently ignored.
+
+       If the tracee is running when the tracer wants to detach it, the
+       usual solution is to send SIGSTOP (using tgkill(2), to make sure it
+       goes to the correct thread), wait for the tracee to stop in signal-
+       delivery-stop for SIGSTOP and then detach it (suppressing SIGSTOP
+       injection).  A design bug is that this can race with concurrent
+       SIGSTOPs.  Another complication is that the tracee may enter other
+       ptrace-stops and needs to be restarted and waited for again, until
+       SIGSTOP is seen.  Yet another complication is to be sure that the
+       tracee is not already ptrace-stopped, because no signal delivery hap‐
+       pens while it is—not even SIGSTOP.
+
+       If the tracer dies, all tracees are automatically detached and
+       restarted, unless they were in group-stop.  Handling of restart from
+       group-stop is currently buggy, but the "as planned" behavior is to
+       leave tracee stopped and waiting for SIGCONT.  If the tracee is
+       restarted from signal-delivery-stop, the pending signal is injected.
+
+   execve(2) under ptrace
+       When one thread in a multithreaded process calls execve(2), the ker‐
+       nel destroys all other threads in the process, and resets the thread
+       ID of the execing thread to the thread group ID (process ID).  (Or,
+       to put things another way, when a multithreaded process does an
+       execve(2), at completion of the call, it appears as though the
+       execve(2) occurred in the thread group leader, regardless of which
+       thread did the execve(2).)  This resetting of the thread ID looks
+       very confusing to tracers:
+
+       *  All other threads stop in PTRACE_EVENT_EXIT stop, if the
+          PTRACE_O_TRACEEXIT option was turned on.  Then all other threads
+          except the thread group leader report death as if they exited via
+          _exit(2) with exit code 0.
+
+       *  The execing tracee changes its thread ID while it is in the
+          execve(2).  (Remember, under ptrace, the "pid" returned from
+          waitpid(2), or fed into ptrace calls, is the tracee's thread ID.)
+          That is, the tracee's thread ID is reset to be the same as its
+          process ID, which is the same as the thread group leader's thread
+          ID.
+
+       *  Then a PTRACE_EVENT_EXEC stop happens, if the PTRACE_O_TRACEEXEC
+          option was turned on.
+
+       *  If the thread group leader has reported its PTRACE_EVENT_EXIT stop
+          by this time, it appears to the tracer that the dead thread leader
+          "reappears from nowhere".  (Note: the thread group leader does not
+          report death via WIFEXITED(status) until there is at least one
+          other live thread.  This eliminates the possibility that the
+          tracer will see it dying and then reappearing.)  If the thread
+          group leader was still alive, for the tracer this may look as if
+          thread group leader returns from a different system call than it
+          entered, or even "returned from a system call even though it was
+          not in any system call".  If the thread group leader was not
+          traced (or was traced by a different tracer), then during
+          execve(2) it will appear as if it has become a tracee of the
+          tracer of the execing tracee.
+
+       All of the above effects are the artifacts of the thread ID change in
+       the tracee.
+
+       The PTRACE_O_TRACEEXEC option is the recommended tool for dealing
+       with this situation.  First, it enables PTRACE_EVENT_EXEC stop, which
+       occurs before execve(2) returns.  In this stop, the tracer can use
+       PTRACE_GETEVENTMSG to retrieve the tracee's former thread ID.  (This
+       feature was introduced in Linux 3.0.)  Second, the PTRACE_O_TRACEEXEC
+       option disables legacy SIGTRAP generation on execve(2).
+
+       When the tracer receives PTRACE_EVENT_EXEC stop notification, it is
+       guaranteed that except this tracee and the thread group leader, no
+       other threads from the process are alive.
+
+       On receiving the PTRACE_EVENT_EXEC stop notification, the tracer
+       should clean up all its internal data structures describing the
+       threads of this process, and retain only one data structure—one which
+       describes the single still running tracee, with
+
+           thread ID == thread group ID == process ID.
+
+       Example: two threads call execve(2) at the same time:
+
+       *** we get syscall-enter-stop in thread 1: **
+       PID1 execve("/bin/foo", "foo" <unfinished ...>
+       *** we issue PTRACE_SYSCALL for thread 1 **
+       *** we get syscall-enter-stop in thread 2: **
+       PID2 execve("/bin/bar", "bar" <unfinished ...>
+       *** we issue PTRACE_SYSCALL for thread 2 **
+       *** we get PTRACE_EVENT_EXEC for PID0, we issue PTRACE_SYSCALL **
+       *** we get syscall-exit-stop for PID0: **
+       PID0 <... execve resumed> )             = 0
+
+       If the PTRACE_O_TRACEEXEC option is not in effect for the execing
+       tracee, and if the tracee was PTRACE_ATTACHed rather that
+       PTRACE_SEIZEd, the kernel delivers an extra SIGTRAP to the tracee
+       after execve(2) returns.  This is an ordinary signal (similar to one
+       which can be generated by kill -TRAP), not a special kind of ptrace-
+       stop.  Employing PTRACE_GETSIGINFO for this signal returns si_code
+       set to 0 (SI_USER).  This signal may be blocked by signal mask, and
+       thus may be delivered (much) later.
+
+       Usually, the tracer (for example, strace(1)) would not want to show
+       this extra post-execve SIGTRAP signal to the user, and would suppress
+       its delivery to the tracee (if SIGTRAP is set to SIG_DFL, it is a
+       killing signal).  However, determining which SIGTRAP to suppress is
+       not easy.  Setting the PTRACE_O_TRACEEXEC option or using
+       PTRACE_SEIZE and thus suppressing this extra SIGTRAP is the recom‐
+       mended approach.
+
+   Real parent
+       The ptrace API (ab)uses the standard UNIX parent/child signaling over
+       waitpid(2).  This used to cause the real parent of the process to
+       stop receiving several kinds of waitpid(2) notifications when the
+       child process is traced by some other process.
+
+       Many of these bugs have been fixed, but as of Linux 2.6.38 several
+       still exist; see BUGS below.
+
+       As of Linux 2.6.38, the following is believed to work correctly:
+
+       *  exit/death by signal is reported first to the tracer, then, when
+          the tracer consumes the waitpid(2) result, to the real parent (to
+          the real parent only when the whole multithreaded process exits).
+          If the tracer and the real parent are the same process, the report
+          is sent only once.
+RETURN VALUE         top
+       On success, the PTRACE_PEEK* requests return the requested data (but
+       see NOTES), the PTRACE_SECCOMP_GET_FILTER request returns the number
+       of instructions in the BPF program, and other requests return zero.
+
+       On error, all requests return -1, and errno is set appropriately.
+       Since the value returned by a successful PTRACE_PEEK* request may be
+       -1, the caller must clear errno before the call, and then check it
+       afterward to determine whether or not an error occurred.
+ERRORS         top
+       EBUSY  (i386 only) There was an error with allocating or freeing a
+              debug register.
+
+       EFAULT There was an attempt to read from or write to an invalid area
+              in the tracer's or the tracee's memory, probably because the
+              area wasn't mapped or accessible.  Unfortunately, under Linux,
+              different variations of this fault will return EIO or EFAULT
+              more or less arbitrarily.
+
+       EINVAL An attempt was made to set an invalid option.
+
+       EIO    request is invalid, or an attempt was made to read from or
+              write to an invalid area in the tracer's or the tracee's
+              memory, or there was a word-alignment violation, or an invalid
+              signal was specified during a restart request.
+
+       EPERM  The specified process cannot be traced.  This could be because
+              the tracer has insufficient privileges (the required
+              capability is CAP_SYS_PTRACE); unprivileged processes cannot
+              trace processes that they cannot send signals to or those
+              running set-user-ID/set-group-ID programs, for obvious
+              reasons.  Alternatively, the process may already be being
+              traced, or (on kernels before 2.6.26) be init(1) (PID 1).
+
+       ESRCH  The specified process does not exist, or is not currently
+              being traced by the caller, or is not stopped (for requests
+              that require a stopped tracee).
+CONFORMING TO         top
+       SVr4, 4.3BSD.
+NOTES         top
+       Although arguments to ptrace() are interpreted according to the
+       prototype given, glibc currently declares ptrace() as a variadic
+       function with only the request argument fixed.  It is recommended to
+       always supply four arguments, even if the requested operation does
+       not use them, setting unused/ignored arguments to 0L or (void *) 0.
+
+       In Linux kernels before 2.6.26, init(1), the process with PID 1, may
+       not be traced.
+
+       A tracees parent continues to be the tracer even if that tracer calls
+       execve(2).
+
+       The layout of the contents of memory and the USER area are quite
+       operating-system- and architecture-specific.  The offset supplied,
+       and the data returned, might not entirely match with the definition
+       of struct user.
+
+       The size of a "word" is determined by the operating-system variant
+       (e.g., for 32-bit Linux it is 32 bits).
+
+       This page documents the way the ptrace() call works currently in
+       Linux.  Its behavior differs significantly on other flavors of UNIX.
+       In any case, use of ptrace() is highly specific to the operating
+       system and architecture.
+
+   Ptrace access mode checking
+       Various parts of the kernel-user-space API (not just ptrace()
+       operations), require so-called "ptrace access mode" checks, whose
+       outcome determines whether an operation is permitted (or, in a few
+       cases, causes a "read" operation to return sanitized data).  These
+       checks are performed in cases where one process can inspect sensitive
+       information about, or in some cases modify the state of, another
+       process.  The checks are based on factors such as the credentials and
+       capabilities of the two processes, whether or not the "target"
+       process is dumpable, and the results of checks performed by any
+       enabled Linux Security Module (LSM)—for example, SELinux, Yama, or
+       Smack—and by the commoncap LSM (which is always invoked).
+
+       Prior to Linux 2.6.27, all access checks were of a single type.
+       Since Linux 2.6.27, two access mode levels are distinguished:
+
+       PTRACE_MODE_READ
+              For "read" operations or other operations that are less
+              dangerous, such as: get_robust_list(2); kcmp(2); reading
+              /proc/[pid]/auxv, /proc/[pid]/environ, or /proc/[pid]/stat; or
+              readlink(2) of a /proc/[pid]/ns/* file.
+
+       PTRACE_MODE_ATTACH
+              For "write" operations, or other operations that are more
+              dangerous, such as: ptrace attaching (PTRACE_ATTACH) to
+              another process or calling process_vm_writev(2).
+              (PTRACE_MODE_ATTACH was effectively the default before Linux
+              2.6.27.)
+
+       Since Linux 4.5, the above access mode checks are combined (ORed)
+       with one of the following modifiers:
+
+       PTRACE_MODE_FSCREDS
+              Use the caller's filesystem UID and GID (see credentials(7))
+              or effective capabilities for LSM checks.
+
+       PTRACE_MODE_REALCREDS
+              Use the caller's real UID and GID or permitted capabilities
+              for LSM checks.  This was effectively the default before Linux
+              4.5.
+
+       Because combining one of the credential modifiers with one of the
+       aforementioned access modes is typical, some macros are defined in
+       the kernel sources for the combinations:
+
+       PTRACE_MODE_READ_FSCREDS
+              Defined as PTRACE_MODE_READ | PTRACE_MODE_FSCREDS.
+
+       PTRACE_MODE_READ_REALCREDS
+              Defined as PTRACE_MODE_READ | PTRACE_MODE_REALCREDS.
+
+       PTRACE_MODE_ATTACH_FSCREDS
+              Defined as PTRACE_MODE_ATTACH | PTRACE_MODE_FSCREDS.
+
+       PTRACE_MODE_ATTACH_REALCREDS
+              Defined as PTRACE_MODE_ATTACH | PTRACE_MODE_REALCREDS.
+
+       One further modifier can be ORed with the access mode:
+
+       PTRACE_MODE_NOAUDIT (since Linux 3.3)
+              Don't audit this access mode check.  This modifier is employed
+              for ptrace access mode checks (such as checks when reading
+              /proc/[pid]/stat) that merely cause the output to be filtered
+              or sanitized, rather than causing an error to be returned to
+              the caller.  In these cases, accessing the file is not a
+              security violation and there is no reason to generate a
+              security audit record.  This modifier suppresses the
+              generation of such an audit record for the particular access
+              check.
+
+       Note that all of the PTRACE_MODE_* constants described in this
+       subsection are kernel-internal, and not visible to user space.  The
+       constant names are mentioned here in order to label the various kinds
+       of ptrace access mode checks that are performed for various system
+       calls and accesses to various pseudofiles (e.g., under /proc).  These
+       names are used in other manual pages to provide a simple shorthand
+       for labeling the different kernel checks.
+
+       The algorithm employed for ptrace access mode checking determines
+       whether the calling process is allowed to perform the corresponding
+       action on the target process.  (In the case of opening /proc/[pid]
+       files, the "calling process" is the one opening the file, and the
+       process with the corresponding PID is the "target process".)  The
+       algorithm is as follows:
+
+       1. If the calling thread and the target thread are in the same thread
+          group, access is always allowed.
+
+       2. If the access mode specifies PTRACE_MODE_FSCREDS, then, for the
+          check in the next step, employ the caller's filesystem UID and
+          GID.  (As noted in credentials(7), the filesystem UID and GID
+          almost always have the same values as the corresponding effective
+          IDs.)
+
+          Otherwise, the access mode specifies PTRACE_MODE_REALCREDS, so use
+          the caller's real UID and GID for the checks in the next step.
+          (Most APIs that check the caller's UID and GID use the effective
+          IDs.  For historical reasons, the PTRACE_MODE_REALCREDS check uses
+          the real IDs instead.)
+
+       3. Deny access if neither of the following is true:
+
+          · The real, effective, and saved-set user IDs of the target match
+            the caller's user ID, and the real, effective, and saved-set
+            group IDs of the target match the caller's group ID.
+
+          · The caller has the CAP_SYS_PTRACE capability in the user
+            namespace of the target.
+
+       4. Deny access if the target process "dumpable" attribute has a value
+          other than 1 (SUID_DUMP_USER; see the discussion of
+          PR_SET_DUMPABLE in prctl(2)), and the caller does not have the
+          CAP_SYS_PTRACE capability in the user namespace of the target
+          process.
+
+       5. The kernel LSM security_ptrace_access_check() interface is invoked
+          to see if ptrace access is permitted.  The results depend on the
+          LSM(s).  The implementation of this interface in the commoncap LSM
+          performs the following steps:
+
+          a) If the access mode includes PTRACE_MODE_FSCREDS, then use the
+             caller's effective capability set in the following check;
+             otherwise (the access mode specifies PTRACE_MODE_REALCREDS, so)
+             use the caller's permitted capability set.
+
+          b) Deny access if neither of the following is true:
+
+             · The caller and the target process are in the same user
+               namespace, and the caller's capabilities are a superset of
+               the target process's permitted capabilities.
+
+             · The caller has the CAP_SYS_PTRACE capability in the target
+               process's user namespace.
+
+             Note that the commoncap LSM does not distinguish between
+             PTRACE_MODE_READ and PTRACE_MODE_ATTACH.
+
+       6. If access has not been denied by any of the preceding steps, then
+          access is allowed.
+
+   /proc/sys/kernel/yama/ptrace_scope
+       On systems with the Yama Linux Security Module (LSM) installed (i.e.,
+       the kernel was configured with CONFIG_SECURITY_YAMA), the
+       /proc/sys/kernel/yama/ptrace_scope file (available since Linux 3.4)
+       can be used to restrict the ability to trace a process with ptrace()
+       (and thus also the ability to use tools such as strace(1) and
+       gdb(1)).  The goal of such restrictions is to prevent attack
+       escalation whereby a compromised process can ptrace-attach to other
+       sensitive processes (e.g., a GPG agent or an SSH session) owned by
+       the user in order to gain additional credentials that may exist in
+       memory and thus expand the scope of the attack.
+
+       More precisely, the Yama LSM limits two types of operations:
+
+       *  Any operation that performs a ptrace access mode
+          PTRACE_MODE_ATTACH check—for example, ptrace() PTRACE_ATTACH.
+          (See the "Ptrace access mode checking" discussion above.)
+
+       *  ptrace() PTRACE_TRACEME.
+
+       A process that has the CAP_SYS_PTRACE capability can update the
+       /proc/sys/kernel/yama/ptrace_scope file with one of the following
+       values:
+
+       0 ("classic ptrace permissions")
+              No additional restrictions on operations that perform
+              PTRACE_MODE_ATTACH checks (beyond those imposed by the
+              commoncap and other LSMs).
+
+              The use of PTRACE_TRACEME is unchanged.
+
+       1 ("restricted ptrace") [default value]
+              When performing an operation that requires a
+              PTRACE_MODE_ATTACH check, the calling process must either have
+              the CAP_SYS_PTRACE capability in the user namespace of the
+              target process or it must have a predefined relationship with
+              the target process.  By default, the predefined relationship
+              is that the target process must be a descendant of the caller.
+
+              A target process can employ the prctl(2) PR_SET_PTRACER
+              operation to declare an additional PID that is allowed to
+              perform PTRACE_MODE_ATTACH operations on the target.  See the
+              kernel source file Documentation/admin-guide/LSM/Yama.rst (or
+              Documentation/security/Yama.txt before Linux 4.13) for further
+              details.
+
+              The use of PTRACE_TRACEME is unchanged.
+
+       2 ("admin-only attach")
+              Only processes with the CAP_SYS_PTRACE capability in the user
+              namespace of the target process may perform PTRACE_MODE_ATTACH
+              operations or trace children that employ PTRACE_TRACEME.
+
+       3 ("no attach")
+              No process may perform PTRACE_MODE_ATTACH operations or trace
+              children that employ PTRACE_TRACEME.
+
+              Once this value has been written to the file, it cannot be
+              changed.
+
+       With respect to values 1 and 2, note that creating a new user
+       namespace effectively removes the protection offered by Yama.  This
+       is because a process in the parent user namespace whose effective UID
+       matches the UID of the creator of a child namespace has all
+       capabilities (including CAP_SYS_PTRACE) when performing operations
+       within the child user namespace (and further-removed descendants of
+       that namespace).  Consequently, when a process tries to use user
+       namespaces to sandbox itself, it inadvertently weakens the
+       protections offered by the Yama LSM.
+
+   C library/kernel differences
+       At the system call level, the PTRACE_PEEKTEXT, PTRACE_PEEKDATA, and
+       PTRACE_PEEKUSER requests have a different API: they store the result
+       at the address specified by the data parameter, and the return value
+       is the error flag.  The glibc wrapper function provides the API given
+       in DESCRIPTION above, with the result being returned via the function
+       return value.
+BUGS         top
+       On hosts with 2.6 kernel headers, PTRACE_SETOPTIONS is declared with
+       a different value than the one for 2.4.  This leads to applications
+       compiled with 2.6 kernel headers failing when run on 2.4 kernels.
+       This can be worked around by redefining PTRACE_SETOPTIONS to
+       PTRACE_OLDSETOPTIONS, if that is defined.
+
+       Group-stop notifications are sent to the tracer, but not to real
+       parent.  Last confirmed on 2.6.38.6.
+
+       If a thread group leader is traced and exits by calling _exit(2), a
+       PTRACE_EVENT_EXIT stop will happen for it (if requested), but the
+       subsequent WIFEXITED notification will not be delivered until all
+       other threads exit.  As explained above, if one of other threads
+       calls execve(2), the death of the thread group leader will never be
+       reported.  If the execed thread is not traced by this tracer, the
+       tracer will never know that execve(2) happened.  One possible
+       workaround is to PTRACE_DETACH the thread group leader instead of
+       restarting it in this case.  Last confirmed on 2.6.38.6.
+
+       A SIGKILL signal may still cause a PTRACE_EVENT_EXIT stop before
+       actual signal death.  This may be changed in the future; SIGKILL is
+       meant to always immediately kill tasks even under ptrace.  Last
+       confirmed on Linux 3.13.
+
+       Some system calls return with EINTR if a signal was sent to a tracee,
+       but delivery was suppressed by the tracer.  (This is very typical
+       operation: it is usually done by debuggers on every attach, in order
+       to not introduce a bogus SIGSTOP).  As of Linux 3.2.9, the following
+       system calls are affected (this list is likely incomplete):
+       epoll_wait(2), and read(2) from an inotify(7) file descriptor.  The
+       usual symptom of this bug is that when you attach to a quiescent
+       process with the command
+
+           strace -p <process-ID>
+
+       then, instead of the usual and expected one-line output such as
+
+           restart_syscall(<... resuming interrupted call ...>_
+
+       or
+
+           select(6, [5], NULL, [5], NULL_
+
+       ('_' denotes the cursor position), you observe more than one line.
+       For example:
+
+               clock_gettime(CLOCK_MONOTONIC, {15370, 690928118}) = 0
+               epoll_wait(4,_
+
+       What is not visible here is that the process was blocked in
+       epoll_wait(2) before strace(1) has attached to it.  Attaching caused
+       epoll_wait(2) to return to user space with the error EINTR.  In this
+       particular case, the program reacted to EINTR by checking the current
+       time, and then executing epoll_wait(2) again.  (Programs which do not
+       expect such "stray" EINTR errors may behave in an unintended way upon
+       an strace(1) attach.)
+
+       Contrary to the normal rules, the glibc wrapper for ptrace() can set
+       errno to zero.
+SEE ALSO         top
+       gdb(1), ltrace(1), strace(1), clone(2), execve(2), fork(2),
+       gettid(2), prctl(2), seccomp(2), sigaction(2), tgkill(2), vfork(2),
+       waitpid(2), exec(3), capabilities(7), signal(7)
+COLOPHON         top
+       This page is part of release 5.04 of the Linux man-pages project.  A
+       description of the project, information about reporting bugs, and the
+       latest version of this page, can be found at
+       https://www.kernel.org/doc/man-pages/.
+
+Linux                            2019-10-10                        PTRACE(2)
+Pages that refer to this page: ltrace(1),  strace(1),  clone(2),  execve(2),  get_robust_list(2),  kcmp(2),  move_pages(2),  perf_event_open(2),  prctl(2),  process_vm_readv(2),  seccomp(2),  set_thread_area(2),  sigaction(2),  syscalls(2),  wait(2),  exec(3),  seccomp_init(3),  seccomp_rule_add(3),  proc(5),  systemd.exec(5),  capabilities(7),  credentials(7),  namespaces(7),  user_namespaces(7),  stapdyn(8)
+
+Copyright and license for this manual page
+
+HTML rendering created 2019-11-19 by Michael Kerrisk, author of The Linux Programming Interface, maintainer of the Linux man-pages project.
+
+For details of in-depth Linux/UNIX system programming training courses that I teach, look here.
+
+Hosting by jambit GmbH.
+
+Valid XHTML 1.1
+
+Cover of TLPI
+

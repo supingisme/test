@@ -1,0 +1,2 @@
+./grep.pl "^(\w).*\1$" test.txt
+./grep.pl "^(un|in).{15}$" test.txt

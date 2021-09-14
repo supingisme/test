@@ -1,0 +1,20 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:06:53 CST. 
+32.4 gendh
+
+	此命令用于生成 DH 参数。
+	
+选项：
+	-out file
+	输出结果到 file 指定的文件；如果不指定，结果显示在屏幕屏幕上；
+	-2
+	将 2 作为生成值，此为默认值；
+	-5
+	将 5 作为生成值；
+	-rand
+	指定随机数文件；
+	-engine e
+	采用 Engine 生成；
+	
+示例：
+	openssl gendh
+	openssl gendh -5 -out dh.pem 1024

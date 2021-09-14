@@ -1,0 +1,45 @@
+centOS安装配置NFS
+环境
+
+nfs 192.168.56.101
+
+client 192.168.56.102
+
+一、yum 安装
+
+yum -y install nfs-utils rpcbind
+
+ 
+
+192.168.56.101:
+
+nfs 的配置文件 /etc/expots
+
+默认为空
+
+vi /etc/exports
+
+/opt/test/ 192.168.56.0/24(rw,no_root_squash,no_all_squash,sync,anonuid=501,anongid=501)
+
+	systemctl enable rpcbind.service
+	systemctl enable nfs-server.service
+	systemctl restart rpcbind
+	systemctl restart nfs
+
+	 
+
+	192.168.56.102:
+
+	 
+
+	showmount -e 192.168.56.101 # IP需要是搭建nas的IP
+	mkdir /opt/test
+	mount -t nfs 192.168.56.101:/opt/test /opt/test
+
+	 
+
+	设置开机自动挂载
+
+	vi /etc/fstab
+
+	添加：    192.168.56.101:/opt/test /opt/test nfs  defaults 0 0

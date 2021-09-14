@@ -1,0 +1,72 @@
+DPDK 的lcore 指的是EAL 线程， 本质是基于pthread（Linux/FreeBSD） 封装实现。
+
+Lcore（EAL pthread）由remote_launch 函数指定的任务创建并管理。在每个EAL pthread 中，
+有一个TLS（Thread Local Storage）称为_lcore_id。当使用DPDK 的EAL‘ -c’参数指定
+coremask 时，EAL pthread 生成相应个数lcore 并默认是1:1 亲和到coremask 对应的CPU 逻
+辑核，_lcore_id 和CPU ID 是一致的。
+下面简单介绍DPDK 中lcore 的初始化及执行任务的注册。
+（1）初始化
+1）rte_eal_cpu_init() 函数中，通过读取/sys/devices/system/cpu/cpuX/ 下的相关信息，确
+定当前系统有哪些CPU 核，以及每个核属于哪个CPU Socket。
+2）eal_parse_args() 函数，解析-c 参数，确认哪些CPU 核是可以使用的，以及设置第一
+个核为MASTER。
+3）为每一个SLAVE 核创建线程，并调用eal_thread_set_affinity() 绑定CPU。线程的执
+行体是eal_thread_loop()。eal_thread_loop() 的主体是一个while 死循环，调用不同模块注册
+到lcore_config[lcore_id].f 的回调函数。
+RTE_LCORE_FOREACH_SLAVE(i) {
+	/*
+	   * create communication pipes between master thread
+	   * and children
+	   */
+	if (pipe(lcore_config[i].pipe_master2slave) < 0)
+		rte_panic("Cannot create pipe\n");
+	if (pipe(lcore_config[i].pipe_slave2master) < 0)
+		rte_panic("Cannot create pipe\n");
+	lcore_config[i].state = WAIT;
+	/* create a thread for each lcore */
+	ret = pthread_create(&lcore_config[i].thread_id, NULL,
+			eal_thread_loop, NULL);
+	if (ret != 0)
+		rte_panic("Cannot create thread\n");
+}
+（2）注册
+不同的模块需要调用rte_eal_mp_remote_launch()，将自己的回调处理函数注册到lcore_
+config[].f 中。以l2fwd 为例，注册的回调处理函数是l2fwd_launch_on_lcore()。
+rte_eal_mp_remote_launch(l2fwd_launch_one_lcore, NULL, CALL_MASTER);
+DPDK 每个核上的线程最终会调用eal_thread_loop()--->l2fwd_launch_on_lcore()，调用到
+自己实现的处理函数。
+最后，总结整个lcore 启动过程和执行任务分发，可以归纳为如图3-5 所示。
+2. lcore 的亲和性
+默认情况下，lcore 是与逻辑核一一亲和绑定的。带来性能提升的同时，也牺牲了一
+定的灵活性和能效。在现网中，往往有流量潮汐现象的发生，在网络流量空闲时，没有必
+要使用与流量繁忙时相同的核数。按需分配和灵活的扩展伸缩能力，代表了一种很有说服
+力的能效需求。于是，EAL pthread 和逻辑核之间进而允许打破1:1 的绑定关系，使得_
+lcore_id 本身和CPU ID 可以不严格一致。EAL 定义了长选项“ --lcores”来指定lcore 的
+CPU 亲和性。对一个特定的lcore ID 或者lcore ID 组，这个长选项允许为EAL pthread 设置
+CPU 集。
+格式如下：
+--lcores=’<lcore_set>[@cpu_set][,<lcore_set>[@cpu_set],...]’
+其中，‘ lcore_set ’ 和‘ cpu_set’ 可以是一个数字、范围或者一个组。数字值是
+“ digit([0-9]+)”；范围是“ <number>-<number> ”；group 是“ (<number|range>[,<number|ran
+		ge>,...])”。如果不指定‘ @cpu_set’的值，那么默认就使用‘ lcore_set’的值。这个选项与
+corelist 的选项‘-l’是兼容的。
+For example, "--lcores='1,2@(5-7),(3-5)@(0,2),(0,6),7-8'" which means start 9 EAL thread;
+lcore 0 runs on cpuset 0x41 (cpu 0,6);
+lcore 1 runs on cpuset 0x2 (cpu 1);
+lcore 2 runs on cpuset 0xe0 (cpu 5,6,7);
+lcore 3,4,5 runs on cpuset 0x5 (cpu 0,2);
+lcore 6 runs on cpuset 0x41 (cpu 0,6);
+lcore 7 runs on cpuset 0x80 (cpu 7);
+lcore 8 runs on cpuset 0x100 (cpu 8).
+
+这个选项以及对应的一组API（rte_thread_set/get_affinity()）为lcore 提供了亲和的灵活
+性。lcore 可以亲和到一个CPU 或者一个CPU 集合，使得在运行时调整具体某个CPU 承载
+lcore 成为可能。
+而另一个方面，多个lcore 也可能亲和到同一个核。这里要注意的是，同一个核上多
+个可抢占式的任务调度涉及非抢占式的库时，会有一定限制。这里以非抢占式无锁rte_ring
+为例：
+1）单生产者/ 单消费者模式，不受影响，可正常使用。
+2）多生产者/ 多消费者模式且pthread 调度策略都是SCHED_OTHER 时，可以使用，
+性能会有所影响。
+3）多生产者/ 多消费者模式且pthread 调度策略有SCHED_FIFO 或者SCHED_RR 时，
+建议不使用，会产生死锁。

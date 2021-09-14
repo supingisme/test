@@ -1,0 +1,8 @@
+OMP_THREAD_LIMIT – Set the maximal number of threads
+Description:
+Specifies the number of threads to use for the whole program. The value of this
+variable shall be positive integer. If undefined, the number of threads is not
+limited.
+See also: Section 3.4 [OMP NUM THREADS], page 17 Section 2.12
+[omp get thread limit], page 9
+Reference: OpenMP specifications v3.0, section 4.8

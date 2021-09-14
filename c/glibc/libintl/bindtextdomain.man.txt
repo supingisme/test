@@ -1,0 +1,71 @@
+
+BINDTEXTDOMAIN(3)                           Library Functions Manual                           BINDTEXTDOMAIN(3)
+
+
+
+NAME
+       bindtextdomain - 设置 包括 消息条目 的 路径
+
+
+总
+       #include <libintl.h>
+
+       char * bindtextdomain (const char * domainname, const char * dirname);
+
+
+描
+       bindtextdomain 函数 的 作用 是 设置 指定消息域 里，包含 消息条目 (message catalog) 的 基本目录 层次结构。
+
+
+       一个  消息域  是 一套 可翻译的 msgid 消息。 通常， 每一个 软件包 有 它自己的 消息域。 提出 bindtextdomain
+       的 需求 是因为 软件包 安装 的 时候，并不总和 <libintl.h> 头文件 和 libc/libintl 库文件 的前缀 保持一致.
+
+
+       消息条目 期望的 路径名 是 dirname/locale/category/domainname.mo, 其中 locale 是 locale 名, 而 category 是
+       locale 面, 如 LC_MESSAGES.
+
+       domainname 必须 是 非空字符串。
+
+       如果  dirname  不是  NULL,  属于  domainname 域 的 消息条目 的 基本目录 被设置为 dirname。 函数 能够 复制
+       参数字符串。 如果 程序 希望 调用 chdir 函数， dirname 必须 是  绝对路径名；  否则  程序  无法  保证  找到
+       消息条目。
+
+       如果 dirname 是 NULL， 函数 返回 以前 为 domainname 域 设置的 基本目录。
+
+
+返
+       如果成功,  bindtextdomain  函数  返回 当前 domainname 域 的 基本目录, 如果 改变了 基本目录, 返回 改变后的
+       基本目录。 返回的 字符串 一直 有效, 直到 下一次 对 同一个 domainname  调用  bindtextdomain;  这个  字符串
+       不应该 被修改 或 释放。 如果 发生 内存分配错误, errno 设置为 ENOMEM, 然后 返回 NULL.
+
+
+错
+       下列 错误 可能 发生， 包括 其它的：
+
+       ENOMEM 没有 足够的 内存 可用。
+
+
+BUGS
+       返回类型 应该是 const char *, 但是 为了 避免 较早版本 ANSI C 代码 的 警告, 返回类型 是 char *.
+
+
+另
+       gettext(3),  dgettext(3),  dcgettext(3),  ngettext(3),  dngettext(3), dcngettext(3), textdomain(3), real‐
+       path(3)
+
+
+[中
+       Viamu <viamu@msn.com>
+
+[中
+       2003/11/28
+
+[中
+       Xuming <xuming@users.sourceforge.net>
+
+《
+       http://cmpp.linuxforum.net
+
+
+
+GNU gettext 0.10.38                                 May 2001                                   BINDTEXTDOMAIN(3)

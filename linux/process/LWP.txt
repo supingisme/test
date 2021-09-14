@@ -1,0 +1,2 @@
+Linux supports multithreaded applications, 
+it relies on so-called lightweight processes (LWP).

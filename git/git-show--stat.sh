@@ -1,0 +1,1 @@
+git show 488388193dccb61aeb4ef8579066902b9914556b --stat

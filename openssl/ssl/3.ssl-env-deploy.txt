@@ -1,0 +1,122 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:07:20 CST. 
+31.3 建立SSL 测试环境
+
+为了对 SSL 协议有大致的了解，我们可以通过openssl 命令来建立一个SSL 测试环境。
+
+1） 建立自己的 CA
+		在 openssl 安装目录的misc 目录下（或者在apps 目录下），
+		运行脚本：./CA.sh -newca（Windows 环境下运行：perl ca.pl –newca），出现提示符时，直接回车。
+		运行完毕后会生成一个demonCA 的目录，里面包含了ca 证书及其私钥。
+		
+2） 生成客户端和服务端证书申请：
+		openssl req -newkey rsa:1024 -out req1.pem -keyout sslclientkey.pem
+		openssl req -newkey rsa:1024 -out req2.pem -keyout sslserverkey.pem
+
+		-------------------------------------------------------------
+			[root@localhost 3.ssl-env-deploy]# sh 1.gen-server-client-pem.sh 
+			Generating a 1024 bit RSA private key
+			..++++++
+			......++++++
+			writing new private key to 'sslclientkey.pem'
+			Enter PEM pass phrase:
+			Verifying - Enter PEM pass phrase:
+			-----
+			You are about to be asked to enter information that will be incorporated
+			into your certificate request.
+			What you are about to enter is what is called a Distinguished Name or a DN.
+			There are quite a few fields but you can leave some blank
+			For some fields there will be a default value,
+			If you enter '.', the field will be left blank.
+			-----
+			Country Name (2 letter code) [XX]:CH
+			State or Province Name (full name) []:CH
+			Locality Name (eg, city) [Default City]:BJ
+			Organization Name (eg, company) [Default Company Ltd]:Sylincom
+			Organizational Unit Name (eg, section) []:OM
+			Common Name (eg, your name or your server's hostname) []:localhost
+			Email Address []:rongtao@sylincom.com
+
+			Please enter the following 'extra' attributes
+			to be sent with your certificate request
+			A challenge password []:rongtao
+			An optional company name []:rongtao
+			Generating a 1024 bit RSA private key
+			........................................................................................++++++
+			............++++++
+			writing new private key to 'sslserverkey.pem'
+			Enter PEM pass phrase:
+			Verifying - Enter PEM pass phrase:
+			-----
+			You are about to be asked to enter information that will be incorporated
+			into your certificate request.
+			What you are about to enter is what is called a Distinguished Name or a DN.
+			There are quite a few fields but you can leave some blank
+			For some fields there will be a default value,
+			If you enter '.', the field will be left blank.
+			-----
+			Country Name (2 letter code) [XX]:CH
+			State or Province Name (full name) []:CH
+			Locality Name (eg, city) [Default City]:BJ
+			Organization Name (eg, company) [Default Company Ltd]:Sylincom
+			Organizational Unit Name (eg, section) []:OM
+			Common Name (eg, your name or your server's hostname) []:localhost
+			Email Address []:rongtao@sylincom.com
+
+			Please enter the following 'extra' attributes
+			to be sent with your certificate request
+			A challenge password []:rongtao
+			An optional company name []:rongtao
+			[root@localhost 3.ssl-env-deploy]# ls
+			1.gen-server-client-pem.sh  2.sign-server-client-pem.sh  req1.pem  req2.pem  sslclientkey.pem  sslserverkey.pem
+		-------------------------------------------------------------
+
+		
+		
+3) 签发客户端和服务端证书
+		openssl ca -in req1.pem -out sslclientcert.pem
+		openssl ca -in req2.pem -out sslservercert.pem
+
+4) 运行ssl 服务端和客户端：
+		openssl s_server -cert sslservercert.pem -key sslserverkey.pem -CAfile demoCA/cacert.pem -ssl3
+		openssl s_client -ssl3 -CAfile demoCA/cacert.pem
+		
+运行客户端程序后，如果正确，会打印类似如下内容:
+
+	SSL-Session:
+	Protocol : SSLv3
+	Cipher : DHE-RSA-AES256-SHA
+	Session-ID:
+		A729F5845CBFFBA68B27F701A6BD9D411627FA5BDC780264131EE966D1DFD6F5
+	Session-ID-ctx:
+	Master-Key:
+		B00EEBD68165197BF033605F348A91676E872EB48487990D8BC77022578EECC0A
+		9789CD1F929E6A9EA259F9F9F3F9DFA
+	Key-Arg : None
+	Start Time: 1164077175
+	Timeout : 7200 (sec)
+	Verify return code: 0 (ok)
+
+	此时，输入数据然后回车，服务端会显示出来。
+	命令的其他选项：
+
+a) 验证客户端证书
+	openssl s_server -cert sslservercert.pem -key sslserverkey.pem -CAfile demoCA/cacert.pem -ssl3 -Verify 1
+	openssl s_client -ssl3 -CAfile demoCA/cacert.pem -cert sslclientcert.pem -key sslclientkey.pem
+	
+b) 指定加密套件
+	openssl s_server -cert sslservercert.pem -key sslserverkey.pem -CAfile demoCA/cacert.pem -ssl3	-Verify 1
+	openssl s_client -ssl3 -CAfile demoCA/cacert.pem -cert sslclientcert.pem -key sslclientkey.pem	-cipher AES256-SHA
+	其中AES256-SHA 可用根据openssl ciphers 命令获取，s_server 也可用指明加密套件：
+	openssl s_server -cert sslservercert.pem -key sslserverkey.pem -CAfile demoCA/cacert.pem -ssl3 -Verify 1 -cipher AES256-SHA
+	
+c) 指定私钥加密口令
+	openssl s_server -cert sslservercert.pem -key sslserverkey.pem -CAfile demoCA/cacert.pem -ssl3 -Verify 3 -cipher AES256-SHA -pass pass:123456
+	openssl s_client -ssl3 -CAfile demoCA/cacert.pem -cert sslclientcert.pem -key sslclientkey.pem -pass pass:123456
+   用参数pass 给出私钥保护口令来源：
+	-pass file:1.txt (1.txt 的内容为加密口令123456）；
+	-pass env:envname (环境变量）；
+	-pass fd:fdname ；
+	-pass stdin。
+   比如：
+	openssl s_client -ssl3 -CAfile demoCA/cacert.pem -cert sslclientcert.pem -key sslclientkey.pem -pass stdin
+	然后输入口令123456 即可。

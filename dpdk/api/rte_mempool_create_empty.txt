@@ -1,0 +1,14 @@
+内存池操作
+
+这允许外部存储子系统，如外部硬件存储管理系统和基于软件的存储管理与DPDK一起使用。
+
+mempool 处理包括两方面：
+	添加你自己新的mempool操作代码。这是通过添加mempool ops代码，并使用 MEMPOOL_REGISTER_OPS 宏来实现的。
+	使用新的API调用 rte_mempool_create_empty() 及 rte_mempool_set_ops_byname() 用于创建新的mempool，并制定用户要使用的操作。
+
+在同一个应用程序中可能会使用几个不同的mempool处理。可以使用 rte_mempool_create_empty() 创建一个新的mempool，然后用 rte_mempool_set_ops_byname() 将mempool指向相关的 mempool处理回调（ops）结构体。
+
+传统的应用程序可能会继续使用旧的 rte_mempool_create() API调用，它默认使用基于ring的mempool处理。这些应用程序需要修改为新的mempool处理。
+
+对于使用 rte_pktmbuf_create()的应用程序，有一个配置设置（RTE_MBUF_DEFAULT_MEMPOOL_OPS），允许应用程序使用另一个mempool处理。
+

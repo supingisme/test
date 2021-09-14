@@ -1,0 +1,39 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:56 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 16:09:52 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 15:51:33 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 15:38:56 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 13:59:12 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 13:23:25 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 11:24:37 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 11:09:05 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 10:12:28 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 13日 星期三 18:23:34 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:34:15 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:15:34 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:11:56 CST. 
+日期和时间处理函数
+日期和时间采用相应的数据类型和特殊的格式存储，以便能快速和
+有效地排序或过滤，并且节省物理存储空间。
+一般，应用程序不使用用来存储日期和时间的格式，因此日期和时
+间函数总是被用来读取、统计和处理这些值。由于这个原因，日期和时
+间函数在MySQL语言中具有重要的作用。
+表11-2列出了某些常用的日期和时间处理函数。
+表11-2 常用日期和时间处理函数
+
+AddDate() 增加一个日期（天、周等）
+AddTime() 增加一个时间（时、分等）
+CurDate() 返回当前日期
+CurTime() 返回当前时间
+Date() 返回日期时间的日期部分
+DateDiff() 计算两个日期之差
+Date_Add() 高度灵活的日期运算函数
+Date_Format() 返回一个格式化的日期或时间串
+Day() 返回一个日期的天数部分
+DayOfWeek() 对于一个日期，返回对应的星期几
+Hour() 返回一个时间的小时部分
+Minute() 返回一个时间的分钟部分
+Month() 返回一个日期的月份部分
+Now() 返回当前日期和时间
+Second() 返回一个时间的秒部分
+Time() 返回一个日期时间的时间部分
+Year() 返回一个日期的年份部分

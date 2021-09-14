@@ -1,0 +1,58 @@
+CLOSE(2)                                    Linux Programmer's Manual                                   CLOSE(2)
+
+
+
+NAME 名
+       close - 关闭一个文件描述符
+
+SYNOPSIS 总
+       #include <unistd.h>
+
+       int close(int fd);
+
+DESCRIPTION 描
+       close  关闭  一个 文件 描述符 , 使它 不在 指向 任何 文件 和 可以 在 新的 文件 操作 中 被 再次 使用.  任何
+       与 此 文件 相关联 的 以及 程序 所 拥有 的 锁 , 都 会 被 删除 (忽略 那些 持有 锁 的 文件描述符)
+
+       假如 fd 是 最后 一个 文件描述符 与此 资源 相 关联 , 则 这个 资源 将 被 释放.  若此 描述符  是  最后  一个
+       引用 到 此 文件 上 的 , 则 文件 将 使用 unlink(2) 删除.
+
+RETURN VALUE 返
+       close 返回 0 表示 成功 , 或者 -1 表示 有 错误 发生 .
+
+ERRORS 错
+       EBADF  fd 不是 一个 有效 的 已 被 打开 的 文件 的 描述符
+
+       EINTR  The close() 调用 被 一 信号 中断.
+
+       EIO    I/O 有 错误 发生
+
+CONFORMING TO
+       SVr4, SVID, POSIX, X/OPEN, BSD 4.3.  SVr4 documents an additional ENOLINK error condition.
+
+NOTES 注
+       通常  不检测 返回值 , 除了 发生 严重 的 程序 错误.  文件系统  使用 了 "write-behind" 的 技术 提高 了 执行
+       write(2) 时 的 性能 . 即使 还 没有 被 写 , 写操作 也会 成功 . 错误 信息 在 写操作 以后  报告  ,  但是  这
+       保证  在  关闭 文件 时 报告 . 在 关闭 文件 时 不检测 返回值 可能 会 导致 数据 的 丢失 . 这 一点 在 NFS 和
+       磁盘 配额 上 比较 明显.
+
+       由于 内核 会 延迟 写 , 所以 就算 成功 关闭 一个 文件 不能 保证 数据 被 成功 的 写到 磁盘 上.   当  文件流
+       关闭  时  ,  对 文件系统 来说 一般 不去 刷新 缓冲区 . 如果 你 要 保证 数据 写入 磁盘 等 物理 存贮器 中 就
+       使用 fsync(2) 或 sync(2), 他们 会 做到 你想做的 (对于 这一点 要 依赖于 磁盘 设备).
+
+SEE ALSO 参
+       open(2), fcntl(2), shutdown(2), unlink(2), fclose(3)
+
+
+[中
+            Daniel (badlong@163.com)
+
+[中
+            2002/1/10
+
+[说
+            若 发现 错误 或 不足 请 与 我 联系.
+
+
+
+                                                   1996-04-14                                           CLOSE(2)

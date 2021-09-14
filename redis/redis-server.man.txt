@@ -1,0 +1,91 @@
+REDIS-SERVER(1)                                  User commands                                 REDIS-SERVER(1)
+
+
+
+NAME
+       redis-server, redis-sentinel - Redis server
+
+
+SYNOPSIS
+       redis-server [ configuration_file ] [ options ] [ --sentinel ]
+
+       redis-sentinel [ configuration_file ] [ options ]
+
+
+
+DESCRIPTION
+       Redis  is  an  open  source (BSD licensed), in-memory data structure store, used as database, cache and
+       message broker, found at http://redis.io/
+
+       The redis-server command is a command line to launch a Redis server.
+
+       The redis-sentinel command is a symbolic link to the redis-server command which imply  the  --sentionel
+       option.
+
+
+OPTIONS
+       -              Read configuration from stdin.
+
+
+       --sentinel     Run in sentinel mode
+
+       --test-memory megabytes
+                      Run a memory check and exit.
+
+       --help
+       -h             Output this help and exit.
+
+       --version
+       -v             Output version and exit.
+
+       All  parameters  described in redis.conf file can be passed as command line option, e.g.  --port
+       port
+
+
+EXAMPLES
+       Run the server with default conf
+            redis-server
+
+       Run the server with a configuration file
+            redis-server /etc/redis/6379.conf
+
+       Run the server changing some default options
+            redis-server --port 7777 --slaveof 127.0.0.1 8888
+
+       Run the server with a configuration file and changing some options
+            redis-server /etc/myredis.conf --loglevel verbose
+
+       Run in sentinel mode
+            redis-server /etc/sentinel.conf --sentinel
+
+
+SEE ALSO
+       redis.conf(5)
+
+
+BUGS
+       See: http://redis.io/support and https://github.com/antirez/redis/issues
+
+COPYRIGHT
+       Copyright © 2006-2016 Salvatore Sanfilippo
+       Redistribution and use in source and binary forms, with or without modification,  are  permitted
+       provided that the following conditions are met:
+       * Redistributions of source code must retain the above copyright notice, this list of conditions
+         and the following disclaimer.
+       * Redistributions in binary form must reproduce the above copyright notice, this list of  condi‐
+         tions  and  the following disclaimer in the documentation and/or other materials provided with
+         the distribution.
+       * Neither the name of Redis nor the names of its contributors may be used to endorse or  promote
+         products derived from this software without specific prior written permission.
+       THIS  SOFTWARE  IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+       IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+       FITNESS  FOR  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CON‐
+       TRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,  OR  CONSEQUENTIAL
+       DAMAGES  (INCLUDING,  BUT  NOT  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+       USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF  LIABILITY,
+       WHETHER  IN  CONTRACT,  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+       ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+Redis                                                2016                                      REDIS-SERVER(1)

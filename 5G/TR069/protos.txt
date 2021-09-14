@@ -1,0 +1,13 @@
+TR069协议包含一些该协议特有的组件，同时也使用了一些标准协议，如下:
+
+    CPE/ACS Management Application
+    RPC Methods
+    SOAP
+    HTTP
+    SSL/TLS
+    TCP/IP
+    
+    TR069 架构在 HTTP / HTTPS 之上，借由 SOAP 包装 XML 物件做为沟通内容的通讯协议。
+
+
+

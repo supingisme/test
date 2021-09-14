@@ -1,0 +1,3 @@
+部分初始化操作从Glibc的开始函数处就执行了。初始化过程中还执行一个检查，用于保证配置文件所选择的微架构类型是本CPU所支持的，然后才开始调用main()函数。Core的初始化和运行是在rte_eal_init()接口上执行的（参考API文档）。它包括对pthread库的调用（更具体的说是pthread_self(), pthread_create()和pthread_setaffinity_np()）。
+
+

@@ -1,0 +1,75 @@
+####################  CRL 介绍
+
+证书撤销列表(Certificate Revocation List，简称CRL)，是一种包含撤销的证书列表的签
+名数据结构。CRL 是证书撤销状态的公布形式，CRL 就像信用卡的黑名单，用于公布某些
+数字证书不再有效。
+CRL 是一种离线的证书状态信息。它以一定的周期进行更新。CRL 可以分为完全CRL
+和增量CRL。在完全CRL 中包含了所有的被撤销证书信息，增量CRL 由一系列的CRL 来
+表明被撤销的证书信息，它每次发布的CRL 是对前面发布CRL 的增量扩充。
+基本的 CRL 信息有：被撤销证书序列号、撤销时间、撤销原因、签名者以及CRL 签名
+等信息。
+基于 CRL 的验证是一种不严格的证书认证。CRL 能证明在CRL 中被撤销的证书是无
+效的。但是，它不能给出不在CRL 中的证书的状态。如果执行严格的认证，需要采用在线
+方式进行认证，即OCSP 认证。
+
+#################### CRL 函数
+
+CRL 函数主要是set 和get 函数，如下：
+1） int X509_CRL_add0_revoked(X509_CRL *crl, X509_REVOKED *rev)
+添加一个被撤销证书的信息。
+2） int X509_CRL_print(BIO *bp,X509_CRL *x)
+打印crl 内容到BIO 中。
+3） int X509_CRL_print_fp(FILE *fp, X509_CRL *x)
+将crl 的内容输出到fp 中，此函数调用了X509_CRL_print。
+4） int X509_CRL_set_issuer_name(X509_CRL *x, X509_NAME *name)
+设置crl 的颁发者。
+5) int X509_CRL_set_lastUpdate(X509_CRL *x, ASN1_TIME *tm)
+设置crl 上次发布时间。
+6) int X509_CRL_set_nextUpdate(X509_CRL *x, ASN1_TIME *tm)
+设置crl 下次发布时间。
+7) int X509_CRL_set_version(X509_CRL *x, long version)
+设置crl 版本。
+8） int X509_CRL_sign(X509_CRL *x, EVP_PKEY *pkey, const EVP_MD *md)
+对crl 进行签名，pkey 为私钥，md 为摘要算法，结果存放在x-> signature 中。
+9） int X509_CRL_sort(X509_CRL *c)
+根据证书序列号对crl 排序，此函数实现采用了堆栈排序，堆栈的比较函数为
+X509_REVOKED_cmp(crypto/asn1/x_crl.c)。
+10）int X509_CRL_add1_ext_i2d(X509_CRL *x, int nid, void *value, int crit, unsigned
+long flags)
+添加CRL 扩展，nid 为要添加的扩展标识，value 为被添加的具体扩展项的内
+部数据结构地址，crit 表明是否为关键扩展，flags 表明何种操作。此函数调用
+X509V3_add1_i2d 函数。
+11）int X509_CRL_add_ext(X509_CRL *x, X509_EXTENSION *ex, int loc)
+添加扩展项到指定堆栈位置，此函数调用 X509v3_add_ext，进行堆栈插入操作。
+12）int X509_CRL_cmp(const X509_CRL *a, const X509_CRL *b)
+CRL 比较，此函数调用X509_NAME_cmp，只比较颁发者的名字是否相同。
+13）X509_EXTENSION *X509_CRL_delete_ext(X509_CRL *x, int loc)
+删除CRL 扩展项堆栈中的某一项，loc 指定被删除项在堆栈中的位置。
+14）int X509_CRL_digest(const X509_CRL *data, const EVP_MD *type,
+unsigned char *md, unsigned int *len)
+CRL 摘要，本函数对X509_CRL 进行摘要，type 指定摘要算法，摘要结果存
+放在md 中，len 表明摘要结果长度。
+15）X509_CRL_dup
+CRL 数据拷贝，此函数通过宏来实现。大部分ASN1 类型数据都有dup 函数，
+它们的实现方式比较简单：将对象DER 编码，然后再解码，这样就实现了ASN1
+数据的复制。
+16) void *X509_CRL_get_ext_d2i(X509_CRL *x, int nid, int *crit, int *idx)
+CRL 中的获取扩展项，此函数用于获取crl 中指定扩展项的内部数据结构，返
+回值为具体的扩展项数据结构地址，nid 为扩展项标识，它调用了X509V3_get_d2i
+函数。
+17）int X509_CRL_get_ext_by_critical(X509_CRL *x, int crit, int lastpos)
+获取扩展项在其堆栈中的位置，crit 为扩展项是否关键标识，lastpos 为堆栈搜
+索起始位置。此函数调用了X509v3_get_ext_by_critical。
+18）int X509_CRL_get_ext_by_NID(X509_CRL *x, int nid, int lastpos)
+获取扩展项在其堆栈中的位置，nid 为扩展项标识，lastpos 为搜索起始位置。
+如果找到此扩展项，返回其在堆栈中的位置。
+19) int X509_CRL_get_ext_by_OBJ(X509_CRL *x, ASN1_OBJECT *obj, int lastpos)
+同上。
+20）int X509_CRL_get_ext_count(X509_CRL *x)
+获取crl 中扩展项的个数。
+21) int X509_CRL_verify(X509_CRL *a, EVP_PKEY *r)
+验证CRL。EVP_PKEY 结构r 中需要给出公钥。
+
+
+
+

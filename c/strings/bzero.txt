@@ -1,0 +1,11 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:42 CST. 
+We first show the Berkeley-derived functions, although the only one we use in this
+text is bzero. (We use it because it has only two arguments and is easier to remember
+		than the three-argument memset function, as explained on p. 8.) You may encounter
+the other two functions, bcopy and bcmp, in existing applications.
+
+
+#include <strings.h>
+void bzero(void *dest, size_t nbytes);
+void bcopy(const void *src, void *dest, size_t nbytes);
+int bcmp(const void *ptr1, const void *ptr2, size_t nbytes);

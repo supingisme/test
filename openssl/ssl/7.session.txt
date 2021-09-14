@@ -1,0 +1,45 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:07:20 CST. 
+31.7 SESSION
+
+	当客户端和服务端在握手中新建了session，服务端生成一个session ID，通过哈希
+	表缓存SESSION 信息，并通过server hello 消息发送给客户端。此ID 是一个随机数，
+	SSL v2 版本时长度为16 字节，SSLv3 和TLSv1 长度为32 字节。此ID 与安全无关，但
+	是在服务端必须是唯一的。当需要session 重用时，客户端发送包含session id 的
+	clientHello 消息（无sesion 重用时，此值为空）给服务端，服务端可用根据此ID 来查
+	询缓存。session 重用可以免去诸多SSL 握手交互，特别是客户端的公钥加密和服务端
+	的私钥解密所带来的性能开销。session 的默认超时时间为60*5+4 秒，5 分钟。
+	
+
+session 相关函数有：
+
+	1) int SSL_has_matching_session_id(const SSL *ssl, const unsigned char * id,unsigned int id_len)
+	
+		SSL 中查询session id，id 和 id_len 为输入的要查询的session id，查询哈希表
+		ssl->ctx->sessions，如果匹配，返回1，否则返回0。
+		
+	2） int ssl_get_new_session(SSL *s, int session)
+	
+		生成ssl 用的session，此函数可用被服务端或客户端调用，当服务端调用时，
+		传入参数session 为1，生成新的session；当客户端调用时，传入参数session 为0，
+		只是简单的将session id 的长度设为0。
+	
+	3） int ssl_get_prev_session(SSL *s, unsigned char *session_id, int len)
+	
+		获取以前用过的session id，用于服务端session 重用，本函数由服务端调用，
+		session_id 为输入senssion ID 首地址，len 为其长度，如果返回1，表明要session
+		重用；返回0，表示没有找到；返回-1 表示错误。
+	
+	4） int SSL_set_session(SSL *s, SSL_SESSION *session)
+	
+		设置session，本函数用于客户端，用于设置session 信息；如果输入参数session
+		为空值，它将置空s->session；如果不为空，它将输入信息作为session 信息。
+	
+	5） void SSL_CTX_flush_sessions(SSL_CTX *s, long t)
+	
+		清除超时的SESSION，输入参数t 指定一个时间，如果t=0,则清除所有
+		SESSION，一般用time(NULL)取当前时间。此函数调用了哈希表函数lh_doall_arg
+		来处理每一个SESSION 数据。
+	
+	6） int ssl_clear_bad_session(SSL *s)
+	
+		清除无效SESSION。

@@ -1,0 +1,16 @@
+Introducing VPP: the vector packet processor
+
+Fully featured
+
+L2: VLan, Q-in-Q, Bridge Domains, LLDP ...
+L3: IPv4, GRE, VXLAN, DHCP, IPSEC …
+L3: IPv6, Discovery, Segment Routing …
+L4: TCP, UDP …
+CP: API, CLI, IKEv2 …
+
+
+•VPP is a fast, scalable and low latency network stack in user space.
+•VPP is trace-able, debug-able and fully featured layer 2, 3 ,4 implementation.
+•VPP is easy to integrate with your data-centre environment for both NFV and Cloud use cases.
+•VPP is always growing, innovatingand getting faster.
+•VPP is a fast growing community of fellow travellers.

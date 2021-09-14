@@ -1,0 +1,6 @@
+Device.SoftwareCtrl.AutoActivateEnable
+Device.SoftwareCtrl.ActivateTime
+Device.SoftwareCtrl.ActivateEnable
+Device.SoftwareCtrl.SystemCurrentVersion
+Device.SoftwareCtrl.SystemBackupVersion
+

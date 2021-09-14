@@ -1,0 +1,5 @@
+halt
+功能说明：关闭系统。
+语 法：halt [-dfinpw]
+补充说明：halt 会先检测系统的runlevel （执行等级）。若runlevel 不为0 或6，则关闭系统，否则即调用shutdown
+来关闭系统。

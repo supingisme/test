@@ -1,0 +1,5 @@
+soapcpp2 -i calc.h
+
+
+g++ -o calcclient++ calcclient.cpp soapC.cpp soapcalcProxy.cpp stdsoap2.cpp
+g++ -o calcserver++ calcserver.cpp soapC.cpp soapcalcService.cpp stdsoap2.cpp

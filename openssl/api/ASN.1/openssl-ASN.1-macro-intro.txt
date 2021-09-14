@@ -1,0 +1,17 @@
+
+
+1) DECLARE_ASN1_FUNCTIONS			用于声明一个内部数据结构的四个基本函数，一般可以在头文件中定义。
+2) IMPLEMENT_ASN1_FUNCTIONS			用于实现一个数据结构的四个基本函数。
+3）ASN1_SEQUENCE					用于 SEQUENCE，表明下面的编码是一个SEQUENCE。
+4) ASN1_CHOICE						表明下面的编码是选择其中一项，为 CHOICE 类型。
+5）ASN1_SIMPLE						用于简单类型或结构类型，并且是必须项。
+6) ASN1_OPT							用于可选项，表明 asn.1 语法中，本项是可选的。
+7) ASN1_EXP_OPT						用于显示标记，表明 asn.1 语法中，本项是显示类型，并且是可选的；
+8) ASN1_EXP							用于显示标记，表明 asn.1 语法中，本项是显示标记。
+9） ASN1_IMP_SEQUENCE_OF_OPT		用于隐示标记，表明 asn.1 语法中，本项是一个SEQUENCE 序列，为隐示类型，并且是可选的。
+10) ASN1_IMP_OPT					用于隐示标记，表明 asn.1 语法中，本项是隐示类型，并且是可选的。
+11) ASN1_IMP						用于隐示标记，表明 asn.1 语法中，本项是隐示类型。
+12) ASN1_SEQUENCE_END				用于 SEQUENCE 结束。
+13) ASN1_CHOICE_END					用于结束 CHOICE 类型。
+
+

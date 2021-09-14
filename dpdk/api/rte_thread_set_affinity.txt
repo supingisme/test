@@ -1,0 +1,12 @@
+3.3.2.	非EAL线程支持
+可以在任何用户线程（non-EAL线程）上执行DPDK任务上下文。 在non-EAL pthread中，_lcore_id 始终是 LCORE_ID_ANY，它标识一个no-EAL线程的有效、唯一的 _lcore_id。有些库可会使用一个唯一的ID替代（如TID），有些库将不受影响，有些库则会受到限制（如定时器和内存池库）。
+
+所有这些影响将在“已知问题”章节中提到。
+
+3.3.3.	公用线程API
+DPDK为线程操作引入了两个公共API rte_thread_set_affinity() 和 rte_pthread_get_affinity()。当他们在任何线程上下文中调用时，将获取或设置线程本地存储(TLS)。
+
+这些TLS包括 _cpuset 和 _socket_id：
+	_cpuset 存储了与线程亲和的CPU位图。
+	_socket_id 存储了CPU set所在的NUMA节点。如果CPU set中的cpu属于不同的NUMA节点, _socket_id 将设置为SOCKET_ID_ANY。
+

@@ -1,0 +1,75 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 26日 星期三 08:58:16 CST. 
+
+
+Mutex Deadlocks
+
+Mutexes provide a mechanism for allowing one thread to block the execution of
+another.This opens up the possibility of a new class of bugs, called deadlocks.A deadlock
+occurs when one or more threads are stuck waiting for something that never will occur.
+
+A simple type of deadlock may occur when the same thread attempts to lock a
+mutex twice in a row.The behavior in this case depends on what kind of mutex is
+being used.Three kinds of mutexes exist:
+
+1. Locking a fast mutex (the default kind) will cause a deadlock to occur.An
+attempt to lock the mutex blocks until the mutex is unlocked. But because the
+thread that locked the mutex is blocked on the same mutex, the lock cannot
+ever be released.
+
+2. Locking a recursive mutex(递归锁) does not cause a deadlock. A recursive mutex may
+safely be locked many times by the same thread.The mutex remembers how
+many times pthread_mutex_lock was called on it by the thread that holds the
+lock; that thread must make the same number of calls to pthread_mutex_unlock
+before the mutex is actually unlocked and another thread is allowed to lock it.
+
+3. GNU/Linux will detect and flag a double lock on an error-checking mutex that
+would otherwise cause a deadlock.The second consecutive call to
+pthread_mutex_lock returns the failure code EDEADLK.
+
+By default, a GNU/Linux mutex is of the fast kind.To create a mutex of one
+of the other two kinds, first create a mutex attribute object by declaring a
+pthread_mutexattr_t variable and calling pthread_mutexattr_init on a
+pointer to it.Then set the mutex kind by calling pthread_mutexattr_setkind_np; the
+first argument is a pointer to the mutex attribute object, and the second is
+PTHREAD_MUTEX_RECURSIVE_NP for a recursive mutex, or PTHREAD_MUTEX_ERRORCHECK_NP
+for an error-checking mutex. Pass a pointer to this attribute object to
+pthread_mutex_init to create a mutex of this kind, and then destroy the attribute
+object with pthread_mutexattr_destroy.
+
+This code sequence illustrates creation of an error-checking mutex, for instance:
+```c
+pthread_mutexattr_t attr;
+pthread_mutex_t mutex;
+pthread_mutexattr_init (&attr);
+pthread_mutexattr_setkind_np (&attr, PTHREAD_MUTEX_ERRORCHECK_NP);
+pthread_mutex_init (&mutex, &attr);
+pthread_mutexattr_destroy (&attr);
+
+```
+As suggested by the “np” suffix, the recursive and error-checking mutex kinds are specific
+to GNU/Linux and are not portable.Therefore, it is generally not advised to use
+them in programs. (Error-checking mutexes can be useful when debugging, though.);
+
+
+Deadlocks with Two or More Threads
+Deadlocks can occur when two (or more) threads are each blocked, waiting for a condition
+to occur that only the other one can cause. For instance, if thread A is blocked
+on a condition variable waiting for thread B to signal it, and thread B is blocked on a
+condition variable waiting for thread A to signal it, a deadlock has occurred because
+neither thread will ever signal the other.You should take care to avoid the possibility
+of such situations because they are quite difficult to detect.
+One common error that can cause a deadlock involves a problem in which more
+than one thread is trying to lock the same set of objects. For example, consider a program
+in which two different threads, running two different thread functions, need to
+lock the same two mutexes. Suppose that thread A locks mutex 1 and then mutex 2,
+and thread B happens to lock mutex 2 before mutex 1. In a sufficiently unfortunate
+scheduling scenario, Linux may schedule thread A long enough to lock mutex 1, and
+then schedule thread B, which promptly locks mutex 2. Now neither thread can
+progress because each is blocked on a mutex that the other thread holds locked.
+This is an example of a more general deadlock problem, which can involve not
+only synchronization objects such as mutexes, but also other resources, such as locks
+on files or devices.The problem occurs when multiple threads try to lock the same set
+of resources in different orders.The solution is to make sure that all threads that lock
+more than one resource lock them in the same order.
+
+

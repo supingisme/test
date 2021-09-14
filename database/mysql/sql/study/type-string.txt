@@ -1,0 +1,15 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:56 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 16:09:52 CST. 
+
+
+数据类型			说 明
+CHAR		1～255个字符的定长串。它的长度必须在创建时指定，否则MySQL
+				假定为CHAR(1)
+ENUM		接受最多64 K个串组成的一个预定义集合的某个串
+LONGTEXT	与TEXT相同，但最大长度为4 GB
+MEDIUMTEXT	与TEXT相同，但最大长度为16 K
+SET			接受最多64个串组成的一个预定义集合的零个或多个串
+TEXT		最大长度为64 K的变长文本
+TINYTEXT	与TEXT相同，但最大长度为255字节
+VARCHAR		长度可变，最多不超过255字节。如果在创建时指定为VARCHAR(n)，
+				则可存储0到n个字符的变长串（其中n≤255）

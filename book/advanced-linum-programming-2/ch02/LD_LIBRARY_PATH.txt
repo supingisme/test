@@ -1,0 +1,26 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 26日 星期三 08:58:16 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 21日 星期五 08:57:16 CST. 
+
+
+Using LD_LIBRARY_PATH
+
+When you link a program with a shared library, the linker does not put the full path
+to the shared library in the resulting executable. Instead, it places only the name of the
+shared library.When the program is actually run, the system searches for the shared
+library and loads it.The system searches only /lib and /usr/lib, by default. If a shared
+library that is linked into your program is installed outside those directories, it will not
+be found, and the system will refuse to run the program.
+One solution to this problem is to use the -Wl,-rpath option when linking the
+program. Suppose that you use this:
+% gcc -o app app.o -L. -ltest -Wl,-rpath,/usr/local/lib
+Then, when app is run, the system will search /usr/local/lib for any required shared
+libraries.
+
+Another solution to this problem is to set the LD_LIBRARY_PATH environment
+variable when running the program. Like the PATH environment variable,
+LD_LIBRARY_PATH is a colon-separated list of directories. For example, if
+LD_LIBRARY_PATH is /usr/local/lib:/opt/lib, then /usr/local/lib and /opt/lib
+will be searched before the standard /lib and /usr/lib directories.You should also
+note that if you have LD_LIBRARY_PATH, the linker will search the directories given
+there in addition to the directories given with the -L option when it is building an
+executable.4

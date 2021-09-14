@@ -1,0 +1,56 @@
+############# DH 算法介绍
+
+DH 算法是W.Diffie 和M.Hellman 提出的。此算法是最早的公钥算法。它实质是一个通
+信双方进行密钥协商的协议：两个实体中的任何一个使用自己的私钥和另一实体的公钥，得
+到一个对称密钥，这一对称密钥其它实体都计算不出来。DH 算法的安全性基于有限域上计
+算离散对数的困难性。离散对数的研究现状表明：所使用的DH 密钥至少需要1024 位，才
+能保证有足够的中、长期安全。
+首先，发送方和接收方设置相同的大数数n 和g，这两个数不是保密的，他们可以通过
+非安全通道来协商这两个素数；
+接着，他们用下面的方法协商密钥：
+发送方选择一个大随机整数 x，计算X= g^x mod n ，发送X 给接收者；
+接收方选择一个大随机整数 y，计算Y = g^y mod n ，发送Y 给发送方；
+双方计算密钥：发送方密钥为 k1=Y^x mod n，接收方密钥为k2=X^y mod n。
+其中 k1=k2=g^(xy) mod n。
+其他人可以知道 n、g、X 和Y，但是他们不能计算出密钥，除非他们能恢复x 和y。DH 算
+法不能抵御中间人攻击，中间人可以伪造假的X 和Y 分别发送给双方来获取他们的秘密密
+钥，所以需要保证X 和Y 的来源合法性。
+
+
+############### 主要函数
+
+1） DH_new
+生成 DH 数据结构，其DH_METHOD 采用openssl 默认提供的。
+2） DH_free
+释放 DH 数据结构。
+3） DH_generate_parameters
+生成 DH 密钥参数。
+4） DH_generate_key
+生成 DH 公私钥。
+5） DH_compute_key
+计算共享密钥，用于数据交换。
+6） DH_check
+检查 DH 密钥。
+7） DH_get_default_method
+获取默认的 DH_METHOD，该方法是可以由用户设置的。
+8） DH_get_ex_data
+获取 DH 结构中的扩展数据。
+9) DH_new_method
+生成DH 数据结构。
+10）DH_OpenSSL
+获取 openssl 提供的DH_METHOD。
+11）DH_set_default_method
+设置默认的DH_METHOD 方法，当用户实现了自己的DH_METHOD 时，可
+调用本函数来设置，控制DH 各种计算。
+12）DH_set_ex_data
+获取扩展数据。
+13）DH_set_method
+替换已有的 DH_METHOD。
+14）DH_size
+获取 DH 密钥长度的字节数。
+15) DH_up_ref
+增加DH 结构的一个引用。
+16）DHparams_print
+将 DH 密钥参数输出到bio 中。
+17) DHparams_print_fp
+将 DH 密钥参数输出到FILE 中。

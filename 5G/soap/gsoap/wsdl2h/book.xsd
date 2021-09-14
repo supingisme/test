@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--语法定义开始. xml 数据元素(schema element ) 和 数据类型( element type) 的定义使用的命名空间(namespace)是 "http://www.w3.org/2000/10/XMLSchema" -->
+<schema id = "book" xmlns="http://www.w3.org/2000/10/XMLSchema">
+<!--根元素为 book-->
+<element name="book">
+<!-- 次级元素为 复合类型 -->
+<complexType>
+<sequence>
+<!-- book 的第一个子元素是 title, 其 数据类型为 string，必须出现至少一次，０ 表示可以不出现此元素 -->
+<element name="title" type="string" minOccurs="1"/>
+<!-- book 的第二个子元素是 publisher, 其 数据类型为 string，必须出现至少一次 -->
+<element name="publisher" type="string" minOccurs="1"/>
+</sequence>
+<!-- "book" 结点有一个属性，其名称为 isbn,数据类型为 string -->
+<attribute name="isbn" type="unsignedLong" use="required"/>
+</complexType>
+</element>
+</schema>

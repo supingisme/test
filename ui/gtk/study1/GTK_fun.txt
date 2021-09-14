@@ -1,0 +1,75 @@
+1.构件的存储类型:GtkWidget 
+     GtkWidget *window;
+     GtkWidget *button;
+     GtkWidget *box;
+
+2.设置信号和信号处理函数之间的连接：g_signal_connect
+     gulong g_signal_connect( gpointer     *object,
+                              const gchar  *name,
+                              GCallback    func,
+                              gpointer     func_data );
+             第一个参数是要发出信号的构件,
+             第二个参数是你想要连接的信号的名称,
+             第三个参数是信号被捕获时所要调用的函数,
+             第四个参数是你想传递给这个函数的数据。
+
+3.创建一个新窗口
+     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+     gtk_window_set_title (GTK_WINDOW (window), "name of window");
+
+4.对所有的窗口都要这一步：点击关闭按钮
+     g_signal_connect (G_OBJECT (window), "destroy",
+                       G_CALLBACK (gtk_main_quit), NULL);
+     g_signal_connect (G_OBJECT (window), "delete_event", 
+                       G_CALLBACK (gtk_main_quit), NULL);
+
+5.设置窗口边框的宽度
+     gtk_container_set_border_width (GTK_CONTAINER (window), 10);
+
+6.放入容器和显示构件
+     gtk_widget_show (box);//显示box
+     gtk_container_add (GTK_CONTAINER (button), box);//将box放入button中
+     gtk_widget_show (button);//显示button
+     gtk_container_add (GTK_CONTAINER (window), button);//将button反如window
+     gtk_widget_show (window);//显示window
+
+7.組裝盒
+     GtkWidget *box;
+     box = gtk_hbox_new (FALSE, 1);//創建橫向組裝盒
+     gtk_container_add (GTK_CONTAINER (window), box);//將看不見胡組裝1放入窗口
+     gtk_box_pack_start (GTK_BOX(box), button, TRUE, TRUE, 0);//將button放入box
+     gtk_widget_show (button);
+     gtk_widget_show (box);
+     gtk_widget_show (window);
+
+8.表
+     GtkWidget *table;
+     table = gtk_table_new (2, 2, TRUE);// 创建一个 2x2 的表 
+     gtk_container_add (GTK_CONTAINER (window), table);  // 将表放进主窗口 
+     gtk_table_attach_defaults (GTK_TABLE (table), button, 0, 2, 0, 1);// 插入表
+     gtk_widget_show (button);
+     gtk_widget_show (table);
+     gtk_widget_show (window);
+
+9.开关按钮 Toggle Buttons/复选按钮 Check Buttons/单选按钮 Radio Buttons
+     GtkWidget *gtk_toggle_button_new( void );
+     GtkWidget *gtk_toggle_button_new_with_label( const gchar *label );
+     GtkWidget *gtk_toggle_button_new_with_mnemonic( const gchar *label );
+
+     GtkWidget *gtk_check_button_new( void );
+     GtkWidget *gtk_check_button_new_with_label ( const gchar *label );
+     GtkWidget *gtk_check_button_new_with_mnemonic ( const gchar *label );
+
+     GtkWidget *gtk_radio_button_new( GSList *group );
+     GtkWidget *gtk_radio_button_new_from_widget( GtkRadioButton *group );
+     GtkWidget *gtk_radio_button_new_with_label( GSList *group, const gchar *label );
+     GtkWidget* gtk_radio_button_new_with_label_from_widget( GtkRadioButton *group,
+                                                           const gchar *label );
+     GtkWidget *gtk_radio_button_new_with_mnemonic( GSList *group, const gchar *label );
+     GtkWidget *gtk_radio_button_new_with_mnemonic_from_widget( GtkRadioButton *group,
+                                                           const gchar *label );
+
+
+
+
+

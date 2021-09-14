@@ -1,0 +1,61 @@
+• OVERCOMMIT_GUESS(0)
+• OVERCOMMIT_ALWAYS(1)
+• OVERCOMMIT_NEVER(2)
+
+OVERCOMMIT_GUESS
+overcommit_memory 的默认值为OVERCOMMIT_GUESS。指定这个参数时，预测将空
+闲内存、页面缓存量、空闲交换区量、可回收slab（长字节）量等回收的页面数，虚拟
+空间要求分配的量比这个数小时，分配成功。
+（请注意，在多个进程同时要求大量的虚拟空间时是无法正确预测的。下面所述的
+OVERCOMMIT_NEVER 中就没有这种问题。）
+在OVERCOMMIT_GUESS 的情况下，可分配的虚拟空间大小基本就是物理内存大小和交
+换区大小的合计值。物理内存为2GB，交换区为2GB，当前消耗1GB 时，还可以分配
+约3GB 的虚拟空间。
+
+OVERCOMMIT_ALWAYS
+在OVERCOMMIT_ALWAYS 的情况下，虚拟空间分配总是成功。即使对于过大的虚拟空间
+要求，也会分配虚拟空间。可以在与实际安装的物理内存量完全无关的形态下使用虚拟
+空间，如前面所述的散列表等
+
+OVERCOMMIT_NEVER
+在OVERCOMMIT_NEVER 的情况下，对可分配虚拟空间量的管理更加严格。
+首先，记录下整个系统内已分配的虚拟空间量。这个值严格由系统进行集中管理，在分
+配或释放虚拟空间时重新计算。这个值为/proc/meminfo 的Committed_AS。
+对于虚拟空间大小的计算也比其他参数严格。例如，在OVERCOMMIT_GUESS 的情况下，
+对mmap 系统调用设置了MAP_NORESERVE 的虚拟空间量不添加到Committed_AS 中。
+但是， 在OVERCOMMIT_NEVER 的情况下会添加到Committed_AS 中。指定了MAP_NORESERVE 
+的区域也作为可能分配物理内存的虚拟空间处理。
+将“所有物理内存量+ 总交换区量”加上通过/proc/sys/vm/overcommit_ratio
+指定的比例得到的值，作为可分配的虚拟空间总量。这个值可以使用/proc/meminfo
+的CommitLimit 查看。CommitLimit 的值仅在利用OVERCOMMIT_NEVER 时有效。在
+OVERCOMMIT_GUESS、OVERCOMMIT_ALWAYS 的情况下，这个项目没有意义。
+要求分配虚拟空间时，如果“整个系统中已经分配（Committed_AS）”的虚拟空间量
+超过“可分配虚拟空间量（CommitLimit）”，则分配失败。
+
+在redis中这样使用
+-----------------------------------------------
+#ifdef __linux__
+int linuxOvercommitMemoryValue(void) {
+    FILE *fp = fopen("/proc/sys/vm/overcommit_memory","r");
+    char buf[64];
+
+    if (!fp) return -1;
+    if (fgets(buf,64,fp) == NULL) {
+        fclose(fp);
+        return -1;
+    }
+    fclose(fp);
+
+    return atoi(buf);
+}
+
+void linuxMemoryWarnings(void) {
+    if (linuxOvercommitMemoryValue() == 0) {
+        serverLog(LL_WARNING,"WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.");
+    }
+    if (THPIsEnabled()) {
+        serverLog(LL_WARNING,"WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.");
+    }
+}
+#endif /* __linux__ */
+-----------------------------------------------

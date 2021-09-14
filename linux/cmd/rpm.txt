@@ -1,0 +1,15 @@
+rpm
+功能说明：redhat package manager，管理套件。
+语 法：rpm [-acdhilqRsvV] [-e<包文件>] [-f<文件>+] [-i<包文件>] [-p<包文件>＋] [-U<包文件>] [-vv]
+[--addsign< 包文件>+] [--allfiles] [--allmatches] [--badreloc] [--changelog] [--checksig< 包文件>+] [--clean]
+[--dbpath<数据库目录>] [--dump] [--excludedocs] [--excludepath<排除目录>] [--force] [--ftpproxy<主机名称或IP
+地址>] [--ftpport<通信端口>] [--help] [--httpproxy<主机名称或IP 地址>] [--httpport<通信端口>] [--ignorearch]
+[--ignoreos] [--ignoresize] [--includedocs] [--initdb] [justdb] [--nodeps] [--nofiles] [--nomd5] [--noorder] [--noscripts]
+[--notriggers] [--oldpackage] [--percent] [--pipe<执行指令>] [--prefix<目的目录>] [--provides] [--queryformat<文
+件头格式>] [--querytags] [--rcfile<设定文件>] [--rebuliddb] [--recompile<包文件>] [--relocate<原目录>=<新目录
+>] [--replacefiles][--replacepkgs] [--requires] [--resign<包文件>+] [--rmsource] [--rmsource<文件>] [--root<根目录
+>] [--scripts] [--setperms] [--setugids] [--short-circuit] [--test] [--triggeredby< 包文件>] [--triggers] [--verify]
+[--version] [--whatprovides<功能特性>] [--whatrequires<功能特性>]
+补充说明：rmp 原本是Red Hat Linux 发行版专门用来管理Linux 各项套件的程序，由于它遵循GPL 规则且功
+能强大方便，因而广受欢迎。逐渐受到其他发行版的采用。RPM 套件管理方式的出现，让Linux 易于安装、
+升级，间接提升了Linux 的适用度。

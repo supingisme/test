@@ -1,0 +1,13 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:12 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 13日 星期三 08:53:54 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:07:31 CST. 
+These constants represent the various IEEE 754 exceptions. Not all FPUs report all the
+diﬀerent exceptions. Each constant is defned if and only if the FPU you are compiling for
+supports that exception, so you can test for FPU support with ‘#ifdef’. They are defned
+in ‘fenv.h’.
+
+FE_INEXACT The inexact exception.
+FE_DIVBYZERO The divide by zero exception.
+FE_UNDERFLOW The underﬂow exception.
+FE_OVERFLOW The overﬂow exception.
+FE_INVALID The invalid exception.

@@ -1,0 +1,20 @@
+# Line69
+auth_host controller
+
+/*asdfa */
+
+rongtao : zaim
+
+
+/*asdfa */
+
+rongtao : zaim
+
+
+/*asdfa */
+
+rongtao : zaim
+
+admin_user glance
+admin_tenant_name  service
+admin_password  94fbb57c427f539b0fc5

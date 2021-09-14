@@ -1,0 +1,47 @@
+用openssl 的ASN.1 库DER 编解码
+
+当采用 Openssl 的ASN.1 库编码一个asn.1 定义的结构的时候，需要采用如下步骤：
+
+1) 用 ASN.1 语法定义内部数据结构，并声明函数；
+
+所谓内部数据结构，指的是Openssl 中用基本的数据类型按照ASN.1 语法定义的其
+他的数据结构，这种数据结构可以方便的用于编解码。
+以 x509v4 中的证书有效期为例，证书有效期定义如下：
+
+	AttCertValidityPeriod ::= SEQUENCE
+	{
+		notBeforeTime GeneralizedTime,
+		notAfterTime GeneralizedTime
+	}
+
+所以我们可以定义相应的内部数据结构，如下：
+
+	typedef struct X509V4_VALID_st
+	{
+		ASN1_GENERALIZEDTIME *notAfter;
+	}X509V4_VALID;
+	DECLARE_ASN1_FUNCTIONS(X509V4_VALID)
+
+其中最后一行用于定义四个函数：
+
+	X509V4_VALID *X509V4_VALID_new(void);
+	void *X509V4_VALID_free(X509V4_VALID *a);
+	X509V4_VALID *d2i_ASN1_INTEGER(X509V4_VALID **a,unsigned char **in,long len);
+	int i2d_ X509V4_VALID (X509V4_VALID *a,unsigned char **out);
+
+2) 实现内部数据结构的四个基本函数
+
+实现内部数据结构的基本函数，是通过一系列的宏来实现的。定义的模式如下，以
+属性证书有效期为例，如下：
+
+	/* X509V4_VALID */
+	ASN1_SEQUENCE(X509V4_VALID) =
+	{
+		ASN1_SIMPLE(X509V4_VALID, notBefore, ASN1_GENERALIZEDTIME),
+		ASN1_SIMPLE(X509V4_VALID, notAfter, ASN1_GENERALIZEDTIME)
+	} ASN1_SEQUENCE_END(X509V4_VALID)
+	IMPLEMENT_ASN1_FUNCTIONS(X509V4_VALID)
+
+	
+这样通过宏就实现了一个 asn.1 定义结构的最基本的四个函数。
+本例有五个宏，采用什么样的宏，与数据结构的 asn.1 定义相关。ASN1_GENERALIZEDTIME *notBefore;

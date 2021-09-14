@@ -1,0 +1,11 @@
+<schema>
+	<element name="book">
+		<complexType>
+			<sequence>
+				<element name="title" type="string" minOccurs="1"/>
+				<element name="publisher" type="string" minOccurs="1"/>
+			</sequence>
+			<attribute name="isbn" type="unsignedLong" use="required"/>
+			</complexType>
+	</element>
+</schema>

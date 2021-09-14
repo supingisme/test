@@ -1,0 +1,328 @@
+VNSTAT(1)                                         User Manuals                                         VNSTAT(1)
+
+
+
+NAME
+       vnstat - a console-based network traffic monitor
+
+
+SYNOPSIS
+       vnstat  [  -Ddhlmqrstuvw?   ]  [  --cleartop  ]  [ --config file ] [ --create ] [ --days ] [ --delete ] [
+       --dbdir directory ] [ --debug ] [ --disable ] [ --enable ] [ --exportdb ]  [  --help  ]  [  --hours  ]  [
+       --importdb  file  ] [ -i interface ] [ --iface interface ] [ --iflist ] [ --json mode ] [ --live mode ] [
+       --locale locale ] [ --longhelp ] [ --months ] [ --nick nickname ] [ --oneline ] [ --query ] [  --rateunit
+       ] [ --rebuildtotal ] [ --reset ] [ -ru ] [ --savemerged ] [ --short ] [ --showconfig ] [ --style number ]
+       [ --sync ] [ --testkernel ] [ --top10 ] [ -tr time ] [ --traffic time ] [ --update  ]  [  --version  ]  [
+       --weeks ] [ --xml mode ]
+
+
+DESCRIPTION
+       vnStat  is  a  console-based network traffic monitor. It keeps a log of hourly, daily and monthly network
+       traffic for the selected interface(s). However, it isn't a packet sniffer.  The  traffic  information  is
+       read  from  the  proc(5)  or  sys filesystems depending on availability. That way vnStat can be used even
+       without root permissions on most systems.
+
+       The implementation is divided into two commands. The purpose of the  vnstat  command  is  to  provide  an
+       interface  for  querying  the traffic information stored in network interface specific databases where as
+       the daemon vnstatd(1) is responsible for data retrieval and storage. Although the daemon process is  con‐
+       stantly running as a service, it is actually spending most of the time sleeping between data updates.
+
+
+OPTIONS
+       --cleartop
+              Remove all top 10 entries.
+
+
+       --config file
+              Use file as configuration file instead of using normal configuration file search functionality.
+
+
+       --create
+              Create database for interface specified with -i or --iface option.
+
+
+       -d, --days
+              Show traffic statistics on a daily basis for the last 30 days.
+
+
+       --dbdir directory
+              Use  directory as database directory instead of using the directory specified in the configuration
+              file or the hardcoded default if no configuration file is available.
+
+
+       -D, --debug
+              Show additional debug output.
+
+
+       --delete
+              Delete the database for the interface specified with -i or --iface and stop monitoring it.
+
+
+       --enable, --disable
+              Enable or disable updates for selected interface. Useful for interfaces that aren't always  avail‐
+              able,  like  ppp0.  If the interface goes down it should be disabled in order to avoid errors. Add
+              something like vnstat -r --disable -i ppp0 to the script that's executed when the  interface  goes
+              down and vnstat --enable -i ppp0 to the up script. These two options aren't needed when the daemon
+              is used.
+
+
+       --exportdb
+              Instead of showing the database with a formatted output, this output will dump the whole  database
+              in  a  plain text based architeture independent format.  The output can be imported back using the
+              --importdb option and can be used for moving  a  database  from  one  host  to  another.  See  the
+              --importdb  documentation below for an example. Using the output for scripting is possible but the
+              outputs of --xml and --json are likely to be more suitable. The dump uses ; as field delimeter.
+
+                    active;1             activity status
+                    interface;eth0       name for the interface
+                    nick;inet            nick (if given)
+                    created;1023895272   creation date in Unix time
+                    updated;1065467100   when the database was updated
+                    totalrx;569605       all time total received MiB
+                    totaltx;2023708      all time total transmitted MiB
+                    currx;621673719      latest rx value in /proc
+                    curtx;981730184      latest tx value in /proc
+                    totalrxk;644         total rx KiB counter
+                    totaltxk;494         total tx KiB counter
+                    btime;1059414541     system boot time in Unix time
+
+              Then follows 30 lines like the following
+
+                    d;0;1078696800;559;7433;68;557;1
+
+              where d = days, 0 = day number in database (0 is today), 1077314401 date in Unix time,  559  =  rx
+              MiB, 7433 = tx MiB, 68 = rx KiB, 557 = tx KiB and 1 tells that vnStat has filled this value and it
+              is in use.
+
+                    m;0;1078092000;48649;139704;527;252;1   (x12)
+                    t;0;1078351200;5979;47155;362;525;1     (x10)
+                    h;0;1078699800;118265;516545            (x24)
+
+              m = months, t = top 10 and h = hours, all other fields are in the same order  as  in  days  except
+              hours  that doesn't have a separate KiB value. For hours the forth and fifth fields have values in
+              KiB.
+
+
+       -h, --hours
+              Show traffic statistics on a hourly basis for the last 24 hours.
+
+
+       --importdb file
+              Import a database from file which was previously exported using the --exportdb option. This can be
+              used  to  transfer a database between different architectures and hosts, as the database is archi‐
+              tecture dependant and not compatible between different architectures. First dump the  database  on
+              one  host, e.g. with vnstat -i ppp0 --exportdb >ppp0db.txt and then import the text file on a dif‐
+              ferent host using vnstat -i ppp0 --importdb ppp0db.txt
+
+
+       -i, --iface interface
+              Select one specific interface and apply actions to only it. For queries, it is possible  to  merge
+              the information of two or more interfaces using the interface1+interface2+...  syntax.
+
+
+       --iflist
+              Show list of currently available interfaces.
+
+
+       --json mode
+              Show  database content for selected interface or all interfaces in json format. All traffic values
+              in the output are in KiB. An optional mode parameter can be used for limiting the output  to  only
+              selected information.  Everything is shown by default. Setting mode to 'h' will output only hours,
+              'd' days, 'm' months and 't' the top 10.
+
+
+       -l, --live mode
+              Display current transfer rate for the selected interface in real time until  interrupted.  Statis‐
+              tics  will  be  shown after interruption if the runtime was more than 10 seconds. An optional mode
+              parameter can be used to select between the displaying of packets per second (mode 0) and transfer
+              counters (mode 1) during execution.  --style can also be used to affect the layout of the output.
+
+
+       --locale locale
+              Use  locale  instead of using the locale setting specified in the configuration file or the system
+              default if no configuration file is available.
+
+
+       --longhelp
+              Show complete options list.
+
+
+       -m, --months
+              Show traffic statistics on a monthly basis for the last 12 months.
+
+
+       --nick nickname
+              Set the selected interfaces nickname as an alias the will be displayed in queries. Usage of -u  is
+              required to save the change and the daemon may not be running during the set operation.
+
+
+       --oneline
+              Show  traffic  summary  for  selected interface using one line with a parseable format. The output
+              contains 15 fields with ; used as field delimeter. The 1st field contains the version  information
+              of  the  output  that will be changed in future versions of vnStat if the field structure changes.
+              The following fields in order 2) interface name, 3) timestamp for today, 4) rx for  today,  5)  tx
+              for  today, 6) total for today, 7) average traffic rate for today, 8) timestamp for current month,
+              9) rx for current month, 10) tx for current month, 11) total for current month, 12) average  traf‐
+              fic rate for today, 13) all time total rx, 14) all time total tx, 15) all time total traffic.
+
+
+       -q, --query
+              Force database query mode.
+
+
+       -r, --reset
+              Reset  the internal counters in the database for the selected interface. Use this if the interface
+              goes down and back up, otherwise that interface will get some extra traffic to its database.   Not
+              needed when the daemon is used.
+
+
+       --rebuildtotal
+              Reset the total traffic counters and recount those using recorded months.
+
+
+       -ru, --rateunit
+              Swap  the configured rate unit. If rate has been configured to be shown in bytes then rate will be
+              shown in bits if this option is present. In the same way, if rate has been configured to be  shown
+              in  bits then rate will be shown in bytes when this option is present. Alternatively 0 or 1 can be
+              given as parameter for this option in order to select between bytes (0) and bits (1) regardless of
+              the configuration file setting.
+
+
+       --savemerged
+              Write the end result of a database merge to the file mergeddb that can then be used as a new data‐
+              base if renamed. Top 10 traffic days isn't included in the merge and will start empty in  the  new
+              database.  The merge interface syntax is documented in -i, --iface option.
+
+
+       -s, --short
+              Use short output mode. This mode is also used if more than one database is available.
+
+
+       --style number
+              Modify  the content and style of outputs. Set number to 0 for a more narrow output, 1 for enabling
+              bar column, 2 for same as previous but with average traffic rate visible  in  summary  and  weekly
+              outputs  and  3 for enabling average traffic rate in all outputs where it is supported. 4 disables
+              the use of terminal control characters in -l / --live mode.
+
+
+       --sync Synchronize internal counters in the database with interface counters for the selected  interface.
+              Use this if the system is rebooted but interface counters aren't reseted. Such can occur when sus‐
+              pend to ram/disk is used. Not needed when the daemon is used.
+
+
+       --testkernel
+              Test if the kernel boot time information always stays the same like it should or if it's shifting.
+
+
+       -t, --top10
+              Show all time top 10 traffic days.
+
+
+       -tr time
+              Calculate how much traffic goes through the selected interface during the given time seconds.  The
+              time will be 5 seconds if a number parameter isn't specified.
+
+
+       -u, --update
+              Update  all  enabled databases or only the one specified with -i parameter. Not supported when the
+              daemon is running.
+
+
+       -v, --version
+              Show current version.
+
+
+       -w, --weeks
+              Show traffic for 7 days, current and previous week.
+
+
+       --xml mode
+              Show database content for selected interface or all interfaces in xml format. All  traffic  values
+              in  the  output are in KiB. An optional mode parameter can be used for limiting the output to only
+              selected information.  Everything is shown by default. Setting mode to 'h' will output only hours,
+              'd' days, 'm' months and 't' the top 10.
+
+
+       -?, --help
+              Show a command option summary.
+
+
+FILES
+       /var/lib/vnstat/
+              This directory contains all databases the program uses. Files are named according to the monitored
+              interfaces. A backup copy of each database is kept in a file starting with a . (dot character) and
+              otherwise named according to the original file.
+
+
+       /etc/vnstat.conf
+              Config  file that will be used unless $HOME/.vnstatrc exists. See vnstat.conf(5) for more informa‐
+              tion.
+
+
+EXAMPLES
+       vnstat Display traffic summary for the default interface or multiple interfaces when  more  than  one  is
+              monitored.
+
+
+       vnstat -i eth0+eth1+eth3
+              Display traffic summary for a merge of interfaces eth0, eth1 and eth3.
+
+
+       vnstat -i eth2 --xml
+              Output all information about interface eth2 in xml format.
+
+
+       vnstat --json
+              Output all information of all monitored interfaces in json format.
+
+
+       vnstat -u -i eth0
+              Force  a  database  update  for interface eth0 or create the database if it doesn't exist. This is
+              usually the first command used after a fresh install if the daemon isn't used.
+
+
+       vnstat -u -i eth0 --nick local
+              Give interface eth0 the nickname "local". That information will be later later visible as a  label
+              when  eth0  is queried. The database will also be updated when this command is executed or created
+              if the database doesn't exist.
+
+
+       vnstat -i eth2 --delete
+              Delete database of interface eth2 and stop monitoring it.
+
+
+RESTRICTIONS
+       Updates needs to be executed at least as often as it is possible for the  interface  to  generate  enough
+       traffic  to  overflow  the  kernel interface traffic counter. Otherwise, it is possible that some traffic
+       won't be seen. This isn't an issue for 64-bit kernels but at  least  one  update  every  hour  is  always
+       required  in  order  to  provide proper input.  With 32-bit kernels, the maximum time between two updates
+       depends on how fast the interface can transfer 4 GiB. Calculated theoretical times are:
+
+              10 Mbit:        54 minutes
+              100 Mbit:        5 minutes
+              1000 Mbit:      30 seconds
+
+       However, for 1000 Mbit interfaces updating once every minute is  usually  a  usable  solution  if  faster
+       updates can't be used.
+
+       Estimated  traffic  values  are likely to be somewhat inaccurate if daily traffic is low because only the
+       MiB counter is used to calculate the estimate.
+
+       Virtual and aliased interfaces cannot be monitored because the kernel doesn't provide traffic information
+       for  that type of interfaces. Such interfaces are usually named eth0:0, eth0:1, eth0:2 etc. where eth0 is
+       the actual interface being aliased.
+
+       Using long date output formats may cause misalignment in shown columns if the length of the date  exceeds
+       the fixed size allocation.
+
+
+AUTHOR
+       Teemu Toivola <tst at iki dot fi>
+
+
+SEE ALSO
+       vnstatd(1), vnstati(1), vnstat.conf(5), proc(5), ifconfig(8), units(7)
+
+
+
+version 1.15                                      DECEMBER 2015                                        VNSTAT(1)

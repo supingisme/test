@@ -1,0 +1,56 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:43 CST. 
+16.5.1 nice 命令
+16.5.2 renice 命令
+
+nice命令允许你设置命令启动时的调度优先级。要让命令以更低的优先级运行，只要用nice
+的-n命令行来指定新的优先级级别。
+$ nice -n 10 ./test4.sh > test4.out &
+[1] 4973
+$
+$ ps -p 4973 -o pid,ppid,ni,cmd
+PID PPID NI CMD
+4973 4721 10 /bin/bash ./test4.sh
+$
+注意，必须将nice命令和要启动的命令放在同一行中。 ps命令的输出验证了谦让度值（NI
+列）已经被调整到了10。
+nice命令会让脚本以更低的优先级运行。但如果想提高某个命令的优先级，你可能会吃惊。
+$ nice -n -10 ./test4.sh > test4.out &
+[1] 4985
+$ nice: cannot set niceness: Permission denied
+
+[1]+ Done nice -n -10 ./test4.sh > test4.out
+$
+nice命令阻止普通系统用户来提高命令的优先级。注意，指定的作业的确运行了，但是试
+图使用nice命令提高其优先级的操作却失败了。
+nice命令的-n选项并不是必须的，只需要在破折号后面跟上优先级就行了。
+$ nice -10 ./test4.sh > test4.out &
+[1] 4993
+$
+$ ps -p 4993 -o pid,ppid,ni,cmd
+PID PPID NI CMD
+4993 4721 10 /bin/bash ./test4.sh
+$
+
+
+有时你想改变系统上已运行命令的优先级。这正是renice命令可以做到的。它允许你指定
+运行进程的PID来改变它的优先级。
+$ ./test11.sh &
+[1] 5055
+$
+$ ps -p 5055 -o pid,ppid,ni,cmd
+PID PPID NI CMD
+5055 4721 0 /bin/bash ./test11.sh
+$
+$ renice -n 10 -p 5055
+5055: old priority 0, new priority 10
+$
+$ ps -p 5055 -o pid,ppid,ni,cmd
+PID PPID NI CMD
+5055 4721 10 /bin/bash ./test11.sh
+$
+renice命令会自动更新当前运行进程的调度优先级。和nice命令一样， renice命令也有一
+些限制：
+ 只能对属于你的进程执行renice；
+ 只能通过renice降低进程的优先级；
+ root用户可以通过renice来任意调整进程的优先级。
+如果想完全控制运行进程，必须以root账户身份登录或使用sudo命令。

@@ -1,0 +1,10 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:56 CST. 
+
+在排除系统启动问题时，首先应该尽量用手动启动服务器。MySQL
+服务器自身通过在命令行上执行mysqld启动。下面是几个重要的mysqld
+命令行选项：
+ --help显示帮助——一个选项列表；
+ --safe-mode装载减去某些最佳配置的服务器；
+ --verbose显示全文本消息（为获得更详细的帮助消息与--help
+联合使用）；
+ --version显示版本信息然后退出。

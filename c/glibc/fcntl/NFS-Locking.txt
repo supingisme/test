@@ -1,0 +1,29 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:11 CST. 
+
+
+NFS Locking
+
+NFS is the Network File System and is discussed in Chapter 29 of TCPv1. f cntl record
+locking is an extension to NFS that is supported by most implementations of NFS. Unix
+systems normally support NFS record locking with two additional daemons: lockd
+and statd. When a process calls f cntl to obtain a lock, and the kernel detects that the
+descriptor refers to a file that is on an NFS-mounted filesystem, the local lockd sends
+the request to the server's lockd. The s tatd daemon keeps track of the clients holding
+locks and interacts with lockd to provide crash and recovery functions for NFS
+locking.
+
+We should expect record locking for an NFS file to take longer than record locking
+for a local file, since network communication is required to obtain and release each lock.
+To test NFS record locking, all we need to change is the filename specified by SEQFILE
+in Figure 9.2. If we measure the time required for our program to execute 10,000 loops
+using f cntl record locking, it is about 80 times faster for a local file than for an NFS
+file. Also realize that when the sequence number file is on an NFS-mounted filesystem,
+network communication is involved for both the record locking and for the reading and
+writing of the sequence number.
+
+Caveat emptor: NFS record locking has been a problem for many years, and most of the problems
+have been caused by poor implementations. Despite the fact that the major Unix vendors
+have finally cleaned up their implementations, using f cntl record locking over NFS is still a
+religious issue for many. We will not take sides on this issue but will just note that f cntl
+record locking is supposed to work over NFS, but your success depends on the quality of the
+implementations, both client and server.

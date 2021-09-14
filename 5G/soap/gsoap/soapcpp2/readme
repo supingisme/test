@@ -1,0 +1,20 @@
+wsdl2h用作wsdl和.h文件的转换。soapcpp2用头文件生成客户端/服务端等开发需要的h和cpp文件。
+
+
+　经常使用的一些指令如下：
+
+　　-i　　　　 生成server的proxy和object，这种object继承于soap struct。
+
+　　-j　　　　 和-i类似，区别在于生成的代理类不继承于soap struct，而是包含了包含了一个soap结构的指针。此种方式生存的代理类便于互相通信
+
+　　-C　　　　仅生成客户端client代码
+
+　　-S　　　　仅生成服务端server代码
+
+　　-x　　　　不生成xml文件。不用此项的话，将对头文件中定义的每个operation生成一个描述性的xml文件
+
+　　-L　　　　不生成soapClientLib文件和soapServerLib文件
+
+　　-p name  修改文件名前缀，代替soap
+
+　　-q name  指定代理类和对象使用的名空间name，包含文件名前缀

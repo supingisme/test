@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<root>
+  <token line="1" type="VOID" string="void" />
+  <token line="1" type="ID" string="main" />
+  <token line="1" type="LPAREN" string="(" />
+  <token line="1" type="RPAREN" string=")" />
+  <token line="2" type="LBRACE" string="{" />
+  <token line="3" type="INT" string="int" />
+  <token line="3" type="ID" string="a" />
+  <token line="3" type="ASSIGN" string="=" />
+  <token line="3" type="NUMBER" string="0" />
+  <token line="3" type="SEMI" string=";" />
+  <token line="4" type="INT" string="int" />
+  <token line="4" type="ID" string="b" />
+  <token line="4" type="ASSIGN" string="=" />
+  <token line="4" type="NUMBER" string="2" />
+  <token line="4" type="SEMI" string=";" />
+  <token line="5" type="WHILE" string="while" />
+  <token line="5" type="LPAREN" string="(" />
+  <token line="5" type="ID" string="a" />
+  <token line="5" type="EQ" string="==" />
+  <token line="5" type="ID" string="b" />
+  <token line="5" type="RPAREN" string=")" />
+  <token line="6" type="INC_OP" string="++" />
+  <token line="6" type="ID" string="a" />
+  <token line="6" type="SEMI" string=";" />
+  <token line="7" type="RBRACE" string="}" />
+</root>

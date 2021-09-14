@@ -1,0 +1,6 @@
+EAL线程与逻辑核亲和性
+
+术语“lcore”指一个EAL线程，这是一个真正意义上的Linux/FreeBSD pthread。“EAL pthread”由EAL创建和管理，并执行remote_launch发出的任务。在每个EAL pthread中，有一个称为_lcore_id的TLS（线程本地存储）用于唯一标识线程。由于EAL pthread通常将物理CPU绑定为1：1，所以_locore_id通常等于CPU ID。
+
+但是，当使用多线程时，EAL pthread和指定的物理CPU之间的绑定不再总是1：1了。EAL pthread可能与一组CPU相关，因此_lcore_id将不同于CPU ID。基于这个原因，EAL有一个运行参数选项“-lcores”用来定义分配的CPU亲和性。对于执行的lcore ID或ID组，该选项允许设置该EAL pthread的CPU组。
+

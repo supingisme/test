@@ -1,0 +1,8 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:07:20 CST. 
+31.2 openssl 实现
+
+SSL 协议源码位于ssl 目录下。它实现了sslv2、sslv3、TLS 以及DTLS（Datagram TLS，基于UDP 的TLS 实现）。
+ssl 实现中，对于每个协议，都有客户端实现(XXX_clnt.c)、服务端实现(XXX_srvr.c)、加密实现(XXX_enc.c)、
+							记录协议实现(XXX_pkt.c)、METHOD 方法(XXX_meth.c)、客户端服务端都用到的握手方法实现(XXX_both.c)，
+		以及对外提供的函数实现(XXX_lib.c)，比较有规律。
+		

@@ -1,0 +1,1 @@
+sudo bpftool net show

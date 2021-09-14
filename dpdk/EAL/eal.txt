@@ -1,0 +1,1 @@
+eal 是指environment abstraction layer

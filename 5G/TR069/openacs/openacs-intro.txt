@@ -1,0 +1,19 @@
+Openacs简介
+
+Openacs是一个用Java编写的开源的ACS服务器，该项目于2007-09-06 由Audrius Valunas发起，经过四年的开发，Openacs已经拥有了非常完善的功能，不仅仅可以作为CPE开发的辅助测试工具，而且完全可以胜任对一定数量的CPE进行远程管理。Openacs采用B/S模式，可以通过浏览器访问ACS服务器，对CPE的远程管理可以通过编写Java script来灵活实现。Openacs需要部署在JBoss应用程序服务器，Release的版本有bin(二进制)版本和src(源码)版本的，其中源码版本需要使用ant进行编译。
+可惜的是该项目已停止维护且无源码
+Openacs服务配置
+
+由于将要用到的openacs和jboss都是用java语言所编写,所以配置前我们需要一些必须的环境配置
+软件环境
+
+    linux系统(centos7.x)
+    jdk(version:1.8)
+    jboss(version:-4.2.0.GA) 这里的版本非常重要,我试了其他高版本,问题会比较多
+    openacs-bin-0.5
+    mysql
+
+作者：老鼠AI大米_Java全栈
+链接：https://www.jianshu.com/p/f76691a6b80c
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。

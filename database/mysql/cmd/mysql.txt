@@ -1,0 +1,10 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:56 CST. 
+
+登录mysql，进入命令行
+$ mysql -uroot -p'XXXXX'
+
+或者
+$ mysql -uroot -p
+input password: XXXXX
+
+

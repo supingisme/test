@@ -1,0 +1,13 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:06:53 CST. 
+32.36 prime
+检查一个数是否为素数。示例如下：
+openssl prime 79
+openssl prime -hex 4F
+
+			[root@localhost openssl-cmd]# openssl prime 79
+			4F is prime
+			[root@localhost openssl-cmd]# openssl prime -hex 4F
+			4F is prime
+			[root@localhost openssl-cmd]# 
+
+

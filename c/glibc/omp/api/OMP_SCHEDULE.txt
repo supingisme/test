@@ -1,0 +1,8 @@
+OMP_SCHEDULE – How threads are scheduled
+Description:
+Allows to specify schedule type and chunk size. The value of the variable
+shall have the form: type[,chunk] where type is one of static, dynamic,
+	  guided or auto The optional chunk size shall be a positive integer. If undefined,
+	  dynamic scheduling and a chunk size of 1 is used.
+	  See also: Section 2.19 [omp set schedule], page 11
+	  Reference: OpenMP specifications v3.0, sections 2.5.1 and 4.1

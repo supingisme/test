@@ -1,0 +1,12 @@
+NUMA
+
+之前的章节已经简要介绍过NUMA 系统，它是一种多处理器环境下设计的计算机内存
+结构。NUMA 系统是从SMP（Symmetric Multiple Processing，对称多处理器）系统演化而来。
+SMP 系统最初是在20 世纪90 年代由Unisys、Convex Computer（后来的HP）、Honeywell、
+IBM 等公司开发的一款商用系统，该系统被广泛应用于Unix 类的操作系统，后来又扩展到
+Windows NT 中，该系统有如下特点：
+
+1）所有的硬件资源都是共享的。即每个处理器都能访问到任何内存、外设等。
+2）所有的处理器都是平等的，没有主从关系。
+3）内存是统一结构、统一寻址的（UMA，Uniform Memory Architecture）。
+4）处理器和内存，处理器和处理器都通过一条总线连接起来。

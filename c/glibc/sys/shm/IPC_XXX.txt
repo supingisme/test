@@ -1,0 +1,19 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:28 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 04月 09日 星期二 08:56:44 CST. 
+
+
+
+IPC_RMID:	remove the shared memory segment identified by shmid from the system and destory the 
+			shared memory segment.
+IPC_SET:	Set the following three members of the shmid_ds struct for the shared memory segment
+			from the corresponding members in the struct pointed to by the buff argument: 
+			shm_perm, uid, shm_perm, gid, and shm_perm.mode. The shm_ctime value is also repalced
+			with the current time.
+IPC_STAT:	Return to the caller(Throught the buff argment) the current shmid_ds struct for the 
+			specified shared memory segment.
+
+IPC_CREAT:	不管是否已存在的共享内存块，都返回该共享内存的ID，不存在则创建
+
+IPC_EXCL:	当只有IPC_EXCL选项打开，不管有没有该共享内存块，shmget都返回-1
+
+

@@ -1,0 +1,16 @@
+Device.FaultMgmt.ExpeditedEvent.{i}.PerceivedSeverity
+Device.FaultMgmt.ExpeditedEvent.{i}.AdditionalText
+Device.FaultMgmt.ExpeditedEvent.{i}.AdditionalInformation
+Device.FaultMgmt.QueuedEvent.{i}.SerialNumber
+Device.FaultMgmt.QueuedEvent.{i}.OUI
+Device.FaultMgmt.QueuedEvent.{i}.EventTime
+Device.FaultMgmt.QueuedEvent.{i}.AlarmIdentifier
+Device.FaultMgmt.QueuedEvent.{i}.NotificationType
+Device.FaultMgmt.QueuedEvent.{i}.ManagedObjectInstance
+Device.FaultMgmt.QueuedEvent.{i}.EventType
+Device.FaultMgmt.QueuedEvent.{i}.ProbableCause
+Device.FaultMgmt.QueuedEvent.{i}.SpecificProblem
+Device.FaultMgmt.QueuedEvent.{i}.PerceivedSeverity
+Device.FaultMgmt.QueuedEvent.{i}.AdditionalText
+Device.FaultMgmt.QueuedEvent.{i}.AdditionalInformation
+

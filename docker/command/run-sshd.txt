@@ -1,0 +1,4 @@
+
+启动镜像命令： 
+"docker run -d -p 10022:22 centos7-ssh:latest /usr/sbin/sshd -D"
+ssh 用户："root"，密码："Jiangwen87"

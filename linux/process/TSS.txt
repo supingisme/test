@@ -1,0 +1,11 @@
+Task State Segment
+
+The 80x86 architecture includes a specific segment type called the Task State Segment (TSS), to
+store hardware contexts. Although Linux doesn't use hardware context switches, it is nonetheless
+forced to set up a TSS for each distinct CPU in the system.
+
+
+Each TSS has its own 8-byte Task State Segment Descriptor (TSSD). This descriptor includes a
+32-bit Base field that points to the TSS starting address and a 20-bit Limit field. The S flag of a
+TSSD is cleared to denote the fact that the corresponding TSS is a System Segment (see the
+section "Segment Descriptors" in Chapter 2).

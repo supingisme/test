@@ -1,0 +1,19 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:22 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 13日 星期三 08:54:00 CST. 
+POSIX provides true asynchronous I/O with its aio_XXX functions. These functions let the process specify whether or not a signal is generated when the I/O completes, and which signal to generate.
+Berkeley-derived implementations support signal-driven I/O for sockets and terminal devices using the SIGIO signal. SVR4 supports signal-driven I/O for STREAMS devices using the SIGPOLL signal, which is then equated to SIGIO.
+
+
+                    - POSIX - aio_XXX
+                   -
+signal-driven I/O ---Berkeley - SIGIO
+                   -
+                     -SVR4 - SIGPOLL=SIGIO
+
+
+ 					 
+ Signal(SIGHUP, sig_hup);
+ Signal(SIGIO, sig_io);
+ Fcntl(sockfd, F_SETOWN, getpid());
+ Ioctl(sockfd, FIOASYNC, &on);
+ Ioctl(sockfd, FIONBIO, &on);

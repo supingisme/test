@@ -1,0 +1,52 @@
+Extended Paging
+
+Starting with the Pentium model, 80 x 86 microprocessors introduce extended paging , which
+allows page frames to be 4 MB instead of 4 KB in size (see Figure 2-8). Extended paging is used
+to translate large contiguous linear address ranges into corresponding physical ones; in these
+cases, the kernel can do without intermediate Page Tables and thus save memory and preserve
+TLB entries (see the section "Translation Lookaside Buffers (TLB)").
+
+"Translation Lookaside Buffers (TLB)"
+
+
+Besides general-purpose hardware caches, 80 x 86 processors include another cache called
+Translation Lookaside Buffers (TLB) to speed up linear address translation. When a linear address
+is used for the first time, the corresponding physical address is computed through slow accesses
+to the Page Tables in RAM. The physical address is then stored in a TLB entry so that further
+references to the same linear address can be quickly translated.
+In a multiprocessor system, each CPU has its own TLB, called the local TLB of the CPU. Contrary
+to the hardware cache, the corresponding entries of the TLB need not be synchronized, because
+processes running on the existing CPUs may associate the same linear address with different
+physical ones.
+
+
+-------------------------------------------
+TLB Cache
+在早期计算机系统中，程序员都是直接访问物理地址进行编程，当程序出现错误时，整
+个系统都瘫痪掉；或者在多进程系统中，当一个进程出现问题，对属于另外一个进程的数据
+或者指令区域进行写操作，会导致另外一个进程崩溃。因此，随着计算机技术的进步，虚拟
+地址和分段分页技术被提出来用来保护脆弱的软件系统。软件使用虚拟地址访问内存，而处
+理器负责虚拟地址到物理地址的映射工作。为了完成映射工作，处理器采用多级页表来进行
+多次查找最终找到真正的物理地址。当处理器发现页表中找不到真正对应的物理地址时，就
+会发出一个异常，挂起寻址错误的进程，但是其他进程仍然可以正常工作。
+
+页表也存储在内存中，处理器虽然可以利用三级Cache 系统来缓存页表内容，但是基
+于两点原因不能这样做。一种原因下面的段落会讲到，我们先讲另外一个原因。处理器每
+当进行寻址操作都要进行一次映射工作，这使得处理器访问页表的频率非常得高，有可能一
+秒钟需要访问几万次。因此，即使Cache 的命中率能够达到99% 以上，也就是说不命中率
+有1%，那么不命中的概率每秒也有几百次，这会导致处理器在单位时间内访问内存（因为
+Cache 没有命中，只能访问内存）的次数增多，降低了系统的性能。
+
+因此，TLB（Translation Look-aside Buffer）Cache 应运而生，专门用于缓存内存中的
+页表项。TLB 一般都采用相连存储器或者按内容访问存储器（CAM，Content Addressable
+Memory）。相连存储器使用虚拟地址进行搜索，直接返回对应的物理地址，相对于内存中的
+多级页表需要多次访问才能得到最终的物理地址，TLB 查找无疑大大减少了处理器的开销，
+这也是上文提到的第二个原因。如果需要的地址在TLB Cache 中，相连存储器迅速返回结
+果，然后处理器用该物理地址访问内存，这样的查找操作也称为TLB 命中；如果需要的地址
+不在TLB Cache 中，也就是不命中，处理器就需要到内存中访问多级页表，才能最终得到物
+理地址。
+
+
+
+
+

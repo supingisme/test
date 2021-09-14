@@ -1,0 +1,1 @@
+docker rename CentOS7-OM CentOS7-5G

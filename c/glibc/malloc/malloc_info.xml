@@ -1,0 +1,19 @@
+<malloc version="1">
+<heap nr="0">
+<sizes>
+</sizes>
+<total type="fast" count="0" size="0"/>
+<total type="rest" count="0" size="0"/>
+<system type="current" size="135168"/>
+<system type="max" size="135168"/>
+<aspace type="total" size="135168"/>
+<aspace type="mprotect" size="135168"/>
+</heap>
+<total type="fast" count="0" size="0"/>
+<total type="rest" count="0" size="0"/>
+<total type="mmap" count="0" size="0"/>
+<system type="current" size="135168"/>
+<system type="max" size="135168"/>
+<aspace type="total" size="135168"/>
+<aspace type="mprotect" size="135168"/>
+</malloc>

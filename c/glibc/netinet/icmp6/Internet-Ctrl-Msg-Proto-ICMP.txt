@@ -1,0 +1,7 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:18 CST. 
+
+
+Internet Control Message Protocols (ICMPv4 and ICMPv6)
+
+	ICMP is a required and integral part of any IPv4 or IPv6 implementation. ICMP is normally used to communicate error or informational messages between IP nodes, both routers and hosts, but it is occasionally used by applications. The ping and traceroute applications (Chapter 28(See 9.17)), for example, both use ICMP.
+	The first 32 bits of both ICMPv4 and ICMPv6 messages are the same and are shown in Figure A.14. RFC 792 [Postel 1981b] documents ICMPv4 and RFC 2463 [Conta and Deering 1998] documents ICMPv6.

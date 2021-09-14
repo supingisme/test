@@ -1,0 +1,13 @@
+ libvirt supports:
+ The Xen hypervisor on Linux and Solaris hosts.
+ The QEMU emulator
+ The KVM Linux hypervisor
+ The LXC Linux container system
+ The OpenVZ Linux container system
+ The User Mode Linux paravirtualized kernel
+ The VirtualBox hypervisor
+ The VMware ESX and GSX hypervisors
+ The VMware Workstation and Player hypervisors
+ Storage on IDE/SCSI/USB disks, FibreChannel, LVM, iSCSI, NFS and filesystems
+ See also:
+http://www.ibm.com/developerworks/linux/library/l-libvirt/index.html

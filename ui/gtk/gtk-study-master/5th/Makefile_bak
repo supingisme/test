@@ -1,0 +1,26 @@
+
+INCFLAGS = 
+LDFLAGS = -Wl,-rpath,/usr/local/lib
+LIBS =$(shell pkg-config gtk+-2.0 libglade-2.0 --libs)
+GTKFLAGS=-export-dynamic `pkg-config --cflags --libs libglade-2.0 `
+
+
+all: main
+
+main: common_func.o   main.o    window_main.o   window_test.o 
+	gcc $^ -o $@  $(LDFLAGS) $(LIBS)
+
+clean:
+	-rm main *.o
+
+.PHONY: clean
+
+sources = common_func.c   main.c    window_main.c   window_test.c 
+
+include $(sources:.c=.d)
+
+%.d: %.c
+	set -e; rm -f $@; \
+	$(CC) -MM $(CPPFLAGS) $< > $@.$$$$ $(GTKFLAGS); \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$

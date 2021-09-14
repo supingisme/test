@@ -1,0 +1,5 @@
+./a.out
+adsf
+asdf
+adsf
+stdout

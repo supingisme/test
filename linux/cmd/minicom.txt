@@ -1,0 +1,8 @@
+minicom
+功能说明：minimal communication program，调制解调器通信程序。
+语 法：minicom [-8lmMostz] [-a<on 或0ff>] [-c<on 或off>] [-C<撷取文件>] [-d<编号>] [-p<模拟终端机>]
+[-S<script 文件>] [配置文件]
+补充说明：minicom 是一个相当受欢迎的PPP 拨号连线程序。minicom 提供了类似功能表的操作模式，比单
+纯的命令行模式容易操作。
+
+

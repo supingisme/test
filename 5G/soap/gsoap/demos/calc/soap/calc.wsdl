@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="calc"
+ targetNamespace="http://localhost/calc.wsdl"
+ xmlns:tns="http://localhost/calc.wsdl"
+ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+ xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:ns="urn:calc"
+ xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:HTTP="http://schemas.xmlsoap.org/wsdl/http/"
+ xmlns:MIME="http://schemas.xmlsoap.org/wsdl/mime/"
+ xmlns:DIME="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/"
+ xmlns:WSDL="http://schemas.xmlsoap.org/wsdl/"
+ xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<types>
+
+ <schema targetNamespace="urn:calc"
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:ns="urn:calc"
+  xmlns="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="unqualified"
+  attributeFormDefault="unqualified">
+  <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+  <!-- operation request element -->
+  <element name="a" type="xsd:double"/>
+  <!-- operation request element -->
+  <element name="b" type="xsd:double"/>
+  <!-- operation response element -->
+  <element name="result" type="xsd:double"/>
+ </schema>
+
+</types>
+
+<message name="addRequest">
+ <part name="a" element="ns:a"/><!-- ns__add::a -->
+ <part name="b" element="ns:b"/><!-- ns__add::b -->
+</message>
+
+<message name="addResponse">
+ <part name="result" element="ns:result"/><!-- ns__add::result -->
+</message>
+
+<message name="subRequest">
+ <part name="a" element="ns:a"/><!-- ns__sub::a -->
+ <part name="b" element="ns:b"/><!-- ns__sub::b -->
+</message>
+
+<message name="subResponse">
+ <part name="result" element="ns:result"/><!-- ns__sub::result -->
+</message>
+
+<portType name="calcPortType">
+ <operation name="add">
+  <documentation>Service definition of function ns__add</documentation>
+  <input message="tns:addRequest"/>
+  <output message="tns:addResponse"/>
+ </operation>
+ <operation name="sub">
+  <documentation>Service definition of function ns__sub</documentation>
+  <input message="tns:subRequest"/>
+  <output message="tns:subResponse"/>
+ </operation>
+</portType>
+
+<binding name="calc" type="tns:calcPortType">
+ <SOAP:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+ <operation name="add">
+  <SOAP:operation style="rpc" soapAction=""/>
+  <input>
+     <SOAP:body parts="Body" use="literal" namespace="urn:calc"/>
+  </input>
+  <output>
+     <SOAP:body parts="Body" use="literal" namespace="urn:calc"/>
+  </output>
+ </operation>
+ <operation name="sub">
+  <SOAP:operation style="rpc" soapAction=""/>
+  <input>
+     <SOAP:body parts="Body" use="literal" namespace="urn:calc"/>
+  </input>
+  <output>
+     <SOAP:body parts="Body" use="literal" namespace="urn:calc"/>
+  </output>
+ </operation>
+</binding>
+
+<service name="calc">
+ <documentation>Simple calculator service </documentation>
+ <port name="calc" binding="tns:calc">
+  <SOAP:address location="http://localhost/server.cgi"/>
+ </port>
+</service>
+
+</definitions>

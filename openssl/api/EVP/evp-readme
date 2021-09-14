@@ -1,0 +1,234 @@
+########### EVP 简介(对称加密)
+
+Openssl EVP(high-level cryptographic functions[1])提供了丰富的密码学中的各种函数。
+Openssl 中实现了各种对称算法、摘要算法以及签名/验签算法。EVP 函数将这些具体的算
+法进行了封装。
+
+EVP 主要封装了如下功能函数：
+
+	1）实现了base64 编解码BIO；
+	2）实现了加解密BIO；
+	3）实现了摘要BIO；
+	4）实现了reliable BIO；
+	5）封装了摘要算法；
+	6）封装了对称加解密算法；
+	7）封装了非对称密钥的加密(公钥)、解密(私钥)、签名与验证以及辅助函数；
+	7）基于口令的加密(PBE)；
+	8）对称密钥处理；
+	9）数字信封：数字信封用对方的公钥加密对称密钥，数据则用此对称密钥加密。
+		发送给对方时，同时发送对称密钥密文和数据密文。接收方首先用自己的私钥解密密钥
+		密文，得到对称密钥，然后用它解密数据。
+	10）其他辅助函数。
+
+
+######## 摘要函数
+
+	典型的摘要函数主要有：
+	1） EVP_md5
+	返回 md5 的EVP_MD。
+	2) EVP_sha1
+	返回 sha1 的EVP_MD。
+	3) EVP_sha256
+	返回 sha256 的EVP_MD。
+	4） EVP_DigestInit
+	摘要初使化函数，需要有EVP_MD 作为输入参数。
+	5） EVP_DigestUpdate 和EVP_DigestInit_ex
+	摘要 Update 函数，用于进行多次摘要。
+	6） EVP_DigestFinal 和EVP_DigestFinal_ex
+	摘要 Final 函数，用户得到最终结果。
+	7） EVP_Digest
+	对一个数据进行摘要，它依次调用了上述三个函数。
+
+##################### 对称加解密函数
+
+典型的加解密函数主要有：
+	1） EVP_CIPHER_CTX_init
+	初始化对称计算上下文。
+	2） EVP_CIPHER_CTX_cleanup
+	清除对称算法上下文数据，它调用用户提供的销毁函数销清除存中的内部密钥
+	以及其他数据。
+	3） EVP_des_ede3_ecb
+	返回一个 EVP_CIPHER；
+	4) EVP_EncryptInit 和EVP_EncryptInit_ex
+	加密初始化函数，本函数调用具体算法的init 回调函数，将外送密钥key 转换
+	为内部密钥形式，将初始化向量iv 拷贝到ctx 结构中。
+	5） EVP_EncryptUpdate
+	加密函数，用于多次计算，它调用了具体算法的 do_cipher 回调函数。
+	6） EVP_EncryptFinal 和EVP_EncryptFinal_ex
+	获取加密结果，函数可能涉及填充，它调用了具体算法的 do_cipher 回调函数。
+	7） EVP_DecryptInit 和EVP_DecryptInit_ex
+	解密初始化函数。
+	8） EVP_DecryptUpdate
+	解密函数，用于多次计算，它调用了具体算法的 do_cipher 回调函数。
+	9） EVP_DecryptFinal 和EVP_DecryptFinal_ex
+	获取解密结果，函数可能涉及去填充，它调用了具体算法的 do_cipher 回调函数。
+	10）EVP_BytesToKey
+	计算密钥函数，它根据算法类型、摘要算法、salt 以及输入数据计算出一个对
+	称密钥和初始化向量iv。
+	11）PKCS5_PBE_keyivgen 和PKCS5_v2_PBE_keyivgen
+	实现了 PKCS5 基于口令生成密钥和初始化向量的算法。
+	12）PKCS5_PBE_add
+	加载所有 openssl 实现的基于口令生成密钥的算法。
+	13）EVP_PBE_alg_add
+	添加一个 PBE 算法。
+
+################### 非对称函数
+
+	典型的非对称函数有：
+	1） EVP_PKEY_encrypt
+	公钥加密。
+	2) EVP_PKEY_decrypt
+	私钥解密。
+	3) EVP_PKEY_assign
+	设置EVP_PKEY 中具体的密钥结构，使它代表该密钥。
+	4) EVP_PKEY_assign_RSA/ EVP_PKEY_set1_RSA
+	设置EVP_PKEY 中的RSA 密钥结构，使它代表该RSA 密钥。
+	5) EVP_PKEY_get1_RSA
+	获取EVP_PKEY 的RSA 密钥结构。
+	6) EVP_SignFinal
+	签名操作，输入参数必须有私钥(EVP_PKEY)。
+	7) EVP_VerifyFinal
+	验证签名，输入参数必须有公钥(EVP_PKEY)。
+	8) int EVP_OpenInit(EVP_CIPHER_CTX *ctx, const EVP_CIPHER *type,const unsigned
+	145
+	char *ek, int ekl, const unsigned char *iv,EVP_PKEY *priv)
+	解数字信封初始化操作，type为对称加密算法，ek为密钥密文，ekl为密
+	钥密文长度，iv为填充值，priv为用户私钥。
+	9) EVP_OpenUpdate
+	做解密运算。
+	10) EVP_OpenFinal
+	做解密运算，解开数字信封。
+	11) int EVP_SealInit(EVP_CIPHER_CTX *ctx, const EVP_CIPHER *type, unsigned char
+	**ek,int *ekl, unsigned char *iv, EVP_PKEY **pubk, int npubk)
+	type为对称算法，ek数组用来存放多个公钥对密钥加密的结果，ekl用于
+	存放ek数组中每个密钥密文的长度，iv为填充值，pubk数组用来存放多个公
+	钥，npubk为公钥个数，本函数用多个公钥分别加密密钥，并做加密初始化。
+	12）EVP_SealUpdate
+	做加密运算。
+	EVP_SealFinal
+	做加密运算，制作数字信封。
+
+
+################# BASE64 编解码函数
+
+	1) EVP_EncodeInit
+	BASE64 编码初始化。
+	2) EVP_EncodeUpdate
+	BASE64 编码，可多次调用。
+	3) EVP_EncodeFinal
+	BASE64 编码，并获取最终结果。
+	4) EVP_DecodeInit
+	BASE64 解码初始化。
+	5) EVP_DecodeUpdate
+	输入数据长度不能大于80 字节。BASE64 解码可多次调用，注意，本函数的
+	输入数据不能太长。
+	6) EVP_DecodeFinal
+	BASE64 解码，并获取最终结果。
+	7）EVP_EncodeBlock
+	BASE64编码函数，本函数可单独调用。
+	8）EVP_DecodeBlock
+	BASE64 解码，本函数可单独调用，对输入数据长度无要求。
+
+
+############## 其他函数
+
+	1） EVP_add_cipher
+	将对称算法加入到全局变量，以供调用。
+	2） EVP_add_digest
+	将摘要算法加入到全局变量中，以供调用。
+	3) EVP_CIPHER_CTX_ctrl
+	对称算法控制函数，它调用了用户实现的ctrl 回调函数。
+	4) EVP_CIPHER_CTX_set_key_length
+	当对称算法密钥长度为可变长时，设置对称算法的密钥长度。
+	5) EVP_CIPHER_CTX_set_padding
+	设置对称算法的填充，对称算法有时候会涉及填充。加密分组长度大于一时，
+	用户输入数据不是加密分组的整数倍时，会涉及到填充。填充在最后一个分组来完
+	成，openssl 分组填充时，如果有n 个填充，则将最后一个分组用n 来填满。
+	6) EVP_CIPHER_get_asn1_iv
+	获取原始iv，存放在ASN1_TYPE 结构中。
+	7) EVP_CIPHER_param_to_asn1
+	设置对称算法参数，参数存放在ASN1_TYPE 类型中，它调用用户实现的回调
+	函数set_asn1_parameters 来实现。
+	8) EVP_CIPHER_type
+	获取对称算法的类型。
+	9） EVP_CipherInit/EVP_CipherInit_ex
+	对称算法计算(加/解密)初始化函数，_ex 函数多了硬件enginge 参数，
+	EVP_EncryptInit 和EVP_DecryptInit 函数也调用本函数。
+	10) EVP_CipherUpdate
+	对称计算（加/解密）函数，它调用了EVP_EncryptUpdate 和EVP_DecryptUpdate
+	函数。
+	11） EVP_CipherFinal/EVP_CipherFinal_ex
+	对称计算( 加/ 解) 函数， 调用了EVP_EncryptFinal （ _ex ） 和
+	EVP_DecryptFinal(_ex）；本函数主要用来处理最后加密分组，可能会有对称计算。
+	12）EVP_cleanup
+	清除加载的各种算法，包括对称算法、摘要算法以及PBE 算法，并清除这些
+	算法相关的哈希表的内容。
+	13) EVP_get_cipherbyname
+	根据字串名字来获取一种对称算法(EVP_CIPHER)，本函数查询对称算法哈希
+	表。
+	14) EVP_get_digestbyname
+	根据字串获取摘要算法(EVP_MD)，本函数查询摘要算法哈希表。
+	15) EVP_get_pw_prompt
+	获取口令提示信息字符串.
+	16）int EVP_PBE_CipherInit(ASN1_OBJECT *pbe_obj, const char *pass, int passlen,
+	ASN1_TYPE *param, EVP_CIPHER_CTX *ctx, int en_de)
+	PBE 初始化函数。本函数用口令生成对称算法的密钥和初始化向量，并作加/
+	解密初始化操作。本函数再加上后续的EVP_CipherUpdate 以及EVP_CipherFinal_ex
+	构成一个完整的加密过程（可参考crypto/p12_decr.c 的PKCS12_pbe_crypt 函数）.
+	17) EVP_PBE_cleanup
+	删除所有的PBE 信息，释放全局堆栈中的信息.
+	18）EVP_PKEY *EVP_PKCS82PKEY(PKCS8_PRIV_KEY_INFO *p8)
+	将PKCS8_PRIV_KEY_INFO(x509.h 中定义)中保存的私钥转换为EVP_PKEY
+	结构。
+	19) EVP_PKEY2PKCS8/EVP_PKEY2PKCS8_broken
+	将EVP_PKEY 结构中的私钥转换为PKCS8_PRIV_KEY_INFO 数据结构存储。
+	20) EVP_PKEY_bits
+	非对称密钥大小，为比特数。
+	21) EVP_PKEY_cmp_parameters
+	比较非对称密钥的密钥参数，用于DSA 和ECC 密钥。
+	22）EVP_PKEY_copy_parameters
+	拷贝非对称密钥的密钥参数，用于DSA 和ECC 密钥。
+	23）EVP_PKEY_free
+	释放非对称密钥数据结构。
+	24) EVP_PKEY_get1_DH/EVP_PKEY_set1_DH
+	获取/设置EVP_PKEY 中的DH 密钥。
+	25) EVP_PKEY_get1_DSA/EVP_PKEY_set1_DSA
+	获取/设置EVP_PKEY 中的DSA 密钥。
+	26）EVP_PKEY_get1_RSA/EVP_PKEY_set1_RSA
+	获取/设置EVP_PKEY 中结构中的RSA 结构密钥。
+	27) EVP_PKEY_missing_parameters
+	检查非对称密钥参数是否齐全，用于DSA 和ECC 密钥。
+	28) EVP_PKEY_new
+	生成一个EVP_PKEY 结构。
+	29) EVP_PKEY_size
+	获取非对称密钥的字节大小。
+	30) EVP_PKEY_type
+	获取EVP_PKEY 中表示的非对称密钥的类型。
+	31）int EVP_read_pw_string(char *buf,int length,const char *prompt,int verify)
+	获取用户输入的口令；buf 用来存放用户输入的口令，length 为buf 长度，prompt
+	为提示给用户的信息，如果为空，它采用内置的提示信息，verify 为0 时，不要求
+	验证用户输入的口令，否则回要求用户输入两遍。返回0 表示成功。
+	32) EVP_set_pw_prompt
+	设置内置的提示信息，用于需要用户输入口令的场合。
+
+
+####################### 对称加密过程
+
+	对称加密过程如下：
+	
+		1） EVP_EncryptInit：
+				设置 buf_len 为0，表明临时缓冲区buf 没有数据。
+				
+		2） EVP_EncryptUpdate：
+				ctx 结构中的buf 缓冲区用于存放上次EVP_EncryptUpdate 遗留下来的未加密
+				的数据，buf_len 指明其长度。如果buf_len 为0，加密的时候先加密输入数据的整
+				数倍，将余下的数据拷贝到buf 缓冲区。如果buf_len 不为0，先加密buf 里面的数
+				据和输入数据的一部分（凑足一个分组的长度），然后用上面的方法加密，输出结
+				果是加过密的数据。
+				
+		3） EVP_ EncryptFinal
+				加密ctx 的buf 中余下的数据，如果长度不够一个分组（分组长度不为1），则
+				填充，然后再加密，输出结果。
+				总之，加密大块数据（比如一个大的文件，多出调用EVP_EncryptUpdate）的结果等效
+				于将所有的数据一次性读入内存进行加密的结果。加密和解密时每次计算的数据块的大
+				小不影响其运算结果。

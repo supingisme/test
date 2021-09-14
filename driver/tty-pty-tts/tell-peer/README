@@ -1,0 +1,3 @@
+#伪终端PTS间标准输出重定向
+
+1.master和slave需要同时填写一个unix socket路径，slave已经写完了getopt

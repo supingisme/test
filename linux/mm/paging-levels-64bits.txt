@@ -1,0 +1,9 @@
+Paging levels in some 64-bit architectures
+Platformname		Pagesize	Numberof		Numberof 		Linear
+								address		paging			address
+								bitsused		levels			splitting
+alpha 				8 KB			43 				3 			10 + 10 + 10 + 13
+ia64 				4 KB 			39 				3 			9 + 9 + 9 + 12
+ppc64				4 KB			41				3			10 + 10 + 9 + 12
+sh64				4 KB			41				3			10 + 10 + 9 + 12
+x86_64				4 KB			48				4			9 + 9 + 9 + 9 + 12

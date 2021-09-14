@@ -1,0 +1,26 @@
+#截取第一种方法
+[root@room13pc37 ~]# a=abcdef
+[root@room13pc37 ~]# echo $a
+abcdef
+[root@room13pc37 ~]# echo ${a:2:2}		#注意：截取的位置是从0(下标)开始计数的
+cd
+[root@room13pc37 ~]# echo ${a: :2}		#中间省略就表示：从第一0位开始截取	可以省略0
+cd
+[root@room13pc37 ~]# echo ${#a}			#  ${#a }中#的作用是：统计字符串的数量,(注意：#是在这里是单独使用的)
+6
+#方法2
+[root@room13pc37 ~]# a=abcdef
+[root@room13pc37 ~]# echo $a
+abcdef[root@room13pc37 ~]# expr substr "$a" 2 5		#注意区分和方法1的不同	。同时它的位置是从1(下标)开始数的
+#方法3
+[root@room13pc37 ~]# echo $a | cut -b 3-5		#与方法2一样位置是从1开始计数， 但是 “5” 表示 截取到那里。==> 截取3到5之间的字符。(相对灵活)
+cde
+[root@room13pc37 ~]# echo $a | cut -b 3,5	# "," 表示：只截取 3，5 这两个位置的字符
+ce
+[root@room13pc37 ~]# echo $a | cut -b -5	#表示截取：1 -5 之间的字符，1可以省略
+abcde
+[root@room13pc37 ~]# echo $a | cut -b 1-5	#同上
+abcde
+[root@room13pc37 ~]# echo $a | cut -b 5	#表示只要第 5 位的字符
+e
+

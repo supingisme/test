@@ -1,0 +1,49 @@
+MALLOC_TRIM(3)                              Linux Programmer's Manual                             MALLOC_TRIM(3)
+
+
+
+NAME
+       malloc_trim - release free memory from the top of the heap
+
+SYNOPSIS
+       #include <malloc.h>
+
+       void malloc_trim(size_t pad);
+
+DESCRIPTION
+       The  malloc_trim()  function  attempts  to release free memory at the top of the heap (by calling sbrk(2)
+       with a suitable argument).
+
+       The pad argument specifies the amount of free space to leave untrimmed at the top of the heap.   If  this
+       argument  is 0, only the minimum amount of memory is maintained at the top of the heap (i.e., one page or
+       less).  A nonzero argument can be used to maintain some trailing space at the top of the heap in order to
+       allow future allocations to be made without having to extend the heap with sbrk(2).
+
+RETURN VALUE
+       The  malloc_trim()  function returns 1 if memory was actually released back to the system, or 0 if it was
+       not possible to release any memory.
+
+ERRORS
+       No errors are defined.
+
+CONFORMING TO
+       This function is a GNU extension.
+
+NOTES
+       This function is automatically called  by  free(3)  in  certain  circumstances;  see  the  discussion  of
+       M_TOP_PAD and M_TRIM_THRESHOLD in mallopt(3).
+
+       This function cannot release free memory located at places other than the top of the heap.
+
+       This function releases only memory in the main arena.
+
+SEE ALSO
+       sbrk(2), malloc(3), mallopt(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.53 of the Linux man-pages project.  A description of the project, and
+       information about reporting bugs, can be found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                                              2012-03-29                                     MALLOC_TRIM(3)

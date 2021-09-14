@@ -1,0 +1,6 @@
+
+
+删除 、home 所在的 logical volumes
+
+lvremove /dev/mapper/centos-home
+

@@ -1,0 +1,10 @@
+Device.Services.FAPService.{i}.Transport.SCTP.Enable
+Device.Services.FAPService.{i}.Transport.SCTP.RTOInitial
+Device.Services.FAPService.{i}.Transport.SCTP.RTOMin
+Device.Services.FAPService.{i}.Transport.SCTP.RTOMax
+Device.Services.FAPService.{i}.Transport.SCTP.MaxInitRetransmits
+Device.Services.FAPService.{i}.Transport.SCTP.HBInterval
+Device.Services.FAPService.{i}.Transport.SCTP.MaxPathRetransmits
+Device.Services.FAPService.{i}.Transport.SCTP.MaxAssociationRetransmits
+Device.Services.FAPService.{i}.Transport.SCTP.ValCookieLife
+

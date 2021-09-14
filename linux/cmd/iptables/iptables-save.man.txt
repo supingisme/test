@@ -1,0 +1,46 @@
+IPTABLES-SAVE(8)                                                                                IPTABLES-SAVE(8)
+
+
+
+NAME
+       iptables-save - 保存 IP Tables
+
+总
+       iptables-save [-c] [-t table]
+
+描
+       iptables-save  用来将  IP  Table  转储为可以简单解析的格式，输出到标准输出 STDOUT。 可以使用 shell 的 I/O
+       重定向功能来写入文件
+
+       -c, --counters
+              在输出中包含所有报文和字节计数的当前值
+
+       -t, --table tablename
+
+       限制只输出一个表。如果不指定，会输出所有可能的表
+
+BUGS
+       无
+
+作
+       Harald Welte <laforge@gnumonks.org>
+
+参
+       iptables-restore(8), iptables(8)
+
+       iptables-HOWTO  记述了  iptables  用法的细节，  NAT-HOWTO  记述了  NAT  的细节，  netfilter-hacking-HOWTO
+       记述了内部实现的细节
+
+[中
+       杨
+       Poopy <email> (?)
+
+[中
+       2002.05.01
+
+《
+       http://cmpp.linuxforum.net
+
+
+
+                                                  Jan 04, 2001                                  IPTABLES-SAVE(8)

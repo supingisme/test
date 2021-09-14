@@ -1,0 +1,14 @@
+comment {
+	文件描述：抓包
+	作者：荣涛
+	日期：2020年9月2日
+}
+
+pcap trace status
+pcap trace tx max 35 intfc dpdk0 file dpdk0.pcap
+pcap trace status
+
+comment { 关闭抓包 }
+comment {
+pcap trace off
+}

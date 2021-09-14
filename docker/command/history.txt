@@ -1,0 +1,6 @@
+# docker history centos7-everything:lastest
+IMAGE               CREATED             CREATED BY          SIZE                COMMENT
+74debb38a411        20 minutes ago      /usr/sbin/sshd -D   236MB               
+4b18bffd585e        2 hours ago         /usr/sbin/sshd -D   783MB               netconf and easycwmp
+<missing>           17 hours ago                            5.31GB              Imported from -
+

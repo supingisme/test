@@ -1,0 +1,18 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:13:49 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:11:44 CST. 
+建造者模式
+如果说前面的工厂模式是对接口进行抽象化处理，那么建造者模式更像是对流程本身
+的一种抽象化处理。这话怎么理解呢？大家可以听我慢慢到来。以前买电脑的时候，大家都
+喜欢自己组装机器。一方面可以满足自己的个性化需求，另外一方面也可以在价格上得到很
+多实惠。但是电脑是由很多部分组成的，每个厂家都只负责其中的一部分，而且相同的组件
+也有很多的品牌可以从中选择。这对于我们消费者来说当然非常有利，那么应该怎么设计
+呢？
+
+typedef struct _AssemblePersonalComputer
+{
+	void (*assemble_cpu)();
+	void (*assemble_memory)();
+	void (*assemble_harddisk)();
+}AssemblePersonalComputer;
+
+对于一个希望配置intel cpu，samsung 内存、日立硬盘的朋友。他可以这么设计，

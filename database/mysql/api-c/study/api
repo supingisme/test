@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+	echo "usage: $1 <mysql api> [mysql_init]"
+	exit
+fi
+
+grep $1 /usr/include/mysql/*.h -n -A 5 --color=auto

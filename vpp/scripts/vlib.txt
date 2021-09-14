@@ -1,0 +1,32 @@
+comment {
+	文档说明：VLIB操作
+	作者：荣涛
+	时间：2020年9月2日
+	参考地址：https://docs.fd.io/vpp/20.05/df/d0f/clicmd_src_vlib.html
+}
+
+clear errors
+clear logging
+clear node counters
+clear runtime
+clear trace
+
+comment {
+	Control event logging of api, cli, and thread barrier events With no arguments, 
+		displays the current trace status. 
+	elog trace [api][cli][barrier][dispatch] [disable]	
+}
+elog trace cli
+
+show cpu
+show errors
+show clock
+show errors 
+show event-logger
+show node
+show node counters
+show threads
+show vlib frame-allocation
+
+
+

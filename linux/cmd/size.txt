@@ -1,0 +1,94 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:26 CST. 
+size(1)                                 GNU Development Tools                                size(1)
+
+
+
+NAME
+       size - 列出段节大小和总共大小
+
+
+总
+       size   [-A|-B|--format=compatibility] [--help] [-d|-o|-x|--radix=number] [--target=bfdname]
+              [-V|--version] objfile...
+
+
+描
+       GNU 的 size 程序 列出 参数列表 objfile 中,  各  目标文件(object)  或  存档库文件(archive)  的
+       段节(section)大小  — 以及 总共大小.  默认情况下, 对 每个 目标文件 或 存档库中的 每个模块 产生
+       一行 输出.
+
+
+选
+       -A
+
+       -B
+
+       --format compatibility
+              使用 这几个 选项, 你 可以 让 GNU size 的 输出效果 类似于  System V size   (使用  `-A',
+              或  `--format=sysv'), 或 Berkeley size (使用 `-B', 或 `--format=berkeley'). 默认情况下
+              是 类似于 Berkeley 的 单行格式.
+
+
+       --help 简述 参数和选项.
+
+
+       -d
+
+       -o
+
+       -x
+
+       --radix number
+              使用 这几个 选项, 你 可以 让 各个 段节 的 大小 以  十进制  (`-d',  或  `--radix  10');
+              八进制  (`-o', 或 `--radix 8'); 或 十六进制 (`-x', 或 `--radix 16') 数字 的 格式 显示.
+              `--radix number' 只支持 三个数值参数 (8, 10, 16). 总共大小 以 两种进制 给出;  `-d'  或
+              `-x' 的 十进制 和 十六进制 输出, 或 `-o' 的 八进制 和 十六进制 输出.
+
+
+       --target bfdname
+              你  可以  通过  参数 bfdname 指定 objfile 的 目标格式. 这个选项 可能 不那么 必要; 因为
+              size 能够 自动 识别 许多 格式. 参见 objdump(1) 列出 的 有效格式.
+
+
+       -V
+
+       --version
+              显示 size 的 版本信息.
+
+
+另
+       info 的 `binutils' 项; The GNU Binary Utilities,
+        Roland H. Pesch (October 1991); ar(1), objdump(1).
+
+
+版
+       Copyright (c) 1991 Free Software Foundation, Inc.
+
+       Permission is granted to make and distribute verbatim copies  of  this  manual  provided  the
+       copyright notice and this permission notice are preserved on all copies.
+
+       Permission  is granted to copy and distribute modified versions of this manual under the con‐
+       ditions for verbatim copying, provided that the entire resulting derived work is  distributed
+       under the terms of a permission notice identical to this one.
+
+       Permission  is  granted  to copy and distribute translations of this manual into another lan‐
+       guage, under the above conditions for modified versions, except that this  permission  notice
+       may  be  included  in translations approved by the Free Software Foundation instead of in the
+       original English.
+
+
+[中
+       徐
+
+[中
+       2004/02/22
+
+《
+       http://cmpp.linuxforum.net
+
+
+
+
+
+
+cygnus support                             5 November 1991                                   size(1)

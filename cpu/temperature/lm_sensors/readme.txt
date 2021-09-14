@@ -1,0 +1,10 @@
+sudo sensors-detect
+
+sensors
+sa-0000
+Adapter: ISA adapter
+Package id 0:  +57.0°C  (high = +80.0°C, crit = +85.0°C)
+Core 0:        +57.0°C  (high = +80.0°C, crit = +85.0°C)
+Core 1:        +54.0°C  (high = +80.0°C, crit = +85.0°C)
+
+

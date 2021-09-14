@@ -1,0 +1,5 @@
+
+1.修改端口号
+
+vim /usr/local/nginx/conf/nginx.conf
+

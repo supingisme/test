@@ -1,0 +1,40 @@
+PTHREAD_EQUAL(3)                            Linux Programmer's Manual                           PTHREAD_EQUAL(3)
+
+
+
+NAME
+       pthread_equal - compare thread IDs
+
+SYNOPSIS
+       #include <pthread.h>
+
+       int pthread_equal(pthread_t t1, pthread_t t2);
+
+       Compile and link with -pthread.
+
+DESCRIPTION
+       The pthread_equal() function compares two thread identifiers.
+
+RETURN VALUE
+       If the two thread IDs are equal, pthread_equal() returns a nonzero value; otherwise, it returns 0.
+
+ERRORS
+       This function always succeeds.
+
+CONFORMING TO
+       POSIX.1-2001.
+
+NOTES
+       The  pthread_equal()  function  is  necessary because thread IDs should be considered opaque: there is no
+       portable way for applications to directly compare two pthread_t values.
+
+SEE ALSO
+       pthread_create(3), pthread_self(3), pthreads(7)
+
+COLOPHON
+       This page is part of release 3.53 of the Linux man-pages project.  A  description  of  the  project,  and
+       information about reporting bugs, can be found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                                              2009-03-30                                   PTHREAD_EQUAL(3)

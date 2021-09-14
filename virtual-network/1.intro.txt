@@ -1,0 +1,6 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:55 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 15日 星期五 08:51:22 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 15日 星期五 08:51:14 CST. 
+Introduction
+When a new feature is added to TCP, such as the long fat pipe support defined in RFC 1323, support is required only in the hosts using TCP; no changes are required in the routers. These RFC 1323 changes, for example, are slowly appearing in host implementations of TCP, and when a new TCP connection is established, each end can determine if the other end supports the new feature. If both hosts support the feature, it can be used.
+This differs from changes being made to the IP layer, such as multicasting at the end of the 1980s and IPv6 in the mid-1990s, because these new features require changes in all the hosts and all the routers. But, what if people want to start using the new features without having to wait for all the systems to be upgraded? To do this, a virtual network is established on top of the existing IPv4 Internet using tunnels.

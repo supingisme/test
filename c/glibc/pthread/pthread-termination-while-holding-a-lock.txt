@@ -1,0 +1,45 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 24日 星期一 08:52:25 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:19 CST. 
+
+
+## Process Termination While Holding a Lock
+
+When a mutex is shared between processes, there is always a chance that the process
+can terminate (perhaps involuntarily) while holding the mutex lock. There is no way to
+have the system automatically release held locks upon process termination. We will see
+that read-write locks and Posix semaphores share this property. The only type of synchronization
+locks that the kernel always cleans up automatically upon process termination
+is fcntl record locks (Chapter 9). When using System V semaphores, the
+application chooses whether a semaphore lock is automatically cleaned up or not by the
+kernel upon process termination (the SEM-UNDO feature that we talk about in Section 11.3).
+
+A thread can also terminate while holding a mutex lock, by being canceled by
+another thread, or by calling pthread-exit. The latter should be of no concern,
+because the thread should know that it holds a mutex lock if it voluntarily terminates by
+calling pthread-exit. In the case of cancellation, the thread can install cleanup handlers
+that are called upon cancellation, which we demonstrate in Section 8.5. Fatal conditions
+for a thread normally result in termination of the entire process. For example, if
+a thread makes an invalid pointer reference, generating SIGSEGV, this terminates the
+entire process if the signal is not caught, and we are back to the previous condition dealing
+with the termination of the process.
+
+Even if the system were to release a lock automatically when a process terminates,
+this may not solve the problem. The lock was protecting a critical region probably
+while some data was being updated. If the process terminates while it is in the middle
+of this critical region, what is the state of the data? A good chance exists that the data
+has some inconsistencies: for example, a new item may have been only partially entered
+into a linked list. If the kernel were to just unlock the mutex when the process terminates,
+the next process to use the linked list could find it corrupted.
+
+In some examples, however, having the kernel clean up a lock (or a counter in the
+case of a semaphore) when the process terminates is OK. For example, a server might
+use a System V semaphore (with the SEM-UNDO feature) to count the number of clients
+currently being serviced. Each time a child is forked, it increments this semaphore,
+and when the child terminates, it decrements this semaphore. If the child terminates
+abnormally, the kernel will still decrement the semaphore. An example of when it is OK
+for the kernel to release a lock (not a counter as we just described) is shown in Section
+9.7. The daemon obtains a write Lock on one of its data files and holds this lock as
+long as it is running. Should someone try to start another copy of the daemon, the new
+copy will terminate when it cannot get the write lock, guaranteeing that only one copy
+of the daemon is ever running. But should the daemon terminate abnormally, the kernel
+releases the write lock, allowing another copy to be started.

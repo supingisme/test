@@ -1,0 +1,9 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:24 CST. 
+表8-6 Linux LVM命令
+命 令 功 能
+vgchange 激活和禁用卷组
+vgremove 删除卷组
+vgextend 将物理卷加到卷组中
+vgreduce 从卷组中删除物理卷
+lvextend 增加逻辑卷的大小
+lvreduce 减小逻辑卷的大小

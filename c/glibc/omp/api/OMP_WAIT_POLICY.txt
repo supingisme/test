@@ -1,0 +1,6 @@
+OMP_WAIT_POLICY – How waiting threads are handled
+Description:
+Specifies whether waiting threads should be active or passive. If the value is
+PASSIVE, waiting threads should not consume CPU power while waiting; while
+the value is ACTIVE specifies that they should.
+Reference: OpenMP specifications v3.0, sections 4.6

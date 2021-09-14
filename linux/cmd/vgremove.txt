@@ -1,0 +1,165 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:26 CST. 
+VGREMOVE(8)                            System Manager's Manual                           VGREMOVE(8)
+
+
+
+NAME
+       vgremove - Remove volume group(s)
+
+SYNOPSIS
+       vgremove position_args
+           [ option_args ]
+
+DESCRIPTION
+       vgremove  removes  one  or  more  VGs. If LVs exist in the VG, a prompt is used to confirm LV
+       removal.
+
+       If one or more PVs in the VG are lost, consider vgreduce --removemissing to make the VG meta‐
+       data consistent again.
+
+       Repeat the force option (-ff) to forcibly remove LVs in the VG without confirmation.
+
+USAGE
+       vgremove VG|Tag|Select ...
+           [ -f|--force ]
+           [ -S|--select String ]
+           [    --noudevsync ]
+           [    --reportformat basic|json ]
+           [ COMMON_OPTIONS ]
+
+       Common options for lvm:
+           [ -d|--debug ]
+           [ -h|--help ]
+           [ -q|--quiet ]
+           [ -t|--test ]
+           [ -v|--verbose ]
+           [ -y|--yes ]
+           [    --commandprofile String ]
+           [    --config String ]
+           [    --driverloaded y|n ]
+           [    --longhelp ]
+           [    --profile String ]
+           [    --version ]
+
+OPTIONS
+       --commandprofile String
+              The command profile to use for command configuration.  See lvm.conf(5) for more infor‐
+              mation about profiles.
+
+       --config String
+              Config settings for the command. These override lvm.conf settings.  The String arg
+              uses the same format as lvm.conf, or may use section/field syntax.  See lvm.conf(5)
+              for more information about config.
+
+       -d|--debug ...
+              Set debug level. Repeat from 1 to 6 times to increase the detail of messages sent to
+              the log file and/or syslog (if configured).
+
+       --driverloaded y|n
+              If set to no, the command will not attempt to use device-mapper.  For testing and
+              debugging.
+
+       -f|--force ...
+              Override various checks, confirmations and protections.  Use with extreme caution.
+
+       -h|--help
+              Display help text.
+
+       --longhelp
+              Display long help text.
+
+       --noudevsync
+              Disables udev synchronisation. The process will not wait for notification from udev.
+              It will continue irrespective of any possible udev processing in the background. Only
+              use this if udev is not running or has rules that ignore the devices LVM creates.
+
+       --profile String
+              An alias for --commandprofile or --metadataprofile, depending on the command.
+
+       -q|--quiet ...
+              Suppress output and log messages. Overrides --debug and --verbose.  Repeat once to
+              also suppress any prompts with answer 'no'.
+
+       --reportformat basic|json
+              Overrides current output format for reports which is defined globally by the
+              report/output_format setting in lvm.conf.  basic is the original format with columns
+              and rows.  If there is more than one report per command, each report is prefixed with
+              the report name for identification. json produces report output in JSON format. See
+              lvmreport(7) for more information.
+
+       -S|--select String
+              Select objects for processing and reporting based on specified criteria.  The criteria
+              syntax is described by --select help and lvmreport(7).  For reporting commands, one
+              row is displayed for each object matching the criteria.  See --options help for
+              selectable object fields.  Rows can be displayed with an additional "selected" field
+              (-o selected) showing 1 if the row matches the selection and 0 otherwise.  For non-
+              reporting commands which process LVM entities, the selection is used to choose items
+              to process.
+
+       -t|--test
+              Run in test mode. Commands will not update metadata.  This is implemented by disabling
+              all metadata writing but nevertheless returning success to the calling function. This
+              may lead to unusual error messages in multi-stage operations if a tool relies on read‐
+              ing back metadata it believes has changed but hasn't.
+
+       -v|--verbose ...
+              Set verbose level. Repeat from 1 to 4 times to increase the detail of messages sent to
+              stdout and stderr.
+
+       --version
+              Display version information.
+
+       -y|--yes
+              Do not prompt for confirmation interactively but always assume the answer yes. Use
+              with extreme caution.  (For automatic no, see -qq.)
+
+VARIABLES
+       VG
+              Volume Group name.  See lvm(8) for valid names.
+
+       Tag
+              Tag name.  See lvm(8) for information about tag names and using tags in place of a VG,
+              LV or PV.
+
+       Select
+              Select  indicates  that a required positional parameter can be omitted if the --select
+              option is used.  No arg appears in this position.
+
+       String
+              See the option description for information about the string content.
+
+       Size[UNIT]
+              Size is an input number that accepts an optional unit.  Input units are always treated
+              as base two values, regardless of capitalization, e.g. 'k' and 'K' both refer to 1024.
+              The default input unit is specified by letter, followed  by  |UNIT.   UNIT  represents
+              other  possible  input  units:  bBsSkKmMgGtTpPeE.  b|B is bytes, s|S is sectors of 512
+              bytes, k|K is kilobytes, m|M is megabytes, g|G is gigabytes, t|T is terabytes, p|P  is
+              petabytes,  e|E  is  exabytes.   (This  should not be confused with the output control
+              --units, where capital letters mean multiple of 1000.)
+
+ENVIRONMENT VARIABLES
+       See lvm(8) for information about environment variables used by lvm.  For example, LVM_VG_NAME
+       can generally be substituted for a required VG parameter.
+
+SEE ALSO
+       lvm(8) lvm.conf(5) lvmconfig(8)
+
+       pvchange(8)  pvck(8)  pvcreate(8)  pvdisplay(8) pvmove(8) pvremove(8) pvresize(8) pvs(8) pvs‐
+       can(8)
+
+       vgcfgbackup(8) vgcfgrestore(8)  vgchange(8)  vgck(8)  vgcreate(8)  vgconvert(8)  vgdisplay(8)
+       vgexport(8)  vgextend(8)  vgimport(8)  vgimportclone(8)  vgmerge(8)  vgmknodes(8) vgreduce(8)
+       vgremove(8) vgrename(8) vgs(8) vgscan(8) vgsplit(8)
+
+       lvcreate(8) lvchange(8) lvconvert(8) lvdisplay(8) lvextend(8) lvreduce(8)  lvremove(8)  lvre‐
+       name(8) lvresize(8) lvs(8) lvscan(8)
+
+       lvm-fullreport(8) lvm-lvpoll(8) lvm2-activation-generator(8) blkdeactivate(8) lvmdump(8)
+
+       dmeventd(8) lvmetad(8) lvmpolld(8) lvmlockd(8) lvmlockctl(8) clvmd(8) cmirrord(8) lvmdbusd(8)
+
+       lvmsystemid(7) lvmreport(7) lvmraid(7) lvmthin(7) lvmcache(7)
+
+
+
+Red Hat, Inc.                 LVM TOOLS 2.02.171(2)-RHEL7 (2017-05-03)                   VGREMOVE(8)

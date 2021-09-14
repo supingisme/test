@@ -1,0 +1,15 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:22 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 26日 星期二 09:02:56 CST. 
+
+
+	Producer							Consumer
+
+initial sem get to 0;
+initial sem put to 1;
+
+for(;;)								for(;;)
+{									{
+	sem_wait(&put);						sem_wait(&get);
+	put data into buffer;				process data in buffer;
+	sem_post(&get);						sem_post(&put);
+}									}

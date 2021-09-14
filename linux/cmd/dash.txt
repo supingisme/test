@@ -1,0 +1,111 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:24 CST. 
+dash 命令行参数
+
+dash shell使用命令行参数来控制其行为。表23-1列出了命令行参数，并介绍了每个参数的
+用途。
+
+参 数 描 述
+-a 导出分配给shell的所有变量
+-c 从特定命令字符串中读取命令
+-e 如果是非交互式shell的话，在有未经测试的命令失败时立即退出
+-f 显示路径名通配符
+-n 如果是非交互式shell的话，读取命令但不执行它们
+-u 在尝试展开一个未设置的变量时，将错误消息写出到STDERR
+-v 在读取输入时将输入写出到STDERR
+-x 在执行命令时将每个命令写出到STDERR
+-I 在交互式模式下，忽略输入中的EOF字符
+-i 强制shell运行在交互式模式下
+-m 启用作业控制（在交互式模式下默认开启）
+-s 从STDIN读取命令（在没有指定文件参数时的默认行为）
+-E 启用emacs命令行编辑器
+-V 启用vi命令行编辑器
+
+dash 环境变量
+$set
+COLORTERM=''
+DESKTOP_SESSION='default'
+DISPLAY=':0.0'
+DM_CONTROL='/var/run/xdmctl'
+GS_LIB='/home/atest/.fonts'
+HOME='/home/atest'
+IFS='
+'
+KDEROOTHOME='/root/.kde'
+KDE_FULL_SESSION='true'
+KDE_MULTIHEAD='false'
+KONSOLE_DCOP='DCOPRef(konsole-5293,konsole)'
+KONSOLE_DCOP_SESSION='DCOPRef(konsole-5293,session-1)'
+LANG='en_US'
+LANGUAGE='en'
+LC_ALL='en_US'
+LOGNAME='atest'
+OPTIND='1'
+PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+PPID='5293'
+PS1='$ '
+PS2='> '
+PS4='+ '
+PWD='/home/atest'
+SESSION_MANAGER='local/testbox:/tmp/.ICE-unix/5051'
+SHELL='/bin/dash'
+SHLVL='1'
+TERM='xterm'
+USER='atest'
+XCURSOR_THEME='default'
+_='ash'
+$
+
+
+
+位置参数
+
+ $0： shell的名称。
+ $n：第n个位置参数。
+ $*：含有所有参数内容的单个值，由IFS环境变量中的第一个字符分隔；没定义IFS的话，
+由空格分隔。
+ $@：将所有的命令行参数展开为多个参数。
+ $#：位置参数的总数。
+ $?：最近一个命令的退出状态码。
+ $-：当前选项标记。
+ $$：当前shell的进程ID（PID）。
+ $!：最近一个后台命令的PID。
+
+用户自定义的环境变量
+
+$ testing=10 ; export testing
+$ echo $testing
+10
+$
+
+
+dash shell内建命令
+
+命 令 描 述
+alias 创建代表文本字符串的别名字符串
+bg 以后台模式继续执行指定的作业
+cd 切换到指定的目录
+echo 显示文本字符串和环境变量
+eval 将所有参数用空格连起来①
+exec 用指定命令替换shell进程
+exit 终止shell进程
+export 导出指定的环境变量，供子shell使用
+fg 以前台模式继续执行指定的作业
+getopts 从参数列表中中提取选项和参数
+hash 维护并提取最近执行的命令及其位置的哈希表
+pwd 显示当前工作目录
+read 从STDIN读取一行并将其赋给一个变量
+readonly 从STDIN读取一行并赋给一个只读变量
+printf 用格式化字符串显示文本和变量
+set 列出或设置选项标记和环境变量
+shift 按指定的次数移动位置参数
+test 测试一个表达式，成立的话返回0，不成立的话返回1
+times 显示当前shell和所有shell进程的累计用户时间和系统时间
+trap 在shell收到某个指定信号时解析并执行命令
+type 解释指定的名称并显示结果（别名、内建、命令或关键字）
+ulimit 查询或设置进程限制
+umask 设置文件和目录的默认权限
+unalias 删除指定的别名
+unset 从导出的变量中删除指定的变量或选项标记
+wait 等待指定的作业完成，然后返回退出状态码
+
+

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+	echo "Usage: $0 <file.c>"
+	exit
+fi
+
+gcc $1 -o a -lpq

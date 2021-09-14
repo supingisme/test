@@ -1,0 +1,19 @@
+df
+功能说明：disk free，显示磁盘的文件系统与使用情形。
+语 法：df [-ahHiklmPT] [--block-size=<区块大小>] [-t <文件系统类型>] [-x <文件系统类型>] [--help]
+[--no-sync] [--sync] [--version] [文件或设备]
+参 数： -a 或--all 包含全部的文件系统。
+--block-size=<区块大小> 以指定的区块大小来显示区块数目。
+-h 或--human-readable 以可读性较高的方式来显示信息。
+-H 或--si 与-h 参数相同，但在计算时是以1000 Bytes 为换算单位而非1024 Bytes。
+-i 或--inodes 显示inode 的信息。
+-k 或--kilobytes 指定区块大小为1024 字节。
+-l 或--local 仅显示本地端的文件系统。
+-m 或--megabytes 指定区块大小为1048576 字节。
+--no-sync 在取得磁盘使用信息前，不要执行sync 指令，此为预设值。
+-P 或--portability 使用POSIX 的输出格式。
+--sync 在取得磁盘使用信息前，先执行sync 指令。
+-t<文件系统类型>或--type=<文件系统类型> 仅显示指定文件系统类型的磁盘信息。
+-T 或--print-type 显示文件系统的类型。
+-x<文件系统类型>或--exclude-type=<文件系统类型> 不要显示指定文件系统类型的磁盘信息。
+[文件或设备] 指定磁盘设备。

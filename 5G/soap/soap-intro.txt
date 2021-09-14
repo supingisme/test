@@ -1,0 +1,32 @@
+简单对象访问协议是交换数据的一种协议规范，是一种轻量的、简单的、基于XML（标准通用标记语言下的一个子集）的协议，
+它被设计成在WEB上交换结构化的和固化的信息。
+
+SOAP是“Simple Object Access Protocol简单对象访问协议”的缩写。
+最新版本SOAP 1.2版在2003年6月24日成为W3C的推荐版本。
+SOAP由Dave Winer, Don Box，Bob Atkinson, Mohsen Al-
+Ghosein于1998年设计，当时只作为一种对象访问协议。SOAP规范由 万维网联盟的 XML工作组维护。
+
+#####webService三要素
+
+SOAP、WSDL(WebServicesDescriptionLanguage)、UDDI(UniversalDescriptionDiscovery andIntegration)之一， 
+soap用来描述传递信息的格式， WSDL 用来描述如何访问具体的接口， 
+uddi用来管理，分发，查询webService 。具体实现可以搜索 Web Services简单实例 ; SOAP 
+可以和现存的许多因特网协议和格式结合使用，包括超文本传输协议（HTTP），简单邮件传输
+协议（SMTP），多用途网际邮件扩充协议（MIME）。它还支持从消息系统到远程过程调用（R
+PC）等大量的应用程序。SOAP使用基于XML的数据结构和超文本传输协议(HTTP)
+的组合定义了一个标准的方法来使用Internet上各种不同操作环境中的分布式对象。
+
+
+
+SOAP 是基于 XML 的简易协议，可使应用程序在 HTTP 
+之上进行信息交换。或者更简单地说：SOAP 是用于访问网络服务的协议。
+
+
+对于应用程序开发来说，使程序之间进行因特网通信是很重要的。目前的应用程序通过使用远程过程调用（RPC）在诸如 DCOM 与 CORBA 等对象之间进行通信，但是 HTTP 
+不是为此设计的。RPC 
+会产生兼容性以及安全问题；防火墙和代理服务器通常会阻止此类流量。通过 HTTP 
+在应用程序间通信是更好的方法，因为 HTTP 
+得到了所有的因特网浏览器及服务器的支持。SOAP 就是被创造出来完成这个任务的。SOAP 
+提供了一种标准的方法，使得运行在不同的操作系统并使用不同的技术和编程语言的应用程序可以互相进行通信。
+
+

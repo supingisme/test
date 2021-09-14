@@ -1,0 +1,241 @@
+以下是来自wiki对obstack的介绍：
+
+　　Obstack是C标准库里面对内存管理的GNU扩展（实际上就是GNU C library了）。
+Obstack===Object stack。没错，Obstack就是一个栈，栈里面的元素是对象object（不是面向对象的对象哦，这里的对象单指数据元素）。
+这些数据是动态的，也就是使用的是动态内存。这种内存管理技术属于Region-based memory management。
+
+
+　　那什么叫基于区域的内存管理呢？区域指的是我们申请的数据对象存放的位置。
+在这种内存管理模式下，我们将所有申请的数据对象集中放在一起（当然咯，地址不一定连续。集中在一起是一种逻辑结构，比如Obstack的栈）。
+好处就是，可以一次性的释放内存，集中管理。这下你对Obstack有了大体上的了解了吧。
+
+
+以下为GNU C的Obstack描述：
+	
+　　Obstack是一种内存池，内存池里面包含了数据对象栈。
+
+　　啥叫内存池呢？内存池也叫做固定大小的块内存申请（fixed-size blocks allocation），同样也是一种内存管理技术。
+这种技术允许动态申请内存。（是不是迷糊了？前面还说固定，现在又说动态了。
+实际上固定的是总大小，动态是指内存实际申请使用。
+如果你用过virtual box，没错就是那个百分之60刚玩linux的人都会安装的东西。
+里面创建虚拟硬盘时对动态分配有这样的描述：虚拟磁盘只是逐渐占用物理硬盘空间[直至达到分配的大小]，
+不过当其内部空间不用时不会自动缩减暂用的物理硬盘空间]）这种方式有点类似malloc或者C++的new操作。
+但是malloc和new操作都会造成内存碎片化问题（别打我，这是wiki讲的，不关我的事）。
+更有效地方式就是使用相同大小内存池了。预先申请，集中管理。
+应用程序在内存池里面自由的玩耍，从来不上岸-_-|||。
+
+
+　　回过头继续讲Obstack。你可以创建任意数量的独立的Obstack，然后在这些Obstack里面申请对象。
+这些对象遵循栈的逻辑结构：最后申请的对象必须第一个释放。不同的Obstack里面的数据是相互独立的，没有任何关系。
+除了对内存释放顺序的要求之外，obstack是非常通用的：一个Obstack可以包含任意数量任意尺寸的对象。
+
+
+　　Obstack里面内存申请的实现用的一般都是宏，很有效率吧。如果你不想使用宏（理由是：方便调试），可以看一看我的另一篇文章。
+这篇文章的最后介绍了如何避免使用预定义的宏。
+唯一的内存空间损耗就是不同对象之间可能需要内存填充，让每一个对象都起始于合适的边界线，这一点实际上是用空间换取时间。
+
+
+　　Obstack的表现形式是一个结构体:struct obstack。这个结构有一个非常小的固定大小，记录了obstack的状态，以及如何找到该Obstack里的对象。
+但是呢，obstack结构体自身不包含任何对象，别妄想直接探寻struct obstack的内容了。必须使用规定的函数才行，这点没得商量。
+
+
+　　你可以通过声明一个struct obstack类型的变量来创建obstack。
+或者动态申请struct obstack *obstack = (struct obstack *)malloc(sizeof(struct obstack)); 
+你还可以obstack里面使用obstack（然并卵，GNU C library文档自己说的)
+
+
+　　Obstack使用的函数都需要指定使用的是那个obstack。Obstack里面的对象会被打包成一个大的内存块（叫做chunks）。
+struct obstack结构指针指向当前使用的chunks。
+
+
+　　每当你申请的对象无法塞进之前的chunk时，都会创建一个新的chunk。这些chunk以何种形式连接在一起（链表？树？），
+不是我们关心的啦。这些交由obstack自动管理。chunk由obstack自动创建，但创建的方式得由你来决定，一般会直接或间接的用到malloc函数。
+
+
+　　联想我们之前讲到的内存池：chunk是固定大小的池。Obstack只是一种池的管理员：他告诉来洗澡的人必须遵守规定，最后来的必须先走。
+
+
+ 
+
+Obstack初始化：
+#include<obstack.h>
+int obstack_init(struct obstack *obstack-ptr)
+ 
+
+ 
+
+　　obstack_init实际上是一个宏实现。obstack_init会自动调用obstack_chunk_alloc函数来申请chunk，注意这还是个宏，需要你指定这个宏指向的函数。
+如果内存申请失败了会调用obstack_alloc_failed_handler指向的函数，没错依旧是宏。
+如果chunk里面的对象都被释放了，obstack_chunk_free指向的函数被用来返回chunk占用的空间。
+目前版本的obstack_init永远只返回1（之前的版本会在失败的时候返回0）
+
+
+实例:
+
+
+#include<obstack.h>
+#include<stdlib.h>
+#define obstack_chunk_alloc malloc
+#define obstack_chunk_free free
+
+//静态申请obstack
+static struct obstack myobstack;
+obstack_init(&myobstack);
+
+//动态申请obstack
+struct obstack *myobstack_ptr = (struct obstack*) malloc (sizeof (struct obstack))
+obstack_init(myobstack_ptr)
+
+  　　obstack 
+chunk的大小默认情况下为4096。如果你想自定义chunk的大小，需要使用宏obstack_chunk_size
+
+
+int obstack_chunk_size (struct obstack* obstack-ptr)
+ 　　注意这实际上是个左值（C++里面有麻烦的左值引用，右值引用 囧rz）。obstack-ptr如之前的myobstack所示，指明了是哪个obstack。
+ 如果你适当的提高chunk的大小，有利于提高效率。减小则没啥好处。。。
+
+
+if (obstack_chunk_size (myobstack_ptr) < new-chunk-size)
+    obstack_chunk_size (myobstack_ptr) = new-chunk-size
+ 
+
+在Obstack里面申请对象： 　　最直接的方法使用aobstack_alloc函数
+
+void * obstack_alloc (struct obstack *obstack-ptr, int size)
+ 
+
+　　调用方式和malloc差不多, 对新申请的空间不初始化。如果chunk被object填满了，obstack_alloc会自动调用obstack_chunk_alloc。
+
+
+
+struct obstack string_obstack;
+/*
+....
+初始化内容
+....
+*/
+char * copystring (char *string)
+{
+    size_t len = strlen (string) + 1;
+    char *s = (char*) obstack_alloc (&string_obstack, len);
+    memcpy (s, string , len);
+    return s;
+}
+
+ 
+
+　　如果想在申请时初始化，需要用到obstack_copy或者obstack_copy0
+
+void * obstack_copy (struct obstack *obstack-ptr, void *address, int size)
+//使用从地址address开始复制size大小的数据初始化，新申请的object内存大小也为size
+
+void *obstack_copy0 (struct obstack *obstack-ptr, void *address, int size)
+//同obstack_copy但结尾处额外添加一个空字符，在复制以NULL结尾的字符串时很方便。
+ 
+
+ 
+
+　　释放Obstack里面的对象：
+　　同样很简单，我们使用函数obstack_free
+
+void obstack_free  (struct obstack *obstack-ptr, void *object)
+ 
+
+　　如果object是空指针的话，所有的对象都被释放，留下一个未初始化的obstack,然后obstack库会自动释放chunk。
+如果你指定了object地址，那自这个object之后的所有对象都被释放。
+值得注意的是：如果你想释放所有object但同时保持obstack有效，可以指定第一个object的地址
+
+
+obstack_free (obstack_ptr, first_object_allocated_ptr);
+ 
+
+　　
+
+可增长内存空间的对象：
+　　由于obstack chunk的内存空间是连续的，在其中的对象空间可以一步步搭建一直增加到结尾。
+这种技术称之为growing object。尽管obstack可以使用growing object，
+但是你无法为已申请好的对象使用这项技术（理由是如果这对象之后还有对象，会造成冲突）
+
+
+
+void obstack_blank (struct obstack *obstack-ptr, int size)
+//添加一个为初始化的growing object
+
+void obstack_grow (struct obstack *obstack-ptr, void *data, int size)
+//添加一个初始化的空间，类似与obstack_copy
+
+void obstack_grow0 (struct obstack *obstack-ptr, void *data, int size)
+//obstack_grow类似与obstack_copy, 那obstack_grow0你说类似与谁？
+
+void  obstack_lgrow (struct obstack *obstack-ptr, charc)
+//一次添加一个字符（字节）
+
+void    obstack_ptr_grow (struct obstack *obstack-ptr, void *data)
+//一次添加一个指针。。。大小为（sizeof(void *)
+
+void obstack_int_grow (struct obstack *obstack-ptr, int data)
+//一次添加一个int型数据，大小为sizeof(int)
+
+ 
+
+　　在growing object中最重要的函数是obstack_finish, 
+因为只有调用了本函数之后才会返回growing object 的最终地址。
+
+
+void *obstack_finish (struct obstrack *obstrack-ptr)
+ 
+
+　　如果你想获取growing object当前大小，可以使用obstack_object_size
+
+int obstack_object_size (struct obstack *obstrack-ptr)
+//只能用在obstack_finish之前，否则只会返回0
+ 
+
+　　如果你想取消一个正在增长的对象，必须先结束他，然后再释放。示例如下：
+
+obstack_free (obstack_ptr, obstack_finish (obstack_ptr))
+ 
+
+　　上面的函数在添加数据时会检查是否由足够的空间。如果你只增加一丁点的空间，检查这一步骤显然是多余的。
+我们可以省略这一步骤，更快的growing。这里关于growing object额外在介绍一个函数：
+
+
+int obstack_room (struct obstack *obstack-ptr)
+//返回可以安全添加的字节数
+ 
+
+　　其余的快速添加函数只需要在之前的growing 
+object函数添加后缀_fast即可（如果不清楚可以查看GNU C 关于这部分的介绍）
+
+
+ 
+
+Obstack 的状态：
+以下函数用于获取obstack的状态：
+
+void * obstack_base (struct obstack *obstack-ptr)
+//
+返回正在增长的对象的假定起始地址。为啥是假定呢，因为如果你增长的过大，当前chunk的空间不够，obstack就会新创建一个chunk，这样地址就变了。
+
+
+
+void *obstack_next_free (struct obstack *obstack-ptr)
+//返回当前chunk未被占用的第一个字节的地址
+
+int obstack_object_size (struct obstack *obstack-ptr)
+//返回当前growing object的大小。等同与：
+//obstack_next_free (obstack-ptr) -obstack_base (obstack-ptr)
+
+ 
+
+ 
+
+Obstack 里的数据对齐问题
+int obstack_alignment_mask (struct obstack *obstack-ptr)
+ 
+
+　　宏展开后是一个左值。如果是函数实现，返回的是掩码。你给他复制也应该是掩码。
+掩码的值应该是2的n次方减一，换算后也就是说地址必须是2的n次方的倍数。
+如果你改变了掩码，只有下次申请object的时候才会生效（特例是growing object：立即生效，调用obstack_finish后就能看到效果了）
+
+ 本文地址http://www.cnblogs.com/san-fu-su/p/5739780.html

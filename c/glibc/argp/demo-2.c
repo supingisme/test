@@ -1,0 +1,161 @@
+/* Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:09 CST. */
+/* 
+ Copyright (C) Rong Tao @Beijing
+
+ Permission is granted to copy, distribute and/or modify this document
+ under the terms of the GNU Free Documentation License, Version 1.3
+ or any later version published by the Free Software Foundation;
+ with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
+ Texts. A copy of the license is included in the section entitled ‘‘GNU
+ Free Documentation License’’.
+   2019年 03月 14日 星期四 19:24:22 CST. 
+*/
+/* Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 13日 星期三 08:53:53 CST. */
+/* Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:07:30 CST. */
+/* Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 08日 星期五 08:10:07 CST. */
+/* Copyright (c) Colorado School of Mines, CST.*/
+/* All rights reserved.                       */
+
+/* Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 07日 星期四 20:27:46 CST. */
+/* Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 07日 星期四 20:26:53 CST. */
+/* Argp example #4 – a program with somewhat more complicated options */
+/* This program uses the same features as example 3, but has more
+ * options, and somewhat more structure in the -help output. It
+ * also shows how you can ‘steal’ the remainder of the input
+ * arguments past a certain point, for programs that accept a
+ * list of items. It also shows the special argp KEY value
+ * ARGP KEY NO ARGS, which is only given if no non-option
+ * arguments were supplied to the program.
+ * For structuring the help output, two features are used,
+ * *headers* which are entries in the options vector with the
+ * frst four felds being zero, and a two part documentation
+ * string (in the variable DOC), which allows documentation both
+ * before and after the options; the two parts of DOC are
+ * separated by a vertical-tab character (’\v’, or ’\013’). By
+ * convention, the documentation before the options is just a
+ * short string saying what the program does, and that afterwards
+ * is longer, describing the behavior in more detail. All
+ * documentation strings are automatically flled for output,
+ * although newlines may be included to force a line break at a
+ * particular point. All documentation strings are also passed to
+ * the ‘gettext’ function, for possible translation into the
+ * current locale. */
+#include <stdlib.h>
+#include <error.h>
+#include <argp.h>
+const char *argp_program_version =
+"argp-ex4 1.0";
+const char *argp_program_bug_address =
+"<bug-gnu-utils@prep.ai.mit.edu>";
+/* Program documentation. */
+static char doc[] =
+"Argp example #4 -- a program with somewhat more complicated\
+		options\
+		\vThis part of the documentation comes *after* the options;\
+		note that the text is automatically filled, but it’s possible\
+		to force a line-break, e.g.\n<-- here.";
+/* A description of the arguments we accept. */
+static char args_doc[] = "ARG1 [STRING...]";
+/* Keys for options without short-options. */
+#define OPT_ABORT 1 /* –abort */
+/* The options we understand. */
+static struct argp_option options[] = {
+	{"verbose", 'v', 0, 0, "Produce verbose output" },
+	{"quiet", 'q', 0, 0, "Don’t produce any output" },
+	{"silent", 's', 0, OPTION_ALIAS },
+	{"output", 'o', "FILE", 0,
+		"Output to FILE instead of standard output" },
+	{0,0,0,0, "The following options should be grouped together:" },
+	{"repeat", 'r', "COUNT", OPTION_ARG_OPTIONAL,
+		"Repeat the output COUNT (default 10) times"},
+	{"abort", OPT_ABORT, 0, 0, "Abort before showing any output"},
+	{ 0 }
+};
+/* Used by main to communicate with parse_opt. */
+struct arguments
+{
+	char *arg1; /* arg1 */
+	char **strings; /* [string. . .] */
+	int silent, verbose, abort; /* ‘-s’, ‘-v’, ‘--abort’ */
+	char *output_file; /* fle arg to ‘--output’ */
+	int repeat_count; /* count arg to ‘--repeat’ */
+};
+/* Parse a single option. */
+static error_t
+parse_opt (int key, char *arg, struct argp_state *state)
+{
+	/* Get the input argument from argp_parse, which we
+	 * know is a pointer to our arguments structure. */
+	struct arguments *arguments = state->input;
+	switch (key)
+	{
+		case 'q': case 's':
+			arguments->silent = 1;
+			break;
+		case 'v':
+			arguments->verbose = 1;
+			break;
+		case 'o':
+			arguments->output_file = arg;
+			break;
+		case 'r':
+			arguments->repeat_count = arg ? atoi (arg) : 10;
+			break;
+		case OPT_ABORT:
+			arguments->abort = 1;
+			break;
+		case ARGP_KEY_NO_ARGS:
+			argp_usage (state);
+		case ARGP_KEY_ARG:
+			/* Here we know that state->arg_num == 0, since we
+			 * force argument parsing to end before any more arguments can
+			 * get here. */
+			arguments->arg1 = arg;
+			/* Now we consume all the rest of the arguments.
+			 * state->next is the index in state->argv of the
+			 * next argument to be parsed, which is the frst string
+			 * we’re interested in, so we can just use
+			 * &state->argv[state->next] as the value for
+			 * arguments->strings.
+			 * In addition, by setting state->next to the end
+			 * of the arguments, we can force argp to stop parsing here and
+			 * return. */
+			arguments->strings = &state->argv[state->next];
+			state->next = state->argc;
+			break;
+		default:
+			return ARGP_ERR_UNKNOWN;
+	}
+	return 0;
+}
+/* Our argp parser. */
+static struct argp argp = { options, parse_opt, args_doc, doc };
+int main (int argc, char **argv)
+{
+	int i, j;
+	struct arguments arguments;
+	/* Default values. */
+	arguments.silent = 0;
+	arguments.verbose = 0;
+	arguments.output_file = "-";
+	arguments.repeat_count = 1;
+	arguments.abort = 0;
+	/* Parse our arguments; every option seen by parse_opt will be
+	 * reﬂected in arguments. */
+	argp_parse (&argp, argc, argv, 0, 0, &arguments);
+	if (arguments.abort)
+		error (10, 0, "ABORTED");
+	for (i = 0; i < arguments.repeat_count; i++)
+	{
+		printf ("ARG1 = %s\n", arguments.arg1);
+		printf ("STRINGS = ");
+		for (j = 0; arguments.strings[j]; j++)
+			printf (j == 0 ? "%s" : ", %s", arguments.strings[j]);
+		printf ("\n");
+		printf ("OUTPUT_FILE = %s\nVERBOSE = %s\nSILENT = %s\n",
+				arguments.output_file,
+				arguments.verbose ? "yes" : "no",
+				arguments.silent ? "yes" : "no");
+	}
+	exit (0);
+}

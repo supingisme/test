@@ -1,0 +1,6 @@
+compress
+功能说明：压缩或解压文件。
+语 法：compress [-cdfrvV][-b <压缩效率>][文件或目录...]
+补充说明：这事Red Hat Linux/Fedora Core 才有的命令。compress 是个历史悠久的压缩程序，文件经它压缩后，
+其名称后面会多出".Z"的扩展名。当要解压缩时，可执行uncompress 命令。事实上uncompress 是指向compress
+的符号连接，因此不论是压缩或解压缩，都可通过compress 指令单独完成。

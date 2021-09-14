@@ -1,0 +1,3 @@
+Each segment is represented by an 8-byte Segment Descriptor that describes the segment
+characteristics. Segment Descriptors are stored either in the Global Descriptor Table (GDT ) or in
+the Local Descriptor Table(LDT).

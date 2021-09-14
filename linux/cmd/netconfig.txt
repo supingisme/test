@@ -1,0 +1,6 @@
+netconfig
+功能说明：设置网络环境。
+语 法：netconfig
+补充说明：这是在某些Linux 发行版如Red Hat Linux/Fedora Core、SlackwareLinux 内附的程序，它具有互动
+式的问答界面，让用户轻易完成网络环境的设置。通过netconfig 可以设置本地主机IP 地址、网络掩码、网关
+以及域名服务器，并决定是否要用动态分配的方式来设定IP。

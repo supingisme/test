@@ -1,0 +1,28 @@
+O_SRCS := 
+SERVER_CPP_SRCS := 
+CLIENT_CPP_SRCS :=
+C_UPPER_SRCS := 
+C_SRCS := 
+S_UPPER_SRCS := 
+OBJ_SRCS := 
+ASM_SRCS := 
+CXX_SRCS := 
+C++_SRCS := 
+CC_SRCS := 
+SERVER_OBJS := 
+CLIENT_OBJS :=
+C++_DEPS := 
+C_DEPS := 
+CC_DEPS := 
+SERVER_CPP_DEPS := 
+CLIENT_CPP_SRCS :=
+EXECUTABLES := 
+CXX_DEPS := 
+C_UPPER_DEPS := 
+LIBS:=`-DWITH_IPV6 -DWITH_NO_IPV6_V6ONLY -DWITH_DOM  -lgsoap++ -lgsoap`
+
+
+# 子目录
+SUBDIRS := \
+soap \
+. \

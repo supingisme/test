@@ -1,0 +1,5 @@
+bunzip2
+功能说明：.bz2 文件的解压缩程序。
+语 法：bunzip2 [-fkLsvV][.bz2 压缩文件]
+补充说明：bunzip2 可解压缩.bz2 格式的压缩文件。bunzip2 实际上是bzip2 的符号连接，执行bunzip2 与bzip2
+-d 的效果相同。

@@ -1,0 +1,15 @@
+Device.DeviceInfo.ManufacturerOUI
+Device.DeviceInfo.Manufacturer
+Device.DeviceInfo.ModelName
+Device.DeviceInfo.SerialNumber
+Device.DeviceInfo.HardwareVersion
+Device.DeviceInfo.SoftwareVersion
+Device.DeviceInfo.HardwarePlatform
+Device.DeviceInfo.AdditionalHardwareVersion
+Device.DeviceInfo.AdditionalSoftwareVersion
+Device.DeviceInfo.ProvisioningCode
+Device.DeviceInfo.ProductClass
+Device.DeviceInfo.UpTime
+Device.DeviceInfo.3GPPSpecVersion
+Device.DeviceInfo.FirstUseDate
+

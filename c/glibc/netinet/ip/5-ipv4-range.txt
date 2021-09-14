@@ -1,0 +1,12 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:19 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 09:06:26 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 09:06:23 CST. 
+
+Ranges for the five different classes of IPv4 addresses.
++------------+--------+-------------------------------+
+|  usage     | class  |              range            |
++------------+--------+-------------------------------+
+|Unicase     | A,B,C  |   0.0.0.0  ~ 223.255.255.255  |
+|Multicase   |   D    |   224.0.0.0 ~ 239.255.255.255 |
+|Experimental|   E    |   240.0.0.0 ~ 255.255.255.255 |
++------------+--------+-------------------------------+

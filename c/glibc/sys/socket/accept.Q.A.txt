@@ -1,0 +1,18 @@
+Accept return 0??
+
+
+Q:
+I'm am trying to learn about sockets by writing a simple chat client. Basically, multiple users will be able to connect to a server which will relay the messages back to each user
+
+At the moment it does not relay messages back. This is because connecting multiple users seems to cause a problem. Basically, the parent fork calls accept while children forks handle each client.
+The problem arrises when accept returns 0. This happens randomly on the second or third call to accept(). When this happens, that socket does not work. Any calls to accept afterwards also return 0. And the socket most recently succesfully created will 'cause a bad file descriptor error next time the client tries to message. Is this a bug with accept()? Here is the code for the host:
+--------------------------------------------
+https://stackoverflow.com/questions/36615243/accept-returning-0-zero-stdin-fd-in-c-socket-prog
+###############################################################################################
+
+
+accept() returning “0” zero (stdin fd) in c socket prog??
+
+
+总体上，我问题解决的方法：
+发现我真的close(0); 了 荣涛

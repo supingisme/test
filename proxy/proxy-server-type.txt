@@ -1,0 +1,110 @@
+代理服务器是一台位于客户端计算机和Internet之间并为客户端提供间接网络服务的计算机。它可以驻留在用户的本地计算机上，也可以驻留在用户的计算机与Internet上的目标服务器之间的各个位置。代理服务器拦截所有客户端请求，并从其缓存中提供响应，或将请求转发到真实服务器。客户端计算机连接到代理服务器，该代理服务器通过提供来自指定服务器或本地缓存的请求资源/数据来确认客户端请求。客户端请求包括文件或各种服务器上可用的任何其他资源。
+代理服务器的类型
+
+代理服务器根据用途和功能分为几种类型。一些最常见的类型及其用途可以描述如下：
+
+Web代理是最常见的代理应用程序类型，它通过访问缓存的网页中的资源和远程Web服务器上可用的文件来响应用户请求。这有助于本地网络客户端快速，可靠地访问数据。如果在高速缓存中找不到请求的资源，则Web代理将从远程服务器获取文件，并在将其返回给客户端之前将副本保存在高速缓存中。
+
+透明代理主要用于缓存网站和克服简单的IP禁止。但是，由于暴露了用户的原始IP地址，因此此类代理不提供任何用户匿名性。客户端计算机上没有专门配置透明代理。
+
+匿名代理不会隐藏用户的原始IP地址。但是，它们为大多数用户提供了足够的匿名性。匿名代理很容易检测到。
+
+失真的代理，将自己标识为代理服务器，并修改HTTP标头以掩盖原始IP地址。
+
+隧道代理能够传递客户端请求并返回响应，而无需进行任何修改。这些也称为网关代理。
+
+转发代理通过从Internet上的各种来源检索数据来响应客户端请求。它也称为面向Internet的代理。
+
+开放式代理属于转发代理服务器的类别，任何Internet用户都可以访问它们，因为它们可以接收和返回来自任何客户端计算机的请求。同时，匿名开放代理用于用户匿名来隐藏IP地址。
+
+反向代理，也称为代理，通常从Internet接收请求并将其转发到内部网络服务器。反向代理服务器将请求转发到一个或多个代理服务器，其响应将返回给客户端计算机，客户端计算机的用户不知道响应的来源。
+在哪里使用代理服务器？
+
+代理服务器有多种用途。如果将其用作缓存Web代理，则可以大大提高Web响应的性能。当客户端发出请求时，如果文档已经存在，则缓存代理直接从其缓存返回响应。否则，它将向真实服务器发出请求，返回结果，并将其保存在其缓存中以备后用。
+
+代理服务器还用作“ Web代理”以过滤网页内容。组织或公司可以使用代理服务器来阻止令人反感的Web内容被用户查看。考虑到组织内部越来越需要防止员工访问特定网站（例如facebook.com），因此在连接到Intranet的计算机上部署了代理服务器。一些Web代理能够重新格式化网页以适合特定的受众群体，或满足某些组织或个人Internet使用目的。此外，Web代理可以用来防止计算机病毒和恶意软件以及跨Internet网页传输的其他恶意内容的攻击。但是，用户也可以使用Web代理服务器间接访问那些被阻止的站点。这些Web代理使用PHP或CGI构建，以实现代理功能，并提供对被公司和学校代理阻止的站点的Web访问。此外，Internet服务提供商（ISP）也可能使用代理来阻止计算机病毒和其他令人反感的内容。
+
+代理服务器有几个优点。我们打算提供代理服务器的一些最基本的用途。
+
+性能改进：
+
+代理服务器还有助于提高Web性能，因为用户请求的结果在设置的时间段内保存在缓存中。这是借助缓存代理服务器来实现的，该代理服务器可以节省大量时间，同时满足来自大量用户负载的请求。缓存代理服务器维护经常请求的Web内容的本地副本。因此，如果内容已被同一网络上的另一个客户端请求，它可以通过从缓存中检索内容来加速服务请求。对于拥有数千名员工的大型组织，此功能有助于显着减少上游带宽的使用和成本。
+
+监视和过滤用户请求：
+
+如前所述，Web代理可以用于过滤用户请求，并阻止某些内容或网页被访问。这可以借助内容过滤Web代理服务器来实现，该服务器根据用户类型（访客或管理员）来区分用户对内容的控制级别。
+
+内容过滤代理通常在具有严格的互联网使用政策的组织和教育机构中使用。阻止某些网站，限制对特定关键字的访问并审查不良内容是内容过滤或Web过滤代理提供的一些基本功能。但是，有些Web代理通过使用某些高级服务来绕过地理限制和审查法规，这些高级服务可帮助从列入黑名单的Web位置访问资源。
+
+匿名浏览：
+
+匿名代理服务器是另一种Web代理，可匿名化用户的在线活动。这种类型的代理服务器将用户请求定向到目标服务器，该服务器最终不知道请求的来源。只有代理知道请求的来源，包括用户IP地址和位置。
+
+针对特定地理区域的广告Web代理也可以用于验证和验证按地理区域定位的广告。此类广告的服务器会验证用户请求的源IP地址，并借助geo-IP数据库确定请求的地理位置。用户请求通过位于相应地理位置内的代理服务器进行响应，以确保显示的广告与用户的位置完全相关。
+
+翻译：
+
+考虑到全球观众，已经开发了翻译代理以将源网站的内容本地化/翻译成客户端计算机的本地语言。由本地用户发送的对请求的响应将替换为源网站中的翻译内容，并通过代理服务器传递回去。一些翻译代理还提供其他服务，例如排除源内容或用原始本地内容替换源内容。
+结论
+
+当今使用最广泛的代理服务器是Web代理，它用于过滤内容并允许匿名浏览。能够解除阻止受地理限制的内容也是使用公共Web代理的广泛应用。尽管代理提供匿名浏览和内容过滤，但是它们大多限于Web浏览，并且缺乏安全性。为了获得带有隐私保护的安全加密通信，我们建议使用VPN解决方案。
+
+如果您对代理服务器有任何疑问，请在代理服务器论坛上发布您的问题。
+
+参考：维基百科
+
+
+Proxy server is a computer that sits between a client computer and the Internet, and provide indirect network services to a client. It may reside on the user's local computer, or at various points between the user's computer and destination servers on the Internet. A proxy server intercepts all client requests, and provide responses from its cache or forwards the request to the real server. A client computer is connected to the proxy server, which acknowledges client requests by providing the requested resource/data from either a specified server or the local cache memory. Client requests include files or any other resources available on various servers.
+Types of Proxy servers
+
+Proxy servers are classified into several types based on purpose and functionality. Some of the most common types and their uses can be described as below:
+
+Web Proxy is the most common type of proxy application, which responds to the user requests by accessing resources from cached web pages and files available on remote web servers. This facilitates quick and reliable access to data for local network clients. If the requested resource is not found in the cache, then a web proxy fetches the file from the remote server, and saves a copy in the cache before returning it to the client.
+
+Transparent Proxy is mostly used for caching websites and overcoming simple IP bans. However, such proxies do not provide any user anonymity since user’s original IP address is exposed. Transparent proxies are not specifically configured on the client computers.
+
+Anonymous proxies do not hide the original IP address of the user; however, they provide adequate anonymity to most users. Anonymous proxies are easily detectable.
+
+A distorting proxy, identifies itself as a proxy server, and modify the HTTP headers to disguise the original IP address.
+
+Tunneling proxies are capable of passing client requests and return responses without making any modifications. These are also referred to as gateway proxies.
+
+A forward proxy responds to client requests by retrieving data from a wide range of sources on the internet. It is also referred to as an Internet-facing proxy.
+
+Open proxies belong to the category of forwarding proxy servers, which are accessible by any internet user since they can receive and return requests from any client computer. Meanwhile, anonymous open proxies are used for user anonymity to conceal the IP address.
+
+Reverse proxies, also known as surrogates, usually receive requests from the Internet and forward them to internal network servers. A reverse proxy server forwards requests to one or more proxy servers, whose response is returned to the client computer, the user of which has no knowledge on the origin of the response.
+Where is a Proxy server used?
+
+Proxy servers are used for several purposes. If it is used as a caching web proxy, it can dramatically improve performance of a web response. When a request is made by a client, a caching proxy returns response directly from its cache if the document already exists. Otherwise, it makes the request to the real server, returns the result, and save it in its cache for later use.
+
+Proxy servers are also used as "web proxies" to filter web page contents. An organization or company may use a proxy server to block offensive web contents from viewed by the users. Considering the growing need within organizations to prevent employees from accessing specific websites, such as facebook.com, proxy servers are being deployed across the computers connected to the intranet. Some web proxies are able to reformat web pages to suit a specific set of audience, or cater certain organizational or personal internet usage purposes. Further, web proxies can be used to prevent the attack of computer viruses and malware, as well as other hostile content transferred across the internet web pages. However, users can also use web proxy servers to access those blocked sites indirectly. These web proxies are built with PHP or CGI to implement the proxying functionality, and provide web access to those sites blocked by corporation and school proxies. Moreover, Internet Service providers (ISPs) may also use proxies to block computer viruses and other offensive contents.
+
+There are several advantages of Proxy servers. We intend to provide some of the most basic uses of proxy servers.
+
+Performance Improvement:
+
+Proxy servers also contribute to improved web performance since the results of the user requests are saved in cache memory for a set period of time. This is achieved with the help of a caching proxy server, which could save a large amount of time while catering to the requests from a vast user load. A caching proxy server maintains a local copy of frequently requested web content. Hence, it can accelerate service requests by retrieving content from the cache memory, if it had already been requested by another client on the same network. This feature contributes to a significant reduction in upstream bandwidth usage and costs for large organizations with thousands of employees.
+
+Monitoring and Filtering User Requests:
+
+As discussed earlier, web proxies can be used to filter user requests, and block certain content or web pages from being accessed. This can be achieved with the help of a content-filtering web proxy server that differentiates the users’ level of control over the content, based on the user type - Guest or Administrator.
+
+Content-filtering proxies are generally used in organizations and educational institutions with strict internet-usage policies. Blocking certain websites, and restricting access to specific key words and censoring undesirable content are some of the basic features provided by content-filtering or web-filtering proxies. However, there are certain web proxies that are used to bypass geo-restrictions and censorship regulations by using certain advanced services that help access resources from blacklisted web locations.
+
+Anonymous Browsing:
+
+An anonymous proxy server is another type of web proxy that anonymizes users' online activities. This type of proxy server directs the user requests to a destination server, which ultimately has no knowledge of the source of the request. Only the proxy is aware of the source of the request, including the user IP address and location.
+
+Advertisements targeting specific geographical regions Web Proxies can also be used to validate and verify geo-targeted advertisements. Servers of such ads validate the source IP address of the user request, and determine the geographic location of the request with the help of a geo-IP database. The user requests are responded via proxy servers that are located within the respective geographical location, to ensure that advertisements displayed are purely relevant to the users’ location.
+
+Translation:
+
+Considering the global audiences, translation proxies have been developed to localize/translate the content of a source website into a local language of the client computer. Responses for requests sent by local users are replaced with translated content from the source website, and passed back through the proxy server. Some translation proxies also provide additional services such as excluding source content or substituting source content with original local content.
+Conclusion
+
+The most popular proxy server used today is a Web Proxy, and it is used to filter contents and allow anonymous browsing. Being able to unblock geo-restricted content is also a wide used application for using public web proxies. Although proxies provide anonymous browsing and content filtering, they are mostly limited to web browsing and also lack security. For secure and encrypted communication with privacy protection, we recommend VPN solution.
+
+If you have any questions about Proxy Server, please post your question on Proxy Server Forum.
+
+Reference: Wikipedia

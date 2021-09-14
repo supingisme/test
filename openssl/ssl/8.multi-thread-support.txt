@@ -1,0 +1,9 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:07:21 CST. 
+31.8 多线程支持
+	
+	编写 openssl 多线程程序时，需要设置两个回调函数：
+
+	CRYPTO_set_id_callback((unsigned long (*)())pthreads_thread_id);
+	CRYPTO_set_locking_callback((void (*)())pthreads_locking_callback);
+	
+	对于多线程程序的写法，读者可以参考crypto/threads/mttest.c，也可以查考下面的例子。

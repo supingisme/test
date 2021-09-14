@@ -1,0 +1,7 @@
+Startx
+功能说明：start X Window。
+语 法：startx [程序][--服务器设定]
+补充说明：startx 为启动X Window 的script 文件，实际上启动X Window 的程序是xinit。一般在使用startx
+时，通常不必加上任何参数。若想启动第2 个X Window，可加上“--:1”参数，类似的，启动第3 个X Window，
+加“--:2”，依此类推。用户也可以指定要在哪一个虚拟终端启动X Window，如“vt8”表示要在第8 好终端
+启动X Window。

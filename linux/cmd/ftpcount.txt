@@ -1,0 +1,5 @@
+ftpcount
+功能说明：显示目前以FTP 登入的用户人数。
+语 法：ftpcount [-n][-f<设定文件>]
+补充说明：这是Mandrake Linux 才有的命令。执行这项命令可得知目前用FTP 登入系统的人数以及FTP 登入
+人数的上限。

@@ -1,0 +1,8 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:24 CST. 
+ELF-Executable and Linking Format是一个定义了目标文件内部信息如何组成和组织的文件格式。
+内核会根据这些信息加载可执行文件，内核根据这些信息可以知道从文件哪里获取代码，从哪里
+获取初始化数据，在哪里应该加载共享库，等信息。
+
+例如：
+gcc a.c -o a.out
+readelf -h a.out   //显示出a.out的头文件信息

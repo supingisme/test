@@ -1,0 +1,103 @@
+############## RSA 介绍
+
+RSA 算法是一个广泛使用的公钥算法。其密钥包括公钥和私钥。它能用于数字签名、
+身份认证以及密钥交换。RSA 密钥长度一般使用1024 位或者更高。RSA 密钥信息主要包
+括[1]：
+􀂾 n：模数
+􀂾 e：公钥指数
+􀂾 d：私钥指数
+􀂾 p：最初的大素数
+􀂾 q：最初的大素数
+􀂾 dmp1：e*dmp1 = 1 (mod (p-1))
+􀂾 dmq1：e*dmq1 = 1 (mod (q-1))
+􀂾 iqmp：q*iqmp = 1 (mod p )
+其中，公钥为n 和e；私钥为n 和d。在实际应用中，公钥加密一般用来协商密钥；私
+钥加密一般用来签名。
+
+
+######### RSA 签名与验证过程
+
+RSA 签名过程如下：
+1) 对用户数据进行摘要；
+2） 构造 X509_SIG 结构并DER 编码，其中包括了摘要算法以及摘要结果。
+3） 对 2）的结果进行填充，填满RSA 密钥长度字节数。比如1024 位RSA 密钥必须填满128 字节。具体的填充方式由用户指定。
+4） 对 3）的结果用RSA 私钥加密。
+
+RSA_eay_private_encrypt 函数实现了3）和4）过程。
+
+####### RSA 验签过程是上述过程的逆过程，如下：
+
+1) 对数据用RSA 公钥解密，得到签名过程中2）的结果。
+2) 去除1）结果的填充。
+3) 从2）的结果中得到摘要算法，以及摘要结果。
+4) 将原数据根据3）中得到摘要算法进行摘要计算。
+5） 比较 4）与签名过程中1）的结果。
+
+RSA_eay_public_decrypt 实现了1）和2）过程。
+
+
+############## 主要函数
+
+1） RSA_check_key
+检查 RSA 密钥。
+2）RSA_new
+生成一个 RSA 密钥结构，并采用默认的rsa_pkcs1_eay_meth RSA_METHOD 方法。
+3）RSA_free
+释放 RSA 结构。
+4) RSA *RSA_generate_key(int bits, unsigned long e_value,
+void (*callback)(int,int,void *), void *cb_arg)
+生成RSA 密钥，bits 是模数比特数，e_value 是公钥指数e，callback 回调函数
+由用户实现，用于干预密钥生成过程中的一些运算，可为空。
+5） RSA_get_default_method
+获取默认的RSA_METHOD，为rsa_pkcs1_eay_meth。
+6） RSA_get_ex_data
+获取扩展数据。
+7） RSA_get_method
+获取RSA 结构的RSA_METHOD。
+8） RSA_padding_add_none
+RSA_padding_add_PKCS1_OAEP
+RSA_padding_add_PKCS1_type_1（私钥加密的填充）
+RSA_padding_add_PKCS1_type_2（公钥加密的填充）
+RSA_padding_add_SSLv23
+各种填充方式函数。
+9） RSA_padding_check_none
+RSA_padding_check_PKCS1_OAEP
+RSA_padding_check_PKCS1_type_1
+RSA_padding_check_PKCS1_type_2
+RSA_padding_check_SSLv23
+RSA_PKCS1_SSLeay
+各种去除填充函数。
+10）int RSA_print(BIO *bp, const RSA *x, int off)
+将RSA 信息输出到BIO 中，off 为输出信息在BIO 中的偏移量，比如是屏幕
+BIO，则表示打印信息的位置离左边屏幕边缘的距离。
+11）int DSA_print_fp(FILE *fp, const DSA *x, int off)
+将RSA 信息输出到FILE 中，off 为输出偏移量。
+12）RSA_public_decrypt
+RSA公钥解密。
+13）RSA_public_encrypt
+RSA 公钥加密。
+14）RSA_set_default_method/ RSA_set_method
+设置RSA 结构中的method，当用户实现了一个RSA_METHOD 时，调用此函
+数来设置，使RSA 运算采用用户的方法。
+15）RSA_set_ex_data
+设置扩展数据。
+16）RSA_sign
+RSA 签名。
+17）RSA_sign_ASN1_OCTET_STRING
+另外一种RSA 签名， 不涉及摘要算法， 它将输入数据作为
+ASN1_OCTET_STRING 进行DER 编码，然后直接调用RSA_private_encrypt 进行
+计算。
+18）RSA_size
+获取 RSA 密钥长度字节数。
+19）RSA_up_ref
+给RSA 密钥增加一个引用。
+20）RSA_verify
+RSA 验证。
+21）RSA_verify_ASN1_OCTET_STRING
+另一种 RSA 验证，不涉及摘要算法，与RSA_sign_ASN1_OCTET_STRING 对应。
+22）RSAPrivateKey_asn1_meth
+获取 RSA 私钥的ASN1_METHOD，包括i2d、d2i、new 和free 函数地址。
+23）RSAPrivateKey_dup
+复制 RSA 私钥。
+24）RSAPublicKey_dup
+复制 RSA 公钥。

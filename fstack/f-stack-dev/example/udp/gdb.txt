@@ -1,0 +1,2 @@
+set args -c server.ini
+run

@@ -1,0 +1,13 @@
+/usr/share/man/man2/_sysctl.2.gz
+/usr/share/man/man2/sysctl.2.gz
+/usr/share/man/man5/sysctl.conf.5.gz
+/usr/share/man/man5/sysctl.d.5.gz
+/usr/share/man/man8/sysctl.8.gz
+/usr/share/man/man8/systemd-sysctl.8.gz
+/usr/share/man/man8/systemd-sysctl.service.8.gz
+/usr/share/man/overrides/de/man5/sysctl.conf.5
+/usr/share/man/overrides/de/man8/sysctl.8
+/usr/share/man/overrides/fr/man5/sysctl.conf.5
+/usr/share/man/overrides/fr/man8/sysctl.8
+/usr/share/man/overrides/uk/man5/sysctl.conf.5
+/usr/share/man/overrides/uk/man8/sysctl.8

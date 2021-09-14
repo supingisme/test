@@ -1,0 +1,5 @@
+ftp
+功能说明：file transfer protocol，设置文件系统相关功能。
+语 法：ftp [-dignv][主机名称或IP 地址]
+补充说明：FTP 是ARPANet 的标准文件传输协议，该网络就是现今Internet 的前身。FTP 让用户得以下载存
+放在远程主机的文件，也能将文件上传至远程主机放置。

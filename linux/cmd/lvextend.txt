@@ -1,0 +1,5 @@
+扩展 /home 所在的logical volumes， 增加500G（一般给/目录增加分配500G）
+
+lvextend -L +500G /dev/mapper/centos-home
+
+

@@ -1,0 +1,9 @@
+ps
+功能说明：process status，报告程序状况。
+语 法：ps [acefghLnrsSTuvxX] [-o <显示栏数>] [-aAcdefHjlmNVwy] [-C <指令名称>] [-g <群名称>] [-G <群
+识别码>] [-p <程序识别码>] [p <程序识别码>] [-s <阶段作业>] [-t <终端机编号>] [t <终端机编号>] [-u <用户
+识别码>] [-U <用户识别码>] [U <用户名称>] [-<程序识别码>] [--cols <每列字符数>] [--columns <每列字符数>]
+[--cumulative] [--forest] [--headers] [--help] [--info] [--lines <显示列数>] [--no-headers] [--group <组名称>]
+[-Group <组识别码>] [--pid <程序识别码>] [--rows <显示列数>] [--sid <阶段作业>] [--tty <终端机编号>] [--user
+<用户名称>] [--User <用户识别码>] [--version] [--width <每列字符数>]
+补充说明：ps 是用来报告程序执行状况的指令，可以搭配kill 随时中断、删除不必要的程序。

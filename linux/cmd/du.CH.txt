@@ -1,0 +1,5 @@
+du
+功能说明：disk usage，显示目录或文件的大小。
+语 法：du [-abcDhHklmsSx] [-L <符号连接>] [-X <文件>] [--block-size] [--exclude=<目录或文件>]
+[--max-depth=<目录层数>] [--help] [--version] [目录或文件]
+补充说明：du 会显示指定的目录或文件所占用的磁盘空间。可以一次指定多个目录或文件。

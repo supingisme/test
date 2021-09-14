@@ -1,0 +1,2 @@
+
+混杂模式： rte_eth_promiscuous_enable

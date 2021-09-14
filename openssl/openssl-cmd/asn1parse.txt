@@ -1,0 +1,83 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:06:53 CST. 
+asn1parse
+asn1parse 命令是一种用来诊断ASN.1 结构的工具，也能用于从ASN1.1 数据中提取数据。
+
+用法：
+	openssl asn1parse [-inform PEM|DER] [-in filename] [-out filename] [-noout] [-offset
+	number] [-length number] [-i] [-oid filename] [-strparse offset] [-genstr string ] [-genconf file]
+	
+选项：
+	-inform PEM|DER
+	输入数据的格式为DER 还是PEM，默认为PEM 格式。
+	-in filename
+	输入文件名,默认为标准输入。
+	-out filename
+	输出文件名，默认为标准输出，给定一个PEM 文件，采用此选项可用生成一
+	个DER 编码的文件。
+	-noout
+	无输出打印。
+	-offset number
+	数据分析字节偏移量，分析数据时，不一定从头开始分析，可用指定偏移量，
+	默认从头开始分析。
+	-length number
+	分析数据的长度，默认的长度为整个数据的长度；
+	-i
+	标记实体，加上此选项后，输出会有缩进，将一个ASN1 实体下的其他对象缩
+	进显示。此选项非默认选项，加上此选项后，显示更易看懂。
+	-dump
+	显示十六进制数据。非默认选项。
+	-dlimit number
+	与-dump 不同，-dump 显示所有的数据，而此选项只能显示由number 指定数目的
+	十六进制数据。
+	-oid file
+	指定外部的 oid 文件。
+	-strparse offset
+	此选项也用于从一个偏移量开始来分析数据，不过，与-offset 不一样。-offset
+	分析偏移量之后的所有数据，而-strparse 只用于分析一段数据，并且这种数据必须
+	是SET 或者SEQUENCE，它只分析本SET 或者SEQUENCE 范围的数据。
+	使用示例：输入文件为一个证书的 PEM 格式文件，文件名为server.pem，各种命
+	令如下：
+	openssl asn1parse c:\serverr.pem
+	openssl asn1parse –in c:\server.pem –inform pem
+	上面的输出内容如下：
+	0:d=0 hl=4 l= 489 cons: SEQUENCE
+	4:d=1 hl=4 l= 338 cons: SEQUENCE
+	8:d=2 hl=2 l= 1 prim: INTEGER :06
+	11:d=2 hl=2 l= 13 cons: SEQUENCE
+	13:d=3 hl=2 l= 9 prim: OBJECT :md5WithRSAEncryption
+	24:d=3 hl=2 l= 0 prim: NULL
+	26:d=2 hl=2 l= 91 cons: SEQUENCE
+	28:d=3 hl=2 l= 11 cons: SET
+	30:d=4 hl=2 l= 9 cons: SEQUENCE
+	32:d=5 hl=2 l= 3 prim: OBJECT :countryName
+	37:d=5 hl=2 l= 2 prim: PRINTABLESTRING :AU
+	41:d=3 hl=2 l= 19 cons: SET
+	43:d=4 hl=2 l= 17 cons: SEQUENCE
+	45:d=5 hl=2 l= 3 prim: OBJECT :stateOrProvinceName
+	50:d=5 hl=2 l= 10 prim: PRINTABLESTRING :Queensland
+	62:d=3 hl=2 l= 26 cons: SET
+	64:d=4 hl=2 l= 24 cons: SEQUENCE
+	………
+	以其中的一行进行说明：
+	13:d=3 hl=2 l= 9 prim: OBJECT :md5WithRSAEncryption
+	13 表示偏移量；d=3 表示此项的深度；hl=2 表示asn1 头长度；l=9 表示内容长度；
+	prim:OBJECT 表示ASN1 类型；md5WithRSAEncryption 表示oid。
+	示例如下：
+	openssl asn1parse –in c:\server.pem –out c:\server.cer
+	此命令除了显示上面内容外，并生成一个 der 编码的文件。
+	openssl asn1parse –in c:\server.pem –i
+	此命令显示上面的内容，但是有缩进。
+	openssl asn1parse –in c:\server.pem –i –offset 26
+	此命令从偏移量26 开始分析，到结束。注意，26 从前面命令的结果得到。
+	openssl asn1parse –in c:\server.pem –i –offset 13 –length 11
+	此命令从偏移量13 进行分析，分析长度为11
+	openssl asn1parse –in c:\server.pem –i –dump
+	分析时，显示BIT STRING 等的十六进制数据；
+	openssl asn1parse –in c:\server.pem –i –dlimit 10
+	分析时，显示BIT SRING 的前10 个十六进制数据。
+	openssl asn1parse –in c:\server.pem –i –strparse 11
+	此令分析一个SEQUENCE。
+	openssl asn1parse –in c:\server.pem –i –strparse 11 –offset 2 –length 11
+	根据偏移量和长度分析。	
+
+	

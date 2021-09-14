@@ -1,0 +1,14 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:15 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 21日 星期四 09:04:25 CST. 
+
+
+Posix Message Queues with select
+
+A message queue descriptor (an mqd-t variable) is not a "normal" descriptor and cannot
+be used with either select or poll (Chapter 6 of UNPvl). Nevertheless, we can
+use them along with a pipe and the manot i fy function. (We show a similar technique
+in Section 6.9 with System V message queues, which involves a child process and a
+pipe.) First, notice from Figure 5.10 that the write function is async-signal-safe, so we
+can call it from a signal handler. Figure 5.14 shows our program.
+
+

@@ -1,0 +1,366 @@
+# tree vpp*
+
+vpp		
+├── api
+│   ├── vpe_all_api_h.h
+│   ├── vpe.api_enum.h
+│   ├── vpe.api.h
+│   ├── vpe.api_types.h
+│   ├── vpe_msg_enum.h
+│   ├── vpe_types.api_enum.h
+│   ├── vpe_types.api.h
+│   └── vpe_types.api_types.h
+└── stats
+    ├── stat_segment.h
+    └── stat_segment_shared.h
+
+vpp-api
+└── client
+    ├── stat_client.h
+    └── vppapiclient.h
+
+vppinfra		VPP基础设施 Infrastructure
+├── atomics.h
+├── bihash_16_8.h
+├── bihash_24_8.h
+├── bihash_40_8.h
+├── bihash_48_8.h
+├── bihash_8_8.h
+├── bihash_template.c
+├── bihash_template.h
+├── bihash_vec8_8.h
+├── bitmap.h
+├── bitops.h
+├── byte_order.h
+├── cache.h
+├── callback.h
+├── clib_error.h
+├── clib.h
+├── config.h
+├── cpu.h
+├── crc32.h
+├── dlist.h
+├── dlmalloc.h
+├── elf_clib.h
+├── elf.h
+├── elog.h
+├── error_bootstrap.h
+├── error.h
+├── fifo.h
+├── file.h
+├── format.h
+├── graph.h
+├── hash.h
+├── heap.h
+├── lb_hash_hash.h
+├── linux
+│   ├── syscall.h
+│   └── sysfs.h
+├── llist.h
+├── lock.h
+├── longjmp.h
+├── macros.h
+├── maplog.h
+├── math.h
+├── memcpy_avx2.h
+├── memcpy_avx512.h
+├── memcpy_sse3.h
+├── mem.h
+├── mhash.h
+├── mheap.h
+├── mpcap.h
+├── os.h
+├── pcap_funcs.h
+├── pcap.h
+├── pmalloc.h
+├── pmc.h
+├── pool.h
+├── ptclosure.h
+├── random_buffer.h
+├── random.h
+├── random_isaac.h
+├── rbtree.h
+├── sanitizer.h
+├── serialize.h
+├── sha2.h
+├── smp.h
+├── socket.h
+├── sparse_vec.h
+├── string.h
+├── time.h
+├── time_range.h
+├── timing_wheel.h
+├── tw_timer_16t_1w_2048sl.h
+├── tw_timer_16t_2w_512sl.h
+├── tw_timer_1t_3w_1024sl_ov.h
+├── tw_timer_2t_1w_2048sl.h
+├── tw_timer_2t_2w_512sl.h
+├── tw_timer_4t_3w_256sl.h
+├── tw_timer_template.c
+├── tw_timer_template.h
+├── types.h
+├── unix.h
+├── valloc.h
+├── vec_bootstrap.h
+├── vec.h
+├── vector_altivec.h
+├── vector_avx2.h
+├── vector_avx512.h
+├── vector_funcs.h
+├── vector.h
+├── vector_neon.h
+├── vector_sse42.h
+├── warnings.h
+└── xxhash.h
+vpp_plugins
+├── abf
+│   ├── abf.api_enum.h
+│   ├── abf.api.h
+│   └── abf.api_types.h
+├── acl
+│   ├── acl.api_enum.h
+│   ├── acl.api.h
+│   ├── acl.api_types.h
+│   ├── acl_types.api_enum.h
+│   ├── acl_types.api.h
+│   ├── acl_types.api_types.h
+│   └── manual_fns.h
+├── avf
+│   ├── avf.api_enum.h
+│   ├── avf.api.h
+│   └── avf.api_types.h
+├── builtinurl
+│   ├── builtinurl.api_enum.h
+│   ├── builtinurl.api.h
+│   └── builtinurl.api_types.h
+├── cdp
+│   ├── cdp.api_enum.h
+│   ├── cdp.api.h
+│   ├── cdp.api_types.h
+│   ├── cdp.h
+│   └── cdp_protocol.h
+├── ct6
+│   ├── ct6.api_enum.h
+│   ├── ct6.api.h
+│   └── ct6.api_types.h
+├── dhcp
+│   ├── client.h
+│   ├── dhcp4_packet.h
+│   ├── dhcp4_proxy_error.def
+│   ├── dhcp6_client_common_dp.h
+│   ├── dhcp6_ia_na_client_cp.api_enum.h
+│   ├── dhcp6_ia_na_client_cp.api.h
+│   ├── dhcp6_ia_na_client_cp.api_types.h
+│   ├── dhcp6_ia_na_client_dp.h
+│   ├── dhcp6_packet.h
+│   ├── dhcp6_pd_client_cp.api_enum.h
+│   ├── dhcp6_pd_client_cp.api.h
+│   ├── dhcp6_pd_client_cp.api_types.h
+│   ├── dhcp6_pd_client_dp.h
+│   ├── dhcp6_proxy_error.def
+│   ├── dhcp.api_enum.h
+│   ├── dhcp.api.h
+│   ├── dhcp.api_types.h
+│   └── dhcp_proxy.h
+├── dns
+│   ├── dns.api_enum.h
+│   ├── dns.api.h
+│   ├── dns.api_types.h
+│   └── dns_packet.h
+├── dpdk
+│   ├── device
+│   │   └── dpdk.h
+│   └── ipsec
+│       └── ipsec.h
+├── dslite
+│   └── dslite
+│       ├── dslite.api_enum.h
+│       ├── dslite.api.h
+│       └── dslite.api_types.h
+├── flowprobe
+│   ├── flowprobe.api_enum.h
+│   ├── flowprobe.api.h
+│   └── flowprobe.api_types.h
+├── gbp
+│   ├── gbp.api_enum.h
+│   ├── gbp.api.h
+│   ├── gbp_api_print.h
+│   ├── gbp.api_types.h
+│   └── gbp.h
+├── gtpu
+│   ├── gtpu.api_enum.h
+│   ├── gtpu.api.h
+│   └── gtpu.api_types.h
+├── http_static
+│   ├── http_static.api_enum.h
+│   ├── http_static.api.h
+│   └── http_static.api_types.h
+├── igmp
+│   ├── igmp.api_enum.h
+│   ├── igmp.api.h
+│   └── igmp.api_types.h
+├── ikev2
+│   ├── ikev2.api_enum.h
+│   ├── ikev2.api.h
+│   ├── ikev2.api_types.h
+│   ├── ikev2.h
+│   └── ikev2_priv.h
+├── ila
+│   └── ila.h
+├── ioam
+│   ├── encap
+│   │   ├── ip6_ioam_e2e.h
+│   │   ├── ip6_ioam_seqno.h
+│   │   └── ip6_ioam_trace.h
+│   ├── export
+│   │   ├── ioam_export.api_enum.h
+│   │   ├── ioam_export.api.h
+│   │   └── ioam_export.api_types.h
+│   ├── export-common
+│   │   └── ioam_export.h
+│   ├── export-vxlan-gpe
+│   │   ├── vxlan_gpe_ioam_export.api_enum.h
+│   │   ├── vxlan_gpe_ioam_export.api.h
+│   │   └── vxlan_gpe_ioam_export.api_types.h
+│   ├── ip6
+│   │   ├── ioam_cache.api_enum.h
+│   │   ├── ioam_cache.api.h
+│   │   └── ioam_cache.api_types.h
+│   ├── lib-e2e
+│   │   └── ioam_seqno_lib.h
+│   ├── lib-pot
+│   │   ├── math64.h
+│   │   ├── pot.api_enum.h
+│   │   ├── pot.api.h
+│   │   ├── pot.api_types.h
+│   │   └── pot_util.h
+│   ├── lib-trace
+│   │   ├── trace.api_enum.h
+│   │   ├── trace.api.h
+│   │   ├── trace.api_types.h
+│   │   ├── trace_config.h
+│   │   └── trace_util.h
+│   ├── lib-vxlan-gpe
+│   │   ├── ioam_vxlan_gpe.api_enum.h
+│   │   ├── ioam_vxlan_gpe.api.h
+│   │   ├── ioam_vxlan_gpe.api_types.h
+│   │   ├── vxlan_gpe_ioam.h
+│   │   ├── vxlan_gpe_ioam_packet.h
+│   │   └── vxlan_gpe_ioam_util.h
+│   └── udp-ping
+│       ├── udp_ping.api_enum.h
+│       ├── udp_ping.api.h
+│       ├── udp_ping.api_types.h
+│       ├── udp_ping.h
+│       ├── udp_ping_packet.h
+│       └── udp_ping_util.h
+├── l2e
+│   ├── l2e.api_enum.h
+│   ├── l2e.api.h
+│   ├── l2e.api_types.h
+│   └── l2e.h
+├── l3xc
+│   ├── l3xc.api_enum.h
+│   ├── l3xc.api.h
+│   └── l3xc.api_types.h
+├── lacp
+│   ├── lacp.api_enum.h
+│   ├── lacp.api.h
+│   ├── lacp.api_types.h
+│   ├── machine.h
+│   ├── mux_machine.h
+│   ├── node.h
+│   ├── protocol.h
+│   ├── ptx_machine.h
+│   ├── rx_machine.h
+│   └── tx_machine.h
+├── lb
+│   ├── lb.api_enum.h
+│   ├── lb.api.h
+│   ├── lb.api_types.h
+│   ├── lb.h
+│   ├── lbhash.h
+│   ├── lb_types.api_enum.h
+│   ├── lb_types.api.h
+│   ├── lb_types.api_types.h
+│   └── util.h
+├── mactime
+│   ├── mactime.api_enum.h
+│   ├── mactime.api.h
+│   └── mactime.api_types.h
+├── map
+│   ├── lpm.h
+│   ├── map.api_enum.h
+│   ├── map.api.h
+│   ├── map.api_types.h
+│   └── map.h
+├── mdata
+│   ├── mdata.api_enum.h
+│   ├── mdata.api.h
+│   └── mdata.api_types.h
+├── memif
+│   ├── memif.api_enum.h
+│   ├── memif.api.h
+│   ├── memif.api_types.h
+│   └── memif.h
+├── nat
+│   ├── nat_all_api_h.h
+│   ├── nat.api_enum.h
+│   ├── nat.api.h
+│   ├── nat.api_types.h
+│   └── nat_msg_enum.h
+├── nsh
+│   ├── nsh.api_enum.h
+│   ├── nsh.api.h
+│   └── nsh.api_types.h
+├── nsim
+│   ├── nsim.api_enum.h
+│   ├── nsim.api.h
+│   └── nsim.api_types.h
+├── oddbuf
+│   ├── oddbuf.api_enum.h
+│   ├── oddbuf.api.h
+│   └── oddbuf.api_types.h
+├── pppoe
+│   ├── pppoe.api_enum.h
+│   ├── pppoe.api.h
+│   └── pppoe.api_types.h
+├── rdma
+│   ├── rdma.api_enum.h
+│   ├── rdma.api.h
+│   └── rdma.api_types.h
+├── srv6ad
+│   └── ad.h
+├── srv6am
+│   └── am.h
+├── srv6as
+│   └── as.h
+├── srv6mobile
+│   └── mobile.h
+├── stn
+│   ├── stn.api_enum.h
+│   ├── stn.api.h
+│   ├── stn.api_types.h
+│   └── stn.h
+├── svs
+│   ├── svs.api_enum.h
+│   ├── svs.api.h
+│   └── svs.api_types.h
+├── tlsopenssl
+│   ├── tls_openssl.api_enum.h
+│   ├── tls_openssl.api.h
+│   └── tls_openssl.api_types.h
+├── urpf
+│   ├── urpf.api_enum.h
+│   ├── urpf.api.h
+│   └── urpf.api_types.h
+├── vmxnet3
+│   ├── vmxnet3.api_enum.h
+│   ├── vmxnet3.api.h
+│   └── vmxnet3.api_types.h
+└── vrrp
+    ├── vrrp.api_enum.h
+    ├── vrrp.api.h
+    ├── vrrp.api_types.h
+    └── vrrp.h
+

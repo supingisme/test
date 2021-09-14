@@ -1,0 +1,11 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:24 CST. 
+打开文件的list
+
+'lsof' Program
+The name lsof stands for "list open files." Like tcpdump, it is a publicly available tool that is handy for debugging and has been ported to many versions of Unix.
+One common use for lsof with networking is to find which process has a socket open on a specified IP address or port. netstat tells us which IP addresses and ports are in use, and the state of the TCP connections, but it does not identify the process. For example, to find out which process provides the daytime server, we execute the following:
+
+freebsd % lsof -i TCP:daytime
+COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME
+inetd 561 root 5u IPv4 0xfffff8003027a260 0t0 TCP *:daytime (LISTEN)
+	inetd 561 root 7u IPv6 0xfffff800302b6720 0t0 TCP *:daytime

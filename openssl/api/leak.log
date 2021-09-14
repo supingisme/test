@@ -1,0 +1,2 @@
+[17:15:22]     0 file=OPENSSL_malloc-bio.c, line=11, thread=140608997857200, number=4, address=01F83010
+4 bytes leaked in 1 chunks

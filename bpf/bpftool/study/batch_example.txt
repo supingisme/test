@@ -1,0 +1,5 @@
+# create a new hash map
+map create /sys/fs/bpf/hash_map type hash key 4 value 4 entries 5 name hash_map
+
+# now show all the maps in the system
+map show

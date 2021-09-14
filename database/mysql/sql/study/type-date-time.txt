@@ -1,0 +1,11 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:56 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 16:09:52 CST. 
+
+
+数据类型			说 明
+DATE			表示1000-01-01～9999-12-31的日期，格式为YYYY-MM-DD
+DATETIME		DATE和TIME的组合
+TIMESTAMP		功能和DATETIME相同（但范围较小）
+TIME			格式为HH:MM:SS
+YEAR			用2位数字表示，范围是70（1970年）～69（2069年），
+				用4位数字表示，范围是1901年～2155年

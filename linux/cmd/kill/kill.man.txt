@@ -1,0 +1,50 @@
+KILL(1)                                                10                                                KILL(1)
+
+
+
+NAME (名
+       kill - 终止进程
+
+SYNOPSIS(总
+       kill[-ssignal|-p][-a]pid...
+       kill -l [ signal ]
+
+DESCRIPTION (描
+       kill  给指定进程发送指定信号.  如果没有指定信号,  则发送 TERM 信号.  TERM 信号会杀死不能俘获该信号的进程.
+       对于其他进程, 可能需要使用 KILL (9) 信号, 因为该信号不能够被俘获.
+
+       大多数现代的 shell 有一个内嵌的 kill 函数.
+
+OPTIONS (选
+       pid ...
+              给     kill     指定一个该发信号的进程列表.      每个      pid      可为下面四种之一.       进程名
+              在这种情况下,发信号给所命名的进程.    n  这里的  n  大于  0.  将发信号给  pid  为  n  的进程.   -1
+              在这种情况下, 只要发信号的用户能够控制那些进行, 将发信号给所有从 MAX_INT 到 2 的进程.  -n 这里的 n
+              大于  1,  在这种情况下, 发信号给属于进程组 n 的进程. 如果给定一个负的参数, 那么信号 必须 首先声明,
+              否则它会被当作信号发送出去.
+
+       -s     指定发送的信号.  信号可以以信号名或数字的方式给定.
+
+       -p     指定 kill 只打印命名进程的进程标识 (pid) , 而不应发送给它信号.
+
+       -l     打印信号名的列表.这可以在 /usr/include/linux/signal.h 中找到.
+
+SEE ALSO (又
+       bash(1), tcsh(1), kill(2), sigvec(2)
+
+AUTHOR (作
+       引自 BSD 4.4. 翻译进程名为进程标识的功能由 Salvatore Valente &lt;svalente@mit.edu&gt; 加入.
+
+
+[中
+       riser <boomer@ccidnet.com>
+
+[中
+       2001/08/08
+
+《
+       http://cmpp.linuxforum.net
+
+
+
+年                                                    1994                                               KILL(1)

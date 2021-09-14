@@ -1,0 +1,16 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:55 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 15日 星期五 08:51:22 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 15日 星期五 08:51:14 CST. 
+The MBone
+
+Our first example of a virtual network that is built using tunnels is the MBone, which started around 1992 [Eriksson 1994]. If two or more hosts on a LAN support multicasting, multicast applications can be run on all these hosts and communicate with each other. To connect this LAN to some other LAN that also has multicast-capable hosts, a tunnel is configured between one host on each of the LANs, as shown in Figure B.1. We show the following numbered steps in this figure:
+
+1. An application on the source host, MH1, sends a multicast datagram to a class D address.
+2. We show this as a UDP datagram, since most multicast applications use UDP. We talk more about multicasting and how to send and receive multicast datagrams in Chapter 21(See 9.10).
+3. The datagram is received by all the multicast-capable hosts on the LAN, including MR2. We note that MR2 is also functioning as a multicast router, running the mrouted program, which performs multicast routing.
+4. MR2 prepends another IPv4 header at the front of the datagram with the destination IPv4 address of this new header set to the unicast address of the tunnel endpoint, MR5. This unicast address is configured by the administrator of MR2 and is read by the mrouted program when it starts up. Similarly, the unicast address of MR2 is configured for MR5, the other end of the tunnel. The protocol field in the new IPv4 header is set to 4, which is the value for IPv4-in-IPv4 encapsulation. The datagram is sent to the next-hop router, UR3, which we explicitly denote as a unicast router. That is, UR3 does not understand multicasting, which is the whole reason why we are using a tunnel. The shaded portion of the IPv4 datagram has not changed from what was sent in Step 1, other than the decrementing of the TTL field in the shaded IPv4 header.
+5. UR3 looks at the destination IPv4 address in the outermost IPv4 header and forwards the datagram to the next-hop router, UR4, another unicast router.
+6. UR4 delivers the datagram to its destination, MR5, the tunnel endpoint.
+7. MR5 receives the datagram, and since the protocol field indicates IPv4-in-IPv4 encapsulation, it removes the first IPv4 header and then outputs the remainder of the datagram (a copy of what was multicast on the top LAN) as a multicast datagram on its LAN.
+8. All the multicast-capable hosts on the lower LAN receive the multicast datagram.
+

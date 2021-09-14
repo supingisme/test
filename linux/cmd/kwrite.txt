@@ -1,0 +1,23 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:24 CST. 
+用法：kwrite [Qt-选项] [KDE-选项] [选项] [URL] 
+
+KWrite - 文本编辑器
+
+通用选项：
+  --help                    显示选项的帮助
+  --help-qt                 显示 Qt 特有的选项
+  --help-kde                显示 KDE 特有的选项
+  --help-all                显示全部选项
+  --author                  显示作者信息
+  -v, --version             显示版本信息
+  --license                 显示版权信息
+  --                        选项结束
+
+选项：
+  --stdin                   读取标准输入的内容
+  --encoding <argument>     设定要打开的文件的编码
+  --line <argument>         导航至此行
+  --column <argument>       导航至此列
+
+参数：
+  URL                       要打开的文档

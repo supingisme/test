@@ -1,0 +1,611 @@
+基础概念
+
+WebService：一种跨编程语言和跨操作系统平台的远程调用技术。能使得运行在不同机器上的不同应用无须借助附加的、专门的第三方软件或硬件， 就可相互交换数据或集成。依据Web Service规范实施的应用之间， 无论它们所使用的语言、 平台或内部协议是什么， 都可以相互交换数据。
+soap：简单对象访问协议。SOAP协议 = HTTP协议 + XML数据格式。
+gsoap：是一种能够把C/C++语言的接口转换成基于soap协议的webservice服务的工具。
+WSDL：自动生成的用来说明webService服务端可提供的服务信息的文件。
+gsoap安装
+
+    系统：centos6.8
+    gsoap：2.8.69
+    gsoap下载地址
+
+配合现场，安装的全新centos，保证啥也没得。（centos6.8居然还需要手动挂载硬盘，长见识了还）
+1、下载解压
+
+压缩包直接丢在/home下了
+
+yum install unzip zip
+unzip gsoap_2.8.69.zip
+
+    1
+    2
+    3
+
+所以，gsoap的大本营就在/home/gsoap（解压完的目录）下了，对应修改makefile文件的时候注意这点。
+2、配置编译环境
+
+运行gsoap目录下configure
+
+cd /home/gsoap-2.8
+./configure
+
+    1
+    2
+
+3、编译安装
+
+简单来说就是
+
+make
+make install
+
+    1
+    2
+
+make时会出现报错，因为缺少依赖包，根据报错信息对应添加依赖即可。
+- error: openssl/bio.h: No such file or directory
+
+yum install openssl-devel
+
+    1
+
+    ylwrap: line 176: yacc: command not found
+
+yum install byacc
+
+    1
+
+    missing: line 81: flex: command not found
+
+yum install flex
+
+    1
+
+    /usr/bin/ld: cannot find -ly
+
+yum install bison-devel
+
+    1
+
+这类报错以此类推找依赖即可，编译成功的字很大，肯定能知道是成功了。
+基础demo
+
+接下来会写一个server做加法和减法。client调用（耍流氓，其实写死了）。
+
+    这个例子的makefile写的很酷，喜欢结构清晰。虽然更复杂的样子，虽然今天还不会，还是喜欢这个demo，明天就会啦。
+
+2018年8月29日过来填"明天就会啦"的坑：当前gsoap示例的makefile文件说明
+
+目录结构如下：
+calc
+├─ bin
+│ ├─ makefile
+│ ├─ objects.mk
+│ ├─ soap
+│ │ └─ subdir.mk
+│ ├─ sources.mk
+│ └─ subdir.mk
+├─ calc.h
+├─ client.cpp
+├─ server.cpp
+├─ soap
+│ ├─ calc.nsmap
+│ ├─ calc.wsdl
+│ ├─ ns.xsd
+│ ├─ soapC.cpp
+│ ├─ soapH.h
+│ ├─ soapStub.h
+│ ├─ soapcalcProxy.cpp
+│ ├─ soapcalcProxy.h
+│ ├─ soapcalcService.cpp
+│ └─ soapcalcService.h
+
+    calc/bin：makefile及目标文件目录
+    calc/soap：gsoap根据server端给出的wsdl文件或头文件定义生成的中间文件。
+    calc/calc.h：头文件定义
+    calc/client.cpp：客户端实现
+    calc/server.cpp：服务端实现（此处是为了测试）
+
+1、生成客户端和服务端所需的文件
+
+文件放在calc/soap下
+如果是根据wsdl文件生成，则需要先使用wsdl2h生成头文件。
+
+wsdl2h -o calc.h calc.wsdl
+
+    1
+
+wsdl2h常用指令如下：
+
+    -s 生成的头文件不使用 STL
+    -o 文件名，指定输出头文件的名称
+    -c 产生纯 C 代码，否则是 C++ 代码
+    -t 文件名，指定 type map 文件，默认是 typemap.dat
+
+此处是直接自定义头文件来生成，需要先创建头文件：
+
+cd /home/calc/
+touch calc.h
+
+    1
+    2
+
+文件内容：
+
+//gsoap ns service name: calc Simple calculator service
+//gsoap ns service style: rpc
+//gsoap ns service encoding: encoded
+//gsoap ns service namespace: http://localhost/calc.wsdl
+//gsoap ns service location: http://localhost/server.cgi
+//gsoap ns schema namespace: urn:calc
+int ns__add(double a, double b, double *result);
+int ns__sub(double a, double b, double *result);
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+
+头文件中给出的是服务端提供接口的声明。
+
+生成客户端和服务端所需的文件：
+
+cd /home/calc/soap/
+soapcpp2 -i -x ../calc.h
+
+    1
+    2
+
+soapcpp2指令参数可以通过help查看，此处不赘述。
+soapcpp2常用指令如下：
+
+    -i 生成 C++ 包装类，客户端为 xxxProxy.h(.cpp)，服务端为xxxService.h(.cpp)
+    -I 指定 import 的路径，比如需要引入stlvector.h文件来支持 STL vector 的序列化
+    -C 仅生成客户端代码
+    -S 仅生成服务端代码
+    -c 产生纯 C 代码，否则是 C++ 代码
+    -x 不要产生 XML 示例文件
+    -L 不要产生soapClientLib.c和soapServerLib.c文件
+
+服务端和客户端实现
+
+server.cpp
+
+#include "soap/soapcalcService.h"
+#include "soap/calc.nsmap"
+#include <iostream>
+using namespace std;
+
+int main(int argc, char **argv) {
+    calcService calc;
+    int port = 65531;
+
+    if (calc.run(port)) {
+        cerr << "Calc service run failed" << endl;
+        exit(0);
+    }
+    return 0;
+}
+
+int calcService::add(double a, double b, double* result) {
+    *result = a + b;
+    return SOAP_OK;
+}
+
+int calcService::sub(double a, double b, double* result) {
+    *result = a - b;
+    return SOAP_OK;
+}
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+    20
+    21
+    22
+    23
+    24
+    25
+
+client.cpp
+
+#include "soap/soapcalcProxy.h"
+#include "soap/calc.nsmap"
+#include <iostream>
+using namespace std;
+
+int main(int argc, char **argv) {
+    double a = 4;
+    double b = 2;
+    double result;
+    calcProxy calc;
+    calc.soap_endpoint = "http://localhost:65531";
+
+    calc.add(a,b,&result);
+    cout<<a<<"+"<<b<<"="<<result<<endl;
+
+    calc.sub(a,b,&result);
+    cout<<a<<"-"<<b<<"="<<result<<endl;
+    return 0;
+}
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+
+示例代码里面把能写死的都固定住了（笑哭），实际使用可调整为参数带入。
+编写makefile文件
+
+/calc/bin/makefile
+
+#文件：makefile
+RM := rm -rf
+
+# 引入相关的生成文件
+-include sources.mk
+-include subdir.mk
+-include soap/subdir.mk
+-include objects.mk
+
+ifneq ($(MAKECMDGOALS),clean)
+  ifneq ($(strip $(C++_DEPS)),)
+    -include $(C++_DEPS)
+  endif
+  ifneq ($(strip $(C_DEPS)),)
+    -include $(C_DEPS)
+  endif
+  ifneq ($(strip $(CC_DEPS)),)
+    -include $(CC_DEPS)
+  endif
+  ifneq ($(strip $(SERVER_CPP_DEPS)),)
+    -include $(SERVER_CPP_DEPS)
+  endif
+  ifneq ($(strip $(CLIENT_CPP_DEPS)),)
+    -include $(CLIENT_CPP_DEPS)
+  endif
+  ifneq ($(strip $(CXX_DEPS)),)
+    -include $(CXX_DEPS)
+  endif
+  ifneq ($(strip $(C_UPPER_DEPS)),)
+    -include $(C_UPPER_DEPS)
+  endif
+endif
+
+# 生成目标
+all: server client
+
+# 相关工具
+server: $(SERVER_OBJS) $(USER_OBJS)
+    @echo '创建目标: $@'
+    g++  -o"server" $(SERVER_OBJS) $(USER_OBJS) $(LIBS)
+    @echo '完成创建目标: $@'
+    @echo "\n"
+
+client: $(CLIENT_OBJS) $(USER_OBJS)
+    @echo '创建目标: $@'
+    g++  -o"client" $(CLIENT_OBJS) $(USER_OBJS) $(LIBS)
+    @echo '完成创建目标: $@'
+    @echo "\n"
+
+# 清空临时文件
+clean:
+    -$(RM) $(SERVER_OBJS)$(CLIENT_OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(SERVER_CPP_DEPS)$(CLIENT_CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS)
+    -@echo "\n"
+cleanall:
+    -$(RM) $(SERVER_OBJS)$(CLIENT_OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(SERVER_CPP_DEPS)$(CLIENT_CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) server client
+    -@echo "\n"
+cleanexe:
+    -$(RM) server client
+    -@echo "\n"
+
+.PHONY: all clean dependents cleanall cleanexe
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+    20
+    21
+    22
+    23
+    24
+    25
+    26
+    27
+    28
+    29
+    30
+    31
+    32
+    33
+    34
+    35
+    36
+    37
+    38
+    39
+    40
+    41
+    42
+    43
+    44
+    45
+    46
+    47
+    48
+    49
+    50
+    51
+    52
+    53
+    54
+    55
+    56
+    57
+    58
+    59
+    60
+    61
+
+/calc/bin/sources.mk
+
+O_SRCS := 
+SERVER_CPP_SRCS := 
+CLIENT_CPP_SRCS :=
+C_UPPER_SRCS := 
+C_SRCS := 
+S_UPPER_SRCS := 
+OBJ_SRCS := 
+ASM_SRCS := 
+CXX_SRCS := 
+C++_SRCS := 
+CC_SRCS := 
+SERVER_OBJS := 
+CLIENT_OBJS :=
+C++_DEPS := 
+C_DEPS := 
+CC_DEPS := 
+SERVER_CPP_DEPS := 
+CLIENT_CPP_SRCS :=
+EXECUTABLES := 
+CXX_DEPS := 
+C_UPPER_DEPS := 
+
+# 子目录
+SUBDIRS := \
+soap \
+. \
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+    20
+    21
+    22
+    23
+    24
+    25
+    26
+
+/calc/bin/subdir.mk
+
+# 生成的相关参数
+SERVER_CPP_SRCS += \
+  ../server.cpp
+
+SERVER_OBJS += \
+  ./server.o 
+
+SERVER_CPP_DEPS += \
+  ./server.d 
+
+CLIENT_CPP_SRCS += \
+  ../client.cpp
+
+CLIENT_OBJS += \
+  ./client.o 
+
+CLIENT_CPP_DEPS += \
+  ./client.d 
+
+# 根据.cpp文件生成.o文件
+%.o: ../%.cpp
+    @echo '创建目标: $<'
+    g++ -O0 -g3 -Wall -DWITH_NONAMESPACES -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+    @echo '完成创建目标: $<'
+    @echo "\n"
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+    20
+    21
+    22
+    23
+    24
+    25
+
+/calc/bin/soap/subdir.mk （注意路径哈，这样是为了更方便地将soap的东西和我们自己写的东西隔开，超喜欢这样整理癖的存在~）
+
+# 生成的相关参数
+SERVER_CPP_SRCS += \
+  ../soap/soapC.cpp \
+  ../soap/soapcalcService.cpp \
+  /home/gsoap-2.8/gsoap/stdsoap2.cpp
+
+SERVER_OBJS += \
+  ./soap/soapC.o \
+  ./soap/soapcalcService.o \
+  ./soap/stdsoap2.o
+
+SERVER_CPP_DEPS += \
+  ./soap/soapC.d \
+  ./soap/soapcalcService.d \
+  ./soap/stdsoap2.d 
+
+CLIENT_CPP_SRCS += \
+  ../soap/soapC.cpp \
+  ../soap/soapcalcProxy.cpp \
+  /home/gsoap-2.8/gsoap/stdsoap2.cpp
+
+CLIENT_OBJS += \
+  ./soap/soapC.o \
+  ./soap/soapcalcProxy.o \
+  ./soap/stdsoap2.o
+
+CLIENT_CPP_DEPS += \
+  ./soap/soapC.d \
+  ./soap/soapcalcProxy.d \
+  ./soap/stdsoap2.d 
+
+# 根据.cpp文件生成.o文件
+soap/%.o: ../soap/%.cpp
+    @echo '创建目标: $<'
+    g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+    @echo '完成创建目标: $<'
+    @echo "\n"
+
+soap/%.o:/home/gsoap-2.8/gsoap/%.cpp
+    @echo '创建目标: $<'
+    g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+    @echo '完成创建目标: $<'
+    @echo "\n"
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+    20
+    21
+    22
+    23
+    24
+    25
+    26
+    27
+    28
+    29
+    30
+    31
+    32
+    33
+    34
+    35
+    36
+    37
+    38
+    39
+    40
+    41
+    42
+    43
+
+编译运行测试
+
+写完bug当然是玩bug丫~
+
+make
+./server
+./client
+————————————————
+版权声明：本文为CSDN博主「一个假的程序媛」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/ellieyaya/article/details/82116850

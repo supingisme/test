@@ -1,0 +1,90 @@
+GETPWENT(3)                                 Linux Programmer's Manual                                GETPWENT(3)
+
+
+
+NAME
+       getpwent, setpwent, endpwent - get password file entry
+
+SYNOPSIS
+       #include <sys/types.h>
+       #include <pwd.h>
+
+       struct passwd *getpwent(void);
+
+       void setpwent(void);
+
+       void endpwent(void);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       getpwent(), setpwent(), endpwent():
+           _BSD_SOURCE || _SVID_SOURCE || _XOPEN_SOURCE >= 500 || _XOPEN_SOURCE && _XOPEN_SOURCE_EXTENDED
+
+DESCRIPTION
+       The  getpwent()  function  returns  a pointer to a structure containing the broken-out fields of a record
+       from the password database (e.g., the local password file /etc/passwd, NIS, and LDAP).   The  first  time
+       getpwent() is called, it returns the first entry; thereafter, it returns successive entries.
+
+       The setpwent() function rewinds to the beginning of the password database.
+
+       The endpwent() function is used to close the password database after all processing has been performed.
+
+       The passwd structure is defined in <pwd.h> as follows:
+
+           struct passwd {
+               char   *pw_name;       /* username */
+               char   *pw_passwd;     /* user password */
+               uid_t   pw_uid;        /* user ID */
+               gid_t   pw_gid;        /* group ID */
+               char   *pw_gecos;      /* user information */
+               char   *pw_dir;        /* home directory */
+               char   *pw_shell;      /* shell program */
+           };
+
+       For more information about the fields of this structure, see passwd(5).
+
+RETURN VALUE
+       The  getpwent() function returns a pointer to a passwd structure, or NULL if there are no more entries or
+       an error occurs.  If an error occurs, errno is set appropriately.  If one wants to check errno after  the
+       call, it should be set to zero before the call.
+
+       The  return  value  may point to a static area, and may be overwritten by subsequent calls to getpwent(),
+       getpwnam(3), or getpwuid(3).  (Do not pass the returned pointer to free(3).)
+
+ERRORS
+       EINTR  A signal was caught.
+
+       EIO    I/O error.
+
+       EMFILE The maximum number (OPEN_MAX) of files was open already in the calling process.
+
+       ENFILE The maximum number of files was open already in the system.
+
+       ENOMEM Insufficient memory to allocate passwd structure.
+
+       ERANGE Insufficient buffer space supplied.
+
+FILES
+       /etc/passwd
+              local password database file
+
+ATTRIBUTES
+   Multithreading (see pthreads(7))
+       The getpwent() function is not thread-safe.
+
+       The setpwent() and endpwent() functions are thread-safe.
+
+CONFORMING TO
+       SVr4, 4.3BSD, POSIX.1-2001.  The pw_gecos field is not specified in POSIX, but is present on most  imple‐
+       mentations.
+
+SEE ALSO
+       fgetpwent(3), getpw(3), getpwent_r(3), getpwnam(3), getpwuid(3), putpwent(3), passwd(5)
+
+COLOPHON
+       This  page  is  part  of  release 3.53 of the Linux man-pages project.  A description of the project, and
+       information about reporting bugs, can be found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                                2013-06-21                                        GETPWENT(3)

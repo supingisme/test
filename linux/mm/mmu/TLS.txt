@@ -1,0 +1,4 @@
+Three Thread-Local Storage (TLS) segments: this is a mechanism that allows multithreaded
+applications to make use of up to three segments containing data local to each thread. The
+set_thread_area( ) and get_thread_area( ) system calls, respectively, create and release a
+TLS segment for the executing process.

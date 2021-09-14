@@ -1,0 +1,5 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:39 CST. 
+编译时候加上 -nostdinc后，不在包含任何包括系统/usr/include在内的文件夹
+
+
+‘-I’ options are not ignored as described above when ‘-nostdinc’ is in eﬀect.

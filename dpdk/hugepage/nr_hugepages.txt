@@ -1,0 +1,38 @@
+
+在Linux 启动之后，如果想预留大页，则可以使用以下的方法来预留内存。在非NUMA
+系统中，可以使用以下方法预留2MB 大小的大页。
+
+echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+
+该命令预留1024 个大小为2MB 的大页，也就是预留了2GB 内存。
+如果是在NUMA 系统中，假设有两个NODE 的系统中，则可以用以下的命令：
+
+echo 1024 > /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages
+echo 1024 > /sys/devices/system/node/node1/hugepages/hugepages-2048kB/nr_hugepages
+
+该命令在NODE0 和NODE1 上各预留1024 个大小为2MB 的大页，总共预留了4GB 大小。
+而对于大小为1GB 的大页，则必须在Linux 命令行的时候就指定，不能动态预留。
+在大页预留之后，接下来则涉及使用的问题。我们以DPDK 为例来说明如何使用大页。
+
+-----------------------------------
+
+DPDK 也是使用HUGETLBFS 来使用大页。首先，它需要把大页mount 到某个路径，
+比如/mnt/huge，以下是命令：
+
+mkdir /mnt/huge
+mount -t hugetlbfs nodev /mnt/huge
+
+需要指出的是，在mount 之前，要确保之前已经成功预留内存，否则之上命令会失败。
+该命令只是临时的mount 了文件系统，如果想每次开机时省略该步骤，可以修改/etc/fstab 文
+件，加上一行：
+
+nodev /mnt/huge hugetlbfs defaults 0 0
+
+对于1GB 大小的大页，则必须用如下的命令：
+
+nodev /mnt/huge_1GB hugetlbfs pagesize=1GB 0 0
+
+接下来，在DPDK 运行的时候，会使用mmap() 系统调用把大页映射到用户态的虚拟地
+址空间，然后就可以正常使用了。
+
+

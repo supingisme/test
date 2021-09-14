@@ -1,0 +1,173 @@
+https://www.cnblogs.com/hugb/articles/7282753.html
+
+netmap
+
+一.netmap简介：
+
+    1.netmap是一个高性能收发原始数据包的框架，由Luigi Rizzo等人开发完成，其包含了内核模块以及用户态库函数。其目标是，不修改现有操作系统软件以及不需要特殊硬件支持，实现用户态和网卡之间数据包的高性能传递。（照搬的！）
+
+    2.netmap通过自带的网卡驱动直接接管网卡，运行时申请一块固定的内存池，用于接受网卡上到来的数据包以及需要发送给网卡的数据包。
+
+    3.netmap目前只支持几种网卡的驱动，官网上介绍的是Intel ixgbe (10G),ixl (10/40G), e1000/e1000e/igb (1G), Realtek 8169 (1G) and Nvidia (1G).
+
+ 
+
+二.安装说明：
+
+    1.使用ubuntu安装netmap，只需要内核源代码，不需要编译内核。而centos上就需要编译并使用新内核了（若有不编译内核的方法，希望指正！）。
+
+    2.netmap上支持的网卡驱动有限，所以本次实验使用实在虚拟机(vmware)下面操作，虚拟的e1000网卡。
+
+    3.所有操作均在root权限下进行，没有管那些权限问题啦！
+
+ 
+
+三.安装新的内核
+
+    centos升级内核的教程网上很多，但对于netmap而言，需要选取正确的linux内核源代码，本次安装使用的是linux-4.1.14.tar.xz的linux内核（使用3.10.94版本的内核编译过一次，不能运行netmap。）Linux内核下载地址：https://www.kernel.org/
+
+本次实验参考的内核升级教程：http://www.linuxidc.com/Linux/2014-01/95511.htm
+
+1.1 下载新的内核,并解压：
+
+[root@huh ~]# cd /usr/local/src
+[root@huh src]# wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.1.14.tar.xz
+[root@huh src]# tar -Jxvf linux-4.1.14.tar.xz 
+[root@huh src]# mv linux-4.1.14 /usr/src/
+[root@huh src]# cd /usr/src/
+1.2 更新当前系统：
+
+[root@huh src]# yum update
+[root@huh src]# yum upgrade
+1.3 安装必要软件：
+
+[root@huh src]# yum groupinstall "Development Tools" # 一口气安装编译时所需的一切工具
+[root@huh src]# yum install ncurses-devel            #必须这样才能让 make *config 这个指令正确地执行。
+[root@huh src]# yum install qt-devel                 #如果你没有 X 环境，这一条可以不用
+[root@huh src]# yum install hmaccalc zlib-devel binutils-devel elfutils-libelf-devel #创建 CentOS-6 内核时需要它们
+2.1 查看当前系统的内核：
+
+[root@huh src]# uname -r
+2.6.32-573.el6.i686
+2.2 将当前系统的配置文件拷贝到当前目录
+
+[root@huh src]# cd linux-4.1.14/
+[root@huh linux-4.1.14]# cp /boot/config-2.6.32-573.el6.i686 .config
+2.3 使用旧内核配置，并自动接受每个新增选项的默认设置
+
+[root@huh linux-4.1.14]# sh -c 'yes "" | make oldconfig'
+make oldconfig会读取当前目录下的.config文件，在.config文件里没有找到的选项则提示用户填写，然后备份.config文件为.config.old，并生成新的.config文件
+
+3.编译
+
+[root@huh linux-4.1.14]# make -j4 bzImage              #生成内核文件，大概需要十几分钟
+[root@huh linux-4.1.14]# make -j4 modules              #编译模块，大概需要半小时
+[root@huh linux-4.1.14]# make -j4 modules_install      #编译安装模块，比较快
+要严格按照这个先后顺序进行编译，不能一起执行。
+
+-j后面的数字是线程数，用于加快编译速度，一般的经验是，有多少G内存，就填写那个数字，例如有8G内存，则为-j8。
+
+4.安装
+
+[root@huh linux-4.1.14]# make install
+如果出现了 ERROR: modinfo: could not find module xxx，数量少的话，可以忽略。
+
+5.修改grub引导顺序，让新安装的内核作为默认内核
+
+[root@huh linux-4.1.14]# vim /boot/grub/grub.conf
+将default=1配置行改为default=0（数一下刚刚新安装的内核在哪个位置，从0开始，然后设置default为那个数字，一般新安装的内核在第一个位置，所以设置default=0。）
+
+6.关机
+
+ 
+
+四.修改虚拟CentOS的网卡类型
+
+找到虚拟机存储路径，找到.vmx为后缀的配置文件(本人使用的vmware虚拟机)，使用编辑工具打开，添加或修改如下配置(位置无所谓)：
+
+ethernet0.virtualDev = "e1000"
+注意：改的是eth0的网卡配置
+
+ 
+
+五.使用netmap收发数据包
+
+1.开启虚拟机，查看当前内核版本：
+
+[root@huh src]# uname -r
+4.1.14
+2.查看当前网卡类型：
+
+[root@huh ~]# lsmod |grep e1000
+e1000                 118376  0 
+3.下载netmap
+
+[root@huh ~]# git clone https://github.com/luigirizzo/netmap.git
+netmap官网：http://info.iet.unipi.it/~luigi/netmap/
+
+netmap的githab网址：https://github.com/luigirizzo/netmap 
+
+netmap手册：man /root/netmap/share/man/man4/netmap.4 
+
+4.编译netmap，生成网卡驱动程序以及测试程序
+
+[root@huh ~]# cd netmap/LINUX/
+[root@huh LINUX]# make KSRC=/usr/src/linux-4.1.14/
+[root@huh LINUX]# cd build-apps/
+[root@huh build-apps]# vim Makefile 
+将Mackfile中"CFLAGS += -Werror -Wall -Wunused-function"配置行的-Werror参数删掉，不然生成测试程序会报错，保存退出！
+
+[root@huh build-apps]# cd ..
+[root@huh LINUX]# make KSRC=/usr/src/linux-4.1.14/ apps
+没报错的话，生成的测试接收包的可执行文件都在build-apps目录下面。
+
+5.替换网卡驱动（写成了一个小脚本，方便每次替换）
+
+[root@huh LINUX]# cd
+[root@huh ~]# cat mount_netmap.sh
+#!/bin/bash
+rmmod e1000
+insmod /root/netmap/LINUX/netmap.ko
+insmod /root/netmap/LINUX/e1000/e1000.ko
+lsmod |grep e1000
+
+
+
+6.运行测试程序
+
+
+[root@huh ~]# cd netmap/LINUX/build-apps/
+[root@huh build-apps]# ./pkt-gen -i eth0 -f tx
+843.803242 main [1930] interface is eth0
+843.806747 main [2050] running on 1 cpus (have 2)
+843.808433 extract_ip_range [367] range is 10.0.0.1:0 to 10.0.0.1:0
+843.808493 extract_ip_range [367] range is 10.1.0.1:0 to 10.1.0.1:0
+843.813622 main [2148] mapped 334980KB at 0xa3080000
+Sending on netmap:eth0: 1 queues, 1 threads and 1 cpus.
+10.0.0.1 -> 10.1.0.1 (00:00:00:00:00:00 -> ff:ff:ff:ff:ff:ff)
+843.813828 main [2233] Sending 512 packets every  0.000000000 s
+843.813851 main [2235] Wait 2 secs for phy reset
+845.814327 main [2237] Ready...
+845.816526 sender_body [1211] start, fd 3 main_fd 3
+846.816691 main_thread [1720] 69.345 Kpps (69.424 Kpkts 33.324 Mbps in 1001145 usec) 14.98 avg_batch 0 min_space
+847.268327 sender_body [1293] drop copy
+847.817915 main_thread [1720] 69.176 Kpps (69.261 Kpkts 33.245 Mbps in 1001229 usec) 14.98 avg_batch 99999 min_space
+848.819100 main_thread [1720] 65.934 Kpps (66.012 Kpkts 31.686 Mbps in 1001183 usec) 14.99 avg_batch 99999 min_space
+849.820296 main_thread [1720] 67.257 Kpps (67.337 Kpkts 32.322 Mbps in 1001192 usec) 14.99 avg_batch 99999 min_space
+850.821500 main_thread [1720] 67.220 Kpps (67.301 Kpkts 32.304 Mbps in 1001207 usec) 14.98 avg_batch 99999 min_space
+851.822731 main_thread [1720] 68.520 Kpps (68.602 Kpkts 32.929 Mbps in 1001202 usec) 14.99 avg_batch 99999 min_space
+852.823912 main_thread [1720] 65.321 Kpps (65.400 Kpkts 31.392 Mbps in 1001217 usec) 14.99 avg_batch 99999 min_space
+853.825202 main_thread [1720] 61.373 Kpps (61.452 Kpkts 29.497 Mbps in 1001291 usec) 14.99 avg_batch 99999 min_space
+^C854.321161 sigint_h [404] received control-C on thread 0xb77a2b30
+854.321204 main_thread [1720] 60.650 Kpps (30.082 Kpkts 14.439 Mbps in 495996 usec) 14.98 avg_batch 99999 min_space
+854.321370 sender_body [1326] flush tail 6 head 6 on thread 0xa307fb70
+854.321472 sender_body [1334] pending tx tail 6 head 6 on ring 0
+854.321849 sender_body [1334] pending tx tail 6 head 6 on ring 0
+855.322625 main_thread [1720] 15.000 pps (15.000 pkts 7.200 Kbps in 1001404 usec) 15.00 avg_batch 99999 min_space
+Sent 564886 packets 33893160 bytes 37695 events 60 bytes each in 8.50 seconds.
+Speed: 66.419 Kpps Bandwidth: 31.881 Mbps (raw 44.634 Mbps). Average batch: 14.99 pkts
+[root@huh build-apps]# 
+
+ 
+
+六，到此，netmap安装完成。

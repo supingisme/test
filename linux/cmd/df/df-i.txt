@@ -1,0 +1,18 @@
+The inode table contains all of the inodes and is created when you create the file system
+(with mkfs). You can use the df -i command to see how many inodes are used and free on
+mounted file systems.
+
+
+
+[root@localhost df]# df -i
+文件系统                   Inode 已用(I)  可用(I) 已用(I)% 挂载点
+/dev/mapper/centos-root 16329936  992450 15337486       7% /
+devtmpfs                  991712     403   991309       1% /dev
+tmpfs                     995845       4   995841       1% /dev/shm
+tmpfs                     995845     633   995212       1% /run
+tmpfs                     995845      16   995829       1% /sys/fs/cgroup
+/dev/vda1                 524288     394   523894       1% /boot
+/dev/vdb                 6553600   87828  6465772       2% /work
+tmpfs                     995845       9   995836       1% /run/user/42
+tmpfs                     995845       3   995842       1% /run/user/1002
+tmpfs                     995845       1   995844       1% /run/user/0

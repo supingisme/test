@@ -1,0 +1,92 @@
+SOAPCPP2(1)                                  General Commands Manual                                 SOAPCPP2(1)
+
+
+
+NAME
+       soapcpp2 - the gSOAP Stub and Skeleton Compiler for C and C++
+
+SYNOPSIS
+       soapcpp2 [OPTIONS] INPUT
+
+DESCRIPTION
+       Please see /usr/share/doc/gsoap-doc/soapdoc2.html for details.
+
+       Create stubs and client and server code from input INPUT or standard input if INPUT is not specified.
+
+OPTIONS
+       -1     Generate SOAP 1.1 bindings.
+
+       -2     Generate SOAP 1.2 bindings.
+
+       -0     Remove SOAP bindings, use REST.
+
+       -C     Generate client-side code only.
+
+       -S     Generate server-side code only.
+
+       -T     Generate server-side auto-test code.
+
+       -L     Do not generate soapClientLib/soapServerLib.
+
+       -a     Use SOAPAction with WS-Addressing to invoke server-side operations.
+
+       -A     Require SOAPAction to invoke server-side operations.
+
+       -b     Serialize byte arrays char[N] as string.
+
+       -c     Generate C source code.
+
+       -dpath Use path to save files.
+
+       -e     Generate SOAP RPC encoding style bindings.
+
+       -fN    File split of N XML serializer implementations per file (N>=10).
+
+       -h     Display help info.
+
+       -Ipath Use path(s) for #import (paths separated with ':').
+
+       -i     Generate C++ service proxies and objects inherited from soap struct.
+
+       -j     Generate C++ service proxies and objects that share a soap struct.
+
+       -k     Generate data structure walkers (experimental).
+
+       -l     Generate linkable modules (experimental).
+
+       -m     Generate Matlab(tm) code for MEX compiler.
+
+       -n     Use service name to rename service functions and namespace table.
+
+       -pname Save files with new prefix name instead of soap.
+
+       -Qname Use name as the C++ namespace for decls, including custom serializers.
+
+       -qname Use name as the C++ namespace for decls, excluding custom serializers.
+
+       -s     Generate deserialization code with strict XML validation checks.
+
+       -t     Generate code for fully xsi:type typed SOAP/XML messaging.
+
+       -u     Uncomment comments in WSDL/schema output by suppressing XML comments.
+
+       -v     Display version info.
+
+       -w     Do not generate WSDL and schema files.
+
+       -x     Do not generate sample XML message files.
+
+       -y     Include C/C++ type access information in sample XML messages.
+
+       -z1    Generate deprecated old-style C++ service proxies and objects.
+
+SEE ALSO
+       wsdl2h(1).
+
+AUTHOR
+       This  manual page was written by Thomas Wana <greuff@debian.org>, for the Debian project (but may be used
+       by others).
+
+
+
+                                                  Juni 27, 2003                                      SOAPCPP2(1)

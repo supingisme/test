@@ -1,0 +1,15 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:29 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 13日 星期三 08:54:03 CST. 
+#restart accept
+for ( ; ; ) {
+	clilen = sizeof (cliaddr);
+	if ( (connfd = accept (listenfd, (SA *) &cliaddr, &clilen)) < 0) {
+		if (errno == EINTR)
+			continue; /* back to for () */
+		else
+			err_sys ("accept error");
+	}
+}
+
+Notice that we call accept and not our wrapper function Accept, since we must handle the failure of the function ourselves.
+What we are doing in this piece of code is restarting the interrupted system call. This is fine for accept, along with functions such as read, write, select, and open. But there is one function that we cannot restart: connect. If this function returns EINTR, we cannot call it again, as doing so will return an immediate error. When connect is interrupted by a caught signal and is not automatically restarted, we must call select to wait for the connection to complete, as we will describe in Section 16.3(See 9.5.3).

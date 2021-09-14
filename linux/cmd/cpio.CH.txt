@@ -1,0 +1,11 @@
+cpio
+功能说明：copy in/out，备份文件。
+语 法：cpio [-0aABckLovV] [-C <输入/输出大小>] [-F <备份档>] [-H <备份格式>] [-O <备份档>]
+[--block-size=<块大小>] [--force-local] [--help] [--quiet] [--version]
+或 cpio [-bBcdfikmnrsStuvV] [-C <输入/输出大小>] [-E <范本文件>] [-F <备份文件>] [-H <备份格式>] [-I <备
+份文件>] [-M <回传信息>] [-R <拥有者><:/.><所属组>] [--block-size=<区块大小>] [--force-local] [--help]
+[--no-absolute-filenames] [--no-preserve-owner] [--only-verify-crc] [--quiet] [--sparse] [--version] [范本样式...]
+或 cpio [-0adkiLmpuvV] [-R <拥有者><:/.><所属组>] [--help] [--no-preserve-owner] [--quiet] [--sparse] [--version]
+[目的目录]
+补充说明：cpio 是用来建立、还原备份档的工具程序，它可以加入、解开cpio 或tar 备份档内的文件。备份的
+文件可存放在硬盘或其他介质上。cpio 有3 种运作模式，分别是copy-out、copy-in 和copy-pass。

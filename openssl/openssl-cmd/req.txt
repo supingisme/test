@@ -1,0 +1,187 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:06:53 CST. 
+32.8 req
+
+	req命令主要用于生成和处理PKCS#10 证书请求。
+
+用法：
+
+	openssl req [-inform PEM|DER] [-outform PEM|DER] [-in filename] [-passin arg] [-out
+				filename] [-passout arg] [-text] [-pubkey] [-noout] [-verify] [-modulus] [-new] [-rand file(s)]
+				[-newkey rsa:bits] [-newkey dsa:file] [-nodes] [-key filename] [-keyform PEM|DER] [-keyout
+				filename] [-[md5|sha1|md2|mdc2]] [-config filename] [-subj arg] [-multivalue-rdn] [-x509] [-days
+				n] [-set_serial n] [-asn1-kludge] [-newhdr] [-extensions section] [-reqexts section] [-utf8]
+				[-nameopt] [-batch] [-verbose] [-engine id]
+
+选项：
+
+	-out
+	指定输出文件名。
+	-outform DER|PEM
+	指定输出格式。
+	-newkey rsa:bits
+	用于生成新的rsa 密钥以及证书请求。如果用户不知道生成的私钥文件名称，
+	默认采用privkey.pem，生成的证书请求。如果用户不指定输出文件(-out)，则将证
+	书请求文件打印在屏幕上。生成的私钥文件可以用-keyout 来指定。生成过程中需
+	要用户输入私钥的保护口令以及证书申请中的一些信息。
+	-new
+	生成新的证书请求以及私钥，默认为 1024 比特。
+	-rand
+	指定随机数种子文件，比如有随机数文件 rand.dat，用户输入：-rand file:rand.dat。
+	-config file
+	指定证书请求模板文件，默认采用openssl.cnf，需另行指定时用此选项。配置
+	的写法可以参考openssl.cnf，其中有关于生成证书请求的设置。
+	-subj arg
+	用于指定生成的证书请求的用户信息，或者处理证书请求时用指定参数替换。
+	生成证书请求时，如果不指定此选项，程序会提示用户来输入各个用户信息，包括
+	国名、组织等信息，如果采用此选择，则不需要用户输入了。比如：-subj
+	/CN=china/OU=test/O=abc/CN=forxy，注意这里等属性必须大写。
+	-multivalue-rdn
+	当采用-subj arg 选项时， 允许多值rdn 名， 比如arg 参数写作：
+	/CN=china/OU=test/O=abc/UID=123456+CN=forxy。
+	-reqexts ..
+	设置证书请求的扩展项，被设置的扩展项覆盖配置文件所指定的扩展项。
+	-utf8
+	输入字符为 utf8 编码，默认输入为ASCII 编码。
+	-batch
+	不询问用户任何信息（私钥口令除外），采用此选项生成证书请求时，不询问
+	证书请求当各种信息。
+	-noout
+	不输出证书请求。
+	-newhdr
+	在生成的 PME 证书请求文件的头尾添加“NEW”，有些软件和CA 需要此项。
+	-engine e
+	指定硬件引擎。
+	-keyout
+	指定生成的私钥文件名称。
+
+示例：
+
+	openssl req –new
+
+				[root@localhost openssl-cmd]# openssl req -new
+				Generating a 2048 bit RSA private key
+				...........................................+++
+				.................................................................................+++
+				writing new private key to 'privkey.pem'
+				Enter PEM pass phrase:
+				Verifying - Enter PEM pass phrase:
+				-----
+				You are about to be asked to enter information that will be incorporated
+				into your certificate request.
+				What you are about to enter is what is called a Distinguished Name or a DN.
+				There are quite a few fields but you can leave some blank
+				For some fields there will be a default value,
+				If you enter '.', the field will be left blank.
+				-----
+				Country Name (2 letter code) [XX]:ch
+				State or Province Name (full name) []:hb
+				Locality Name (eg, city) [Default City]:beijing
+				Organization Name (eg, company) [Default Company Ltd]:sylincom
+				Organizational Unit Name (eg, section) []:sylincom
+				Common Name (eg, your name or your server's hostname) []:rongtao
+				Email Address []:rongtao@sylincom.com
+
+				Please enter the following 'extra' attributes
+				to be sent with your certificate request
+				A challenge password []:rongtao
+				An optional company name []:sylincom
+				-----BEGIN CERTIFICATE REQUEST-----
+				MIIDADCCAegCAQAwgYkxCzAJBgNVBAYTAmNoMQswCQYDVQQIDAJoYjEQMA4GA1UE
+				BwwHYmVpamluZzERMA8GA1UECgwIc3lsaW5jb20xETAPBgNVBAsMCHN5bGluY29t
+				MRAwDgYDVQQDDAdyb25ndGFvMSMwIQYJKoZIhvcNAQkBFhRyb25ndGFvQHN5bGlu
+				Y29tLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKC6Ig6i8KsG
+				JCCxxlr9nGhZPy5gDui2cGQ9kPnBYsIYQoMFJzO6hXF7UkbWx79Wk8x7nIiFolQ6
+				xIN4UftQLBgbQmUdtntcmJ6cnssyg9HT8B1T7ojB55qG/WmP1vx2lMY597XXZ+rW
+				RE0aPNDjluZGdTyB2U5wZw3Joiz/p4tKyjmgVEO0KMpmNTxSch6WwMhYfOQQhqF8
+				QOJzEEYd/Cau3gV/fY9ZeWCbXXUDL2CdtMoLwBGHgS5FuM/fLsxdJ6NI0OU75tSy
+				dt06mIvFQIUDnUv8U6t/RrRXfLP6eCiXRO7Ypy2DwudFFoeR1WazRptLP93EpGnr
+				f8RhErZpHw0CAwEAAaAxMBYGCSqGSIb3DQEJBzEJDAdyb25ndGFvMBcGCSqGSIb3
+				DQEJAjEKDAhzeWxpbmNvbTANBgkqhkiG9w0BAQsFAAOCAQEAI9nmgvuCuEHDzDm0
+				H9IPQCXqZL3/FxlO/obPjYr0RFu3xKe2h37qiJMzfxMNbWSfPL2FVkN6X3AAipxz
+				3rj7GJYYovy0RtwDzDf2+rn6ovXoV5KK4lU3pDDX1pZ/zkGbtwAp7YbCr18NeY7R
+				qcXwgXPeuXj+IwWPNszs+AInhSAOp81W7Uqhl5qytxm+TCJCTV4HbeybOd0MQRnv
+				EPoI1mAWt/nBSLAokLc5EWfS3w8Jm04IXuywhrVeIXsYYzZMHB2AmYXMa2Y6YN6X
+				NQtSKXlTZNzQT3eRGTm3+rQpwP2aeJOw2ne/GXmmJ1tDQCZVO72cvEAr51UlXYTC
+				0qB/aA==
+				-----END CERTIFICATE REQUEST-----
+				[root@localhost openssl-cmd]# 
+
+	
+	openssl req –new –config myconfig.cnf
+	openssl req –subj /CN=cn/O=test/OU=abc/CN=forxy
+	openssl req -newkey rsa:1024
+	openssl req -newkey rsa:1024 -out myreq.pem –keyout myprivatekey.pem
+	openssl req -newkey rsa:1024 -out myreq.pem -keyout myprivatekey.pem -outform DER
+
+	
+	-subject
+			输出证书请求者信息。
+	-modulus
+			输出证书请求的模数。
+	
+	示例：openssl req -in myreq.pem -modulus –subject。
+
+	-pubkey
+			获取证书请求中的公钥信息。
+
+	示例：openssl req -in myreq.pem -pubkey -out pubkey.pem
+		
+	-in filename
+			输入的证书请求文件。
+	-text
+			打印证书请求或自签名证书信息。
+	-verify
+			验证证书请求。
+
+	示例：	openssl req -in zcp.pem -verify
+	
+	-inform DER|PEM
+	指定输入的格式是DEM 还是DER。
+	-x509
+	生成自签名证书。
+	-extensions ..
+	设置证书扩展项，设置的扩展项优先于配置文件指定的扩展项。
+	-set_serial
+	设置生成证书的证书序列号，比如 -set_serial 100 或 -set_serial 0x100
+	-[md5|md4|md2|sha1|mdc2]
+	生成自签名证书时，指定摘要算法。
+	-passin
+	用户将私钥的保护口令写入一个文件，采用此选项指定此文件，可以免去用户
+	输入口令的操作。比如用户将口令写入文件“pwd.txt”，输入的参数为：-passin
+	file:pwd.txt。
+	-days
+	指定自签名证书的有效期限。
+
+示例：
+	openssl req -in myreq.pem -x509 -key myprivatekey.pem -out mycert.pem
+	openssl req -in myreq.pem -x509 -key myprivatekey.pem -out mycert.pem -days 300
+	openssl req -in myreq.pem -x509 -key myprivatekey.pem -out mycert.pem -days 300
+	-text
+	openssl req -in myreq.pem -x509 -key myprivatekey.pem -out mycert.pem -days 300
+	-text -md5
+	openssl req -in myreq.pem -x509 -key myprivatekey.pem -out mycert.pem -days 300
+	-text -md5 –set_serial 0x100
+	openssl req -in myreq.pem -x509 -key myprivatekey.pem -out mycert.pem -days 300
+	-text -md5 –passin file:pwd.txt
+	这里的myreq.pem 为PEM 格式的文件，可以用-inform 指定其格式。
+	-out filename
+	要输出的文件名。
+	-text
+	将CSR 文件里的内容以可读方式打印出来。
+	-noout
+	不要打印CSR 文件的编码版本信息。
+	-modulus
+	将CSR 里面的包含的公共米要的系数打印出来。
+	-verify
+	检验请求文件里的签名信息。
+
+示例：
+
+	生成 ECC 证书请求：
+	
+	openssl ecparam -genkey -name secp160r1 -out ec160.pem
+	openssl req -newkey ec:ec160.pem
+	
+	注意，如果由ecparam 中的 -name 指定的密钥长度太短，将不能生成请求。因为md5
+	或者sha1 等的摘要长度对它来说太长了。
+

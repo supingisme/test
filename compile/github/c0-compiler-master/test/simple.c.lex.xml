@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<root>
+  <token line="1" type="INT" string="int" />
+  <token line="1" type="ID" string="a" />
+  <token line="1" type="ASSIGN" string="=" />
+  <token line="1" type="NUMBER" string="0" />
+  <token line="1" type="SEMI" string=";" />
+</root>

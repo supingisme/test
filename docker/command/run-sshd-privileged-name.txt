@@ -1,0 +1,1 @@
+docker run -d -p 10022:22 --name CentOS7-OM --privileged centos7-everything:lastest /usr/sbin/sshd -D

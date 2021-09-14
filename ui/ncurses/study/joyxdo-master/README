@@ -1,0 +1,225 @@
+
+********************************************************
+*                                                      *
+* JOYXDO                                               *
+*                                                      *
+* A command-line keymapper for Linux gamepads.         *
+*                                                      *
+*                                                      *
+********************************************************
+
+
+ -- What is joyxdo? --
+Joyxdo is a small, simple utility to handle joystick input on Linux and map it
+to the keyboard. The design of this little beast arose because I was having so
+much trouble with other Linux-based keymappers after the move to Wayland. These
+bugs/crashes/whatevers will probably be fixed someday, but the good ol' command
+line is always there for you.
+
+This utility marries the common automation library known as xdotool to a simple
+ini config file parser. This allows some even very complicated key combinations
+to be emulated at the press of a joystick button -- we just let xdotool do the
+parsing.
+
+Note that the copyrights and the licensings are in LICENSE, which should have
+been distributed with this program.
+
+
+ -- Requirements --
+  * A functional Linux distrobution with X or Wayland
+  * Xdotool. Most distro's will have this in their standard repos.
+  * Libevdev. This is probably already installed, as it is a major library.
+  * Ncurses. We don't need no stinkin' gui.
+
+And that's pretty much it. You'll need gcc and make to build the thing. Also
+pkg-config, but if you do any compiling on Linux at all, you probably have it.
+Oh, and a gamepad or joystick the Linux can communicate with, probably of the
+USB variety.
+
+
+ -- How to build --
+First, ensure that xdotool, libevdev, ncurses, and pkg-config are installed.
+Then, in the project root, type:
+
+   make
+
+This will compile teh whole chalupa. A freshly compiled executable will be
+waiting for you in the project's bin directory.
+
+
+ -- How to use --
+First, plug in a joystick. Joyxdo will exit pronto if no joystick or gamepad is
+found by the OS. Next, you'll have to decide what to call your profile. I use a
+bunch of different configurations for a slew of different games. For example:
+
+    joyxdo dosbox
+
+launches joyxdo with the dosbox configuration profile. If the profile ini file
+cannot be found, joyxdo will assume that you haven't made it yet, and will save
+a handy template (built around the joystick device you have plugged in) for you
+to edit and use next time you launch the utility.
+
+Per the example above, joyxdo doesn't actually ship with a dosbox profile --
+there's over a kabillion different gamepads, and one "profile to rule them all"
+with one piece of software in mind just doesn't work. Making profiles is
+trivial anyway, especially if you've ever messed with ini configurations.
+
+You can build a profile in just a minute or two. Plug in a joystick and type:
+
+    joyxdo game
+
+joyxdo will respond with this message:
+
+	Generating default profile: game
+	You'll want to check the default keys set in game.
+
+The actual name of the profile doesn't matter, you could've called it anything
+from game to snurglefrood, as long as you choose a valid Linux filename. The
+new profile will be saved to a file called "game," in the form of an ini style
+configuration file. Open the new profile in your text editor of choice and
+you'll get something that looks a bit like this:
+
+
+; auto generated config for game
+
+
+; buttons
+[button]
+0=q
+1=w
+2=e
+3=r
+4=t
+5=y
+6=u
+7=i
+
+
+; axis
+; ABS_X
+[axis0]
+0=Left
+1=Right
+
+; ABS_Y
+[axis1]
+0=Up
+1=Down
+
+
+For many old games (the stuff I play anyway) this profile won't work. Why?
+Because the game's key input defaults won't line up with keys like
+q, w, e, etc. In fact, joyxdo expects you to change them; they're just quick
+keys to plug into the joystick map until you put in something better.
+
+Why not change the profile until we get something like this:
+
+
+; auto generated config for game
+
+
+; buttons
+[button]
+0=Alt
+1=Ctrl
+2=e
+3=Ctrl+Alt
+4=t
+5=y
+6=u
+7=Return
+
+
+; axis
+; ABS_X
+[axis0]
+0=a
+1=d
+
+; ABS_Y
+[axis1]
+0=w
+1=s
+
+
+Now these buttons now map to more logical defaults. The axis maps to keys wasd,
+which lots of DOS games used for directional input. Take a look at button 3
+on the buttons configuration -- it's mapped to press two keys at once. Again,
+lots of old games did this, but you can use any valid xdotool input to emulate
+keypresses. Command chaining is perfectly acceptable; but be careful, if you
+want joyxdo to emulate an invalid xdotool command, it will yell at you through
+the console.
+
+By the way, you can find the official xdotool docs here:
+http://semicomplete.com/projects/xdotool/xdotool.xhtml
+
+Now, if you type
+
+    joyxdo game
+
+You'll get a console screen that looks something like this:
+
+
+Gamepad device name: "USB,2-axis 8-button gamepad  "
+Gamepad device ID: bus 0x3 vendor 0x583 product 0x2060
+Press ESCAPE to exit
+0 - Joystick has button: 0x120 - BTN_TRIGGER
+1 - Joystick has button: 0x121 - BTN_THUMB
+2 - Joystick has button: 0x122 - BTN_THUMB2
+3 - Joystick has button: 0x123 - BTN_TOP
+4 - Joystick has button: 0x124 - BTN_TOP2
+5 - Joystick has button: 0x125 - BTN_PINKIE
+6 - Joystick has button: 0x126 - BTN_BASE
+7 - Joystick has button: 0x127 - BTN_BASE2
+Joystick has absolute axis: 0x00 - ABS_X, 0
+Values = { 128, 0, 255, 0, 15 }
+Joystick has absolute axis: 0x01 - ABS_Y, 1
+Values = { 128, 0, 255, 0, 15 }
+
+
+Besides a bunch of techincal details about your gamepad, you'll see the buttons
+and axises available at your command. Press a button on the gamepad, and the
+readout will reflect the new polling event:
+
+
+Gamepad device name: "USB,2-axis 8-button gamepad  "
+Gamepad device ID: bus 0x3 vendor 0x583 product 0x2060
+Press ESCAPE to exit
+0 - Joystick has button: 0x120 - BTN_TRIGGER
+1 - Joystick has button: 0x121 - BTN_THUMB
+2 - Joystick has button: 0x122 - BTN_THUMB2
+3 - Joystick has button: 0x123 - BTN_TOP
+4 - Joystick has button: 0x124 - BTN_TOP2
+5 - Joystick has button: 0x125 - BTN_PINKIE
+6 - Joystick has button: 0x126 - BTN_BASE
+7 - Joystick has button: 0x127 - BTN_BASE2
+Joystick has absolute axis: 0x00 - ABS_X, 0
+Values = { 128, 0, 255, 0, 15 }
+Joystick has absolute axis: 0x01 - ABS_Y, 1
+Values = { 128, 0, 255, 0, 15 }
+
+
+
+
+
+
+
+Ctrl
+Button 1, 1
+
+
+Note that I pressed button 1, which is now set to the 1 position. When
+depressed, that bar on the bottom will look like this:
+
+
+Ctrl
+Button 1, 0
+
+
+Joyxdo will tell you the last button pressed, along with it's current state.
+Here, button 1 was last pressed, and the current state is 0. According to the
+profile we made, button 1 was mapped to the CTRL key, so that's what xdotool
+will emulate!
+
+
+

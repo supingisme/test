@@ -1,0 +1,3 @@
+3.1.5.	PCI访问
+EAL使用Linux内核提供的文件系统/sys/bus/pci来扫描PCI总线上的内容。 内核模块uio_pci_generic提供了/dev/uioX设备文件及/sys下对应的资源文件用于访问PCI设备。 DPDK特有的igb_uio模块也提供了相同的功能用于PCI设备的访问。 这两个驱动模块都用到了Linux内核提供的uio特性（用户空间驱动）。
+

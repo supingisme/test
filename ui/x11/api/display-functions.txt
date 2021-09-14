@@ -1,0 +1,11 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:54 CST. 
+• Open (connect to) the display
+• Obtain information about the display, image formats, or screens
+• Generate a NoOperation protocol request
+• Free client-created data
+• Close (disconnect from) a display
+• Use X Server connection close operations
+• Use Xlib with threads
+• Use internal connections
+
+

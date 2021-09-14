@@ -1,0 +1,2 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:23 CST. 
+addr2line用于得到程序指令地址所对应的函数以及函数所在的源文件名和行号。

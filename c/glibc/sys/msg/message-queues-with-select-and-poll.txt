@@ -1,0 +1,42 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:27 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 22日 星期五 08:39:33 CST. 
+
+
+Message Queues with select and poll
+
+One problem with System V message queues is that they are known by their own identifiers,
+and not by descriptors. This means that we cannot use either select or poll
+(Chapter 6 of UNPv1) with these message queues.
+
+Actually, one version of Unix, IBM's AIX, extends select to handle System V message queues
+in addition to descriptors. But this is nonportable and works only with AIX.
+This missing feature is often uncovered when someone wants to write a server that
+handles both network connections and IPC connections. Network communications
+using either the sockets API or the XTI API (UNPvl) use descriptors, allowing either
+select or poll to be used. Pipes and FIFOs also work with these two functions,
+because they too are identified by descriptors.
+
+One solution to this problem is for the server to create a pipe and then spawn a
+child, with the child blocking in a call to msgrcv. When a message is ready to be processed,
+msgrcv returns, and the child reads the message from the queue and writes the
+message to the pipe. The server parent can then select on the pipe, in addition to
+some network connections. The downside is that these messages are then processed
+three times: once when read by the child using msgrcv, again when written to the pipe
+by the child, and again when read from the pipe by the parent. To avoid this extra processing,
+the parent could create a shared memory segment that is shared between itself
+and the child, and then use the pipe as a flag between the parent and child (Exercise
+12.5).
+
+In Figure 5.14 we showed a solution using Posix message queues that did not require a fork.
+We can use a single process with Posix message queues, because they provide a notification
+capability that generates a signal when a message arrives for an empty queue. System V message
+queues do not provide this capability, so we must fork a child and have the child block
+in a call to msgrcv.
+
+Another missing feature from System V message queues, when compared to network
+programming, is the inability to peek at a message, something provided with the
+MSG-PEEK flag to the recv, recvfrom, and recvmsg functions (p. 356 of UNPv1). If
+such a facility were provided, then the parent-child scenario just described (to get
+around the select problem) could be made more efficient by having the child specify
+the peek flag to msgrcv and just write 1 byte to the pipe when a message was ready,
+and let the parent read the message.

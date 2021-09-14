@@ -1,0 +1,75 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:42 CST. 
+2. 在脚本中使用bc
+现在你可能想问bash计算器是如何在shell脚本中帮助处理浮点运算的。还记得命令替换吗？
+是的，可以用命令替换运行bc命令，并将输出赋给一个变量。基本格式如下：
+variable=$(echo "options; expression" | bc)
+第一部分options允许你设置变量。如果你需要不止一个变量，可以用分号将其分开。
+expression参数定义了通过bc执行的数学表达式。这里有个在脚本中这么做的例子。
+$ cat test9
+#!/bin/bash
+var1=$(echo "scale=4; 3.44 / 5" | bc)
+echo The answer is $var1
+$
+这个例子将scale变量设置成了四位小数，并在expression部分指定了特定的运算。运行
+这个脚本会产生如下输出。
+$ chmod u+x test9
+$ ./test9
+The answer is .6880
+$
+太好了！现在你不会再只能用数字作为表达式值了。也可以用shell脚本中定义好的变量。
+$ cat test10
+#!/bin/bash
+var1=100
+var2=45
+var3=$(echo "scale=4; $var1 / $var2" | bc)
+echo The answer for this is $var3
+$
+脚本定义了两个变量，它们都可以用在expression部分，然后发送给bc命令。别忘了用美
+元符表示的是变量的值而不是变量自身。这个脚本的输出如下。
+$ ./test10
+The answer for this is 2.2222
+$
+当然，一旦变量被赋值，那个变量也可以用于其他运算。
+$ cat test11
+#!/bin/bash
+var1=20
+var2=3.14159
+var3=$(echo "scale=4; $var1 * $var1" | bc)
+var4=$(echo "scale=4; $var3 * $var2" | bc)
+echo The final result is $var4
+$
+这个方法适用于较短的运算，但有时你会涉及更多的数字。如果需要进行大量运算，在一个
+命令行中列出多个表达式就会有点麻烦。
+有一个方法可以解决这个问题。 bc命令能识别输入重定向，允许你将一个文件重定向到bc
+命令来处理。但这同样会叫人头疼，因为你还得将表达式存放到文件中。
+最好的办法是使用内联输入重定向，它允许你直接在命令行中重定向数据。在shell脚本中，
+你可以将输出赋给一个变量。
+variable=$(bc << EOF
+		options
+		statements
+		expressions
+		EOF
+		)
+EOF文本字符串标识了内联重定向数据的起止。记住，仍然需要命令替换符号将bc命令的输
+出赋给变量。
+现在可以将所有bash计算器涉及的部分都放到同一个脚本文件的不同行。下面是在脚本中使
+用这种技术的例子。
+$ cat test12
+#!/bin/bash
+var1=10.46
+var2=43.67
+var3=33.2
+var4=71
+var5=$(bc << EOF
+		scale = 4
+		a1 = ( $var1 * $var2)
+		b1 = ($var3 * $var4)
+		a1 + b1
+		EOF
+	  )
+echo The final answer for this mess is $var5
+$
+将选项和表达式放在脚本的不同行中可以让处理过程变得更清晰，提高易读性。 EOF字符串
+标识了重定向给bc命令的数据的起止。当然，必须用命令替换符号标识出用来给变量赋值的命令。
+你还会注意到，在这个例子中，你可以在bash计算器中赋值给变量。这一点很重要：在bash
+计算器中创建的变量只在bash计算器中有效，不能在shell脚本中使用。

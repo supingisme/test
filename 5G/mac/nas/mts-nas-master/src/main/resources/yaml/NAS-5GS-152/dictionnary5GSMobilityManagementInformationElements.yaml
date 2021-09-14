@@ -1,0 +1,1238 @@
+elements:
+  - name: "Spare half octet"
+    pdu:
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 4
+        value: 0
+  - name: "Spare half octet 3"
+    pdu:
+      - "@type": "SPARE"
+        name: "Spare half octet 3"
+        length: 4
+        value: 3
+
+  - name: "Message authentication code"
+    pdu:
+      - "@type": "HEXA"
+        name: "Message authentication code value"
+        length: 32
+
+  - name: "Sequence number"
+    pdu:
+      - "@type": "DIGITS"
+        name: "Sequence number value"
+        length: 8
+
+  - name: "5GS registration type" #9.11.3.7
+    pdu:
+      - name: "FOR"
+        length: 1
+        namedValue:
+          0: "No follow-on request pending"
+          1: "Follow-on request pending"
+      - name: "5GS registration type value"
+        length: 3
+        namedValue:
+          1: "initial registration"
+          2: "mobility registration updating"
+          3: "periodic registration updating"
+          4: "emergency registration"
+          5: "5initial registration"
+          6: "6initial registration"
+          7: "reserved"
+
+  - name: "5GS update type"
+    pdu:
+      - "@type": "SPARE"
+        name: "Spare half octet"
+        length: 6
+        value: 0
+      - name: "NG-RAN-RCU"
+        length: 1
+        namedValue:
+          0: "NG-RAN radio capability update not needed"
+          1: "NG-RAN radio capability update needed"
+      - name: "SMS requested"
+        length: 1
+        namedValue:
+          0: "SMS over NAS not supported"
+          1: "SMS over NAS supported"
+
+  - name: "NAS key set identifier"
+    pdu:
+      - name: "TSC"
+        length: 1
+        namedValue:
+          0: "native security context (for KSIAMF)"
+          1: "mapped security context (for KSIASME)"
+      - "@type": "DIGITS"
+        name: "NAS key set identifier value"
+        length: 3
+
+  - name: "5GS mobile identity"
+    pdu:
+      - "@type": "DIGITS"
+        name: "digit"
+        length: 4
+      - name: "odd even indication"
+        length: 1
+        namedValue:
+          0: "even number of identity digits"
+          1: "odd number of identity digits"
+      - "@type": "CHOICE"
+        name: "Type of identity"
+        field:
+          name: "Type of identity"
+          length: 3
+          namedValue:
+            0: "No identity"
+            1: "SUCI"
+            2: "5G-GUTI"
+            3: "IMEI"
+            4: "5G-S-TMSI"
+            5: "IMEISV"
+        pdus:
+          - keys:
+              - 3
+              - 5
+            pdu:
+              - "@type": "BIN"
+                name: "Identity digit"
+                length: -1
+          - keys:
+              - 0
+            pdu:
+              - "@type": "BIN"
+                name: "Contents"
+                length: -1
+          - keys:
+              - 2
+            pdu:
+              - "@type": "DIGITS"
+                name: "MCC digit 2"
+                length: 4
+              - "@type": "DIGITS"
+                name: "MCC digit 1"
+                length: 4
+              - "@type": "DIGITS"
+                name: "MNC digit 3"
+                length: 4
+              - "@type": "DIGITS"
+                name: "MCC digit 3"
+                length: 4
+              - "@type": "DIGITS"
+                name: "MNC digit 2"
+                length: 4
+              - "@type": "DIGITS"
+                name: "MNC digit 1"
+                length: 4
+              - "@type": "DIGITS"
+                name: "AMF Region ID"
+                length: 8
+              - "@type": "DIGITS"
+                name: "AMF Set ID"
+                length: 8
+              - "@type": "DIGITS"
+                name: "AMF Set ID continued"
+                length: 2
+              - "@type": "DIGITS"
+                name: "AMF Pointer"
+                length: 6
+              - "@type": "BIN"
+                name: "5G-TMSI"
+                length: 32
+          - keys:
+              - 4
+            pdu:
+              - "@type": "BIN"
+                name: "Content"
+                length: -1
+          - keys:
+              - 1
+            pdu:
+              - "@type": "DIGITS"
+                name: "MCC digit 2"
+                length: 4
+              - "@type": "DIGITS"
+                name: "MCC digit 1"
+                length: 4
+              - "@type": "DIGITS"
+                name: "MNC digit 3"
+                length: 4
+              - "@type": "DIGITS"
+                name: "MCC digit 3"
+                length: 4
+              - "@type": "DIGITS"
+                name: "MNC digit 2"
+                length: 4
+              - "@type": "DIGITS"
+                name: "MNC digit 1"
+                length: 4
+              - "@type": "DIGITS"
+                name: "Routing indicator digit 2"
+                length: 4
+              - "@type": "DIGITS"
+                name: "Routing indicator digit 1"
+                length: 4
+              - "@type": "DIGITS"
+                name: "Routing indicator digit 4"
+                length: 4
+              - "@type": "DIGITS"
+                name: "Routing indicator digit 3"
+                length: 4
+              - "@type": "SPARE"
+                name: "Spare half octet"
+                length: 4
+                value: 0
+              - "@type": "DIGITS"
+                name: "Protection scheme id"
+                length: 4
+              - name: "Home network public key identifier"
+                length: 8
+                namedValue:
+                  0: "Null scheme"
+                  1: "ECIES scheme profile A"
+                  2: "ECIES scheme profile B"
+              - "@type": "BIN"
+                name: "Scheme output"
+                length: -1
+
+
+  - name: "5GS tracking area identity"
+    pdu:
+      - "@type": "DIGITS"
+        name: "MCC digit 2"
+        length: 4
+      - "@type": "DIGITS"
+        name: "MCC digit 1"
+        length: 4
+      - "@type": "DIGITS"
+        name: "MNC digit 3"
+        length: 4
+      - "@type": "DIGITS"
+        name: "MCC digit 3"
+        length: 4
+      - "@type": "DIGITS"
+        name: "MNC digit 2"
+        length: 4
+      - "@type": "DIGITS"
+        name: "MNC digit 1"
+        length: 4
+      - "@type": "DIGITS"
+        name: "TAC"
+        length: 24
+
+  - name: "5GS tracking area identity list"
+    pdu:
+      - "@type": "SPARE"
+        name: "Spare half octet"
+        length: 1
+        value: 0
+      - name: "Type of list"
+        length: 2
+        namedValue:
+          0: "list of TACs belonging to one PLMN, with non-consecutive TAC values"
+          1: "list of TACs belonging to one PLMN, with consecutive TAC values"
+          2: "list of TAIs belonging to different PLMNs"
+      - name: "Number of elements"
+        length: 5
+        namedValue:
+          0: "1 element"
+          1: "2 elements"
+          2: "3 elements"
+          3: "4 elements"
+          4: "5 elements"
+          5: "6 elements"
+          6: "7 elements"
+          7: "8 elements"
+          8: "9 elements"
+          9: "10 elements"
+          10: "11 elements"
+          11: "12 elements"
+          12: "13 elements"
+          13: "14 elements"
+          14: "15 elements"
+      - "@type": "BIN"
+        name: "Content"
+        length: -1
+
+  - name: "NAS message container"
+    pdu:
+      - name: "Extended protocol discriminator"
+        length : 8
+        namedValue:
+          46: "5GS session management messages"
+          126: "5GS mobility management messages"
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 4
+        value: 0
+      - "@type": "MESSAGE_WRAPPER"
+        name: "Security header type"
+        length: 4
+        namedValue:
+          0: "Plain 5GS NAS message not security protected"
+          1: "Integrity protected"
+          2: "Integrity protected and ciphered"
+          3: "Integrity protected with new 5G NAS security context"
+          4: "Integrity protected and ciphered with new 5G NAS security context"
+          5: "Security protected NAS message: Integrity protected and partially ciphered NAS message"
+
+  - name: "5GMM capability"
+    pdu:
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 5
+        value: 0
+      - name: "LPP"
+        length: 1
+        namedValue:
+            0: "LPP in N1 mode not supported"
+            1: "LPP in N1 mode supported "
+      - name: "HO attach"
+        length: 1
+        namedValue:
+            0: "ATTACH REQUEST message containing PDN CONNECTIVITY REQUEST message with request type set to \"handover\" or \"handover of emergency bearer services\" to transfer PDU session from N1 mode to S1 mode not supported"
+            1: "ATTACH REQUEST message containing PDN CONNECTIVITY REQUEST message with request type set to \"handover\" or \"handover of emergency bearer services\" to transfer PDU session from N1 mode to S1 mode supported"
+      - name: "S1 mode"
+        length: 1
+        namedValue:
+            0: "S1 mode not supported"
+            1: "S1 mode supported"
+
+  - name: "UE security capability"
+    pdu:
+      - name: "5GS encryption algorithm 5G-EA0 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 5G-EA0 not supported"
+          1: "5GS encryption algorithm 5G-EA0 supported"
+      - name: "5GS encryption algorithm 128-5G-EA1 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-EA1 not supported"
+          1: "5GS encryption algorithm 128-5G-EA1 supported"
+      - name: "5GS encryption algorithm 128-5G-EA2 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-EA2 not supported"
+          1: "5GS encryption algorithm 128-5G-EA2 supported"
+      - name: "5GS encryption algorithm 128-5G-EA3 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-EA3 not supported"
+          1: "5GS encryption algorithm 128-5G-EA3 supported"
+      - name: "5GS encryption algorithm 128-5G-EA4 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-EA4 not supported"
+          1: "5GS encryption algorithm 128-5G-EA4 supported"
+      - name: "5GS encryption algorithm 128-5G-EA5 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-EA5 not supported"
+          1: "5GS encryption algorithm 128-5G-EA5 supported"
+      - name: "5GS encryption algorithm 128-5G-EA6 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-EA6 not supported"
+          1: "5GS encryption algorithm 128-5G-EA6 supported"
+      - name: "5GS encryption algorithm 128-5G-EA7 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-EA7 not supported"
+          1: "5GS encryption algorithm 128-5G-EA7 supported"
+      - name: "5GS integrity algorithm 5G-IA0 supported"
+        length: 1
+        namedValue:
+          0: "5GS integrity algorithm 5G-IA0 not supported"
+          1: "5GS integrity algorithm 5G-IA0 supported"
+      - name: "5GS encryption algorithm 128-5G-IA1 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-IA1 not supported"
+          1: "5GS encryption algorithm 128-5G-IA1 supported"
+      - name: "5GS encryption algorithm 128-5G-IA2 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-IA2 not supported"
+          1: "5GS encryption algorithm 128-5G-IA2 supported"
+      - name: "5GS encryption algorithm 128-5G-IA3 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-IA3 not supported"
+          1: "5GS encryption algorithm 128-5G-IA3 supported"
+      - name: "5GS encryption algorithm 128-5G-IA4 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-IA4 not supported"
+          1: "5GS encryption algorithm 128-5G-IA4 supported"
+      - name: "5GS encryption algorithm 128-5G-IA5 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-IA5 not supported"
+          1: "5GS encryption algorithm 128-5G-IA5 supported"
+      - name: "5GS encryption algorithm 128-5G-IA6 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-IA6 not supported"
+          1: "5GS encryption algorithm 128-5G-IA6 supported"
+      - name: "5GS encryption algorithm 128-5G-IA7 supported"
+        length: 1
+        namedValue:
+          0: "5GS encryption algorithm 128-5G-IA7 not supported"
+          1: "5GS encryption algorithm 128-5G-IA7 supported"
+      - name: "EPS encryption algorithm EEA0 supported"
+        length: 1
+        namedValue:
+          0: "EPS encryption algorithm EEA0 not supported"
+          1: "EPS encryption algorithm EEA0 supported"
+      - name: "EPS encryption algorithm EEA1 supported"
+        length: 1
+        namedValue:
+          0: "EPS encryption algorithm EEA1 not supported"
+          1: "EPS encryption algorithm EEA1 supported"
+      - name: "EPS encryption algorithm EEA2 supported"
+        length: 1
+        namedValue:
+          0: "EPS encryption algorithm EEA2 not supported"
+          1: "EPS encryption algorithm EEA2 supported"
+      - name: "EPS encryption algorithm EEA3 supported"
+        length: 1
+        namedValue:
+          0: "EPS encryption algorithm EEA3 not supported"
+          1: "EPS encryption algorithm EEA3 supported"
+      - name: "EPS encryption algorithm EEA4 supported"
+        length: 1
+        namedValue:
+          0: "EPS encryption algorithm EEA4 not supported"
+          1: "EPS encryption algorithm EEA4 supported"
+      - name: "EPS encryption algorithm EEA5 supported"
+        length: 1
+        namedValue:
+          0: "EPS encryption algorithm EEA5 not supported"
+          1: "EPS encryption algorithm EEA5 supported"
+      - name: "EPS encryption algorithm EEA6 supported"
+        length: 1
+        namedValue:
+          0: "EPS encryption algorithm EEA6 not supported"
+          1: "EPS encryption algorithm EEA6 supported"
+      - name: "EPS encryption algorithm EEA7 supported"
+        length: 1
+        namedValue:
+          0: "EPS encryption algorithm EEA7 not supported"
+          1: "EPS encryption algorithm EEA7 supported"
+      - name: "EPS integrity algorithm EIA0 supported"
+        length: 1
+        namedValue:
+          0: "EPS integrity algorithm EIA0 not supported"
+          1: "EPS integrity algorithm EIA0 supported"
+      - name: "EPS integrity algorithm EIA1 supported"
+        length: 1
+        namedValue:
+          0: "EPS integrity algorithm EIA1 not supported"
+          1: "EPS integrity algorithm EIA1 supported"
+      - name: "EPS integrity algorithm EIA2 supported"
+        length: 1
+        namedValue:
+          0: "EPS integrity algorithm EIA2 not supported"
+          1: "EPS integrity algorithm EIA2 supported"
+      - name: "EPS integrity algorithm EIA3 supported"
+        length: 1
+        namedValue:
+          0: "EPS integrity algorithm EIA3 not supported"
+          1: "EPS integrity algorithm EIA3 supported"
+      - name: "EPS integrity algorithm EIA4 supported"
+        length: 1
+        namedValue:
+          0: "EPS integrity algorithm EIA4 not supported"
+          1: "EPS integrity algorithm EIA4 supported"
+      - name: "EPS integrity algorithm EIA5 supported"
+        length: 1
+        namedValue:
+          0: "EPS integrity algorithm EIA5 not supported"
+          1: "EPS integrity algorithm EIA5 supported"
+      - name: "EPS integrity algorithm EIA6 supported"
+        length: 1
+        namedValue:
+          0: "EPS integrity algorithm EIA6 not supported"
+          1: "EPS integrity algorithm EIA6 supported"
+      - name: "EPS integrity algorithm EIA7 supported"
+        length: 1
+        namedValue:
+          0: "EPS integrity algorithm EIA7 not supported"
+          1: "EPS integrity algorithm EIA7 supported"
+
+  - name: "IMEISV request"
+    pdu:
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 1
+        value: 0
+      - name: "IMEISV request value"
+        length: 3
+        namedValue:
+          0: "IMEISV not requested"
+          1: "IMEISV requested"
+
+  - name: "EPS NAS message container"
+    pdu:
+      - "@type": "HEXA"
+        name: "EPS NAS message container"
+        nBitLength: 16
+
+  - name: "Additional 5G security information"
+    pdu:
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 6
+        value: 0
+      - name: "Retransmission of initial NAS message request"
+        length: 1
+        namedValue:
+          0: "Retransmission of the initial NAS message not requested"
+          1: "Retransmission of the initial NAS message requested"
+      - name: "Horizontal derivation parameter"
+        length: 1
+        namedValue:
+          0: "KAMF derivation is not required"
+          1: "KAMF derivation is required"
+
+
+  - name: "ABBA"
+    pdu:
+      - "@type": "BIN"
+        name: "ABBA content"
+
+  - name: "Authentication parameter RAND"
+    pdu:
+      - "@type" : BIN
+        name: "RAND"
+        length: 128
+  - name: "Authentication Parameter AUTN"
+    pdu:
+      - "@type": "DIGITS"
+        name: "Length"
+        length : 8
+      - "@type": BIN
+        name: "SQN xor AK"
+        length: 48
+      - "@type": BIN
+        name: "AMF"
+        length: 16
+      - "@type": BIN
+        name: "MAC"
+        length: 64
+
+  - name: "Authentication response parameter"
+    pdu:
+      - "@type" : BIN
+        name: "RES"
+
+  - name: "EAP message"
+    pdu:
+      - name: "EAP message"
+        "@type": BIN
+        nBitLength: 16
+
+  - name: "NAS security algorithms"
+    pdu:
+      - name: "Type of ciphering algorithm"
+        length: 4
+        namedValue:
+          0: "5GS encryption algorithm 5G-EA0 (null ciphering algorithm)"
+          1: "5GS encryption algorithm 128-5G-EA1"
+          2: "5GS encryption algorithm 128-5G-EA2"
+          3: "5GS encryption algorithm 128-5G-EA3"
+          4: "5GS encryption algorithm 5G-EA4"
+          5: "5GS encryption algorithm 5G-EA5"
+          6: "5GS encryption algorithm 5G-EA6"
+          7: "5GS encryption algorithm 5G-EA7"
+      - name: "Type of integrity protection algorithm"
+        length: 4
+        namedValue:
+          0: "5GS integrity algorithm 5G-IA0 (null integrity protection algorithm)"
+          1: "5GS integrity algorithm 128-5G-IA1"
+          2: "5GS integrity algorithm 128-5G-IA2"
+          3: "5GS integrity algorithm 128-5G-IA3"
+          4: "5GS integrity algorithm 5G-IA4"
+          5: "5GS integrity algorithm 5G-IA5"
+          6: "5GS integrity algorithm 5G-IA6"
+          7: "5GS integrity algorithm 5G-IA7"
+
+  - name: "5GS registration result"
+    pdu:
+      - "@type": "DIGITS"
+        name: "Length"
+        length: 8
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 1
+        value: 0
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 1
+        value: 0
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 1
+        value: 0
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 1
+        value: 0
+      - name: "SMS over NAS transport allowed"
+        length: 1
+        namedValue:
+          0: "SMS over NAS not allowed"
+          1: "SMS over NAS allowed"
+      - name: "5GS registration result value"
+        length: 3
+        namedValue:
+          1: "3GPP access"
+          2: "Non-3GPP access"
+          3: "3GPP access and non-3GPP access"
+          7: "reserved"
+
+  - name: "Payload container type"
+    pdu:
+      - name: "Payload container type"
+        length: 4
+        namedValue:
+          1: "N1 SM information"
+          2: "SMS"
+          3: "LTE Positioning Protocol (LPP) message container"
+          4: "SOR transparent container"
+          5: "UE policy container"
+          6: "UE parameters update transparent container"
+          7: "Multiple payloads"
+
+
+  - name: "NSSAI"
+    pdu:
+      - "@type": "MULTI"
+        name: S-NSSAI value
+        contentLength: "Length"
+        nBit: 8
+        pdu:
+            - "@type": "CHOICE"
+              name: "S-NSSAI"
+              field:
+                name: "Length of S-NSSAI contents"
+                length: 8
+                namedValue:
+                  1: "SST"
+                  2: "SST and mapped HPLMN SST"
+                  4: "SST and SD"
+                  5: "SST, SD and mapped HPLMN SST"
+                  8: "SST, SD, mapped HPLMN SST and mapped HPLMN SD"
+              pdus:
+                - keys:
+                    - 1
+                    - 7
+                  pdu:
+                    - "@type": BIN
+                      name: "SST"
+                      length: 8
+                - keys:
+                    - 2
+                  pdu:
+                    - "@type": BIN
+                      name: "SST"
+                      length: 8
+                    - "@type": BIN
+                      name: "mapped HPLMN SST"
+                      length: 8
+                - keys:
+                    - 4
+                  pdu:
+                    - "@type": BIN
+                      name: "SST"
+                      length: 8
+                    - "@type": BIN
+                      name: "SD"
+                      length: 24
+                - keys:
+                    - 5
+                  pdu:
+                    - "@type": BIN
+                      name: "SST"
+                      length: 8
+                    - "@type": BIN
+                      name: "SD"
+                      length: 24
+                    - "@type": BIN
+                      name: "mapped HPLMN SST"
+                      length: 8
+                - keys:
+                    - 8
+                  pdu:
+                    - "@type": BIN
+                      name: "SST"
+                      length: 8
+                    - "@type": BIN
+                      name: "SD"
+                      length: 24
+                    - "@type": BIN
+                      name: "mapped HPLMN SST"
+                      length: 8
+                    - "@type": BIN
+                      name: "mapped HPLMN SD"
+                      length: 24
+
+  - name: "deregistration type"
+    pdu :
+      - name : "Switch off"
+        length: 1
+        namedValue:
+          0: "Normal de-registration"
+          1: "Switch off"
+      - name : "Re-registration required"
+        length: 1
+        namedValue:
+          0: "re-registration not required"
+          1: "re-registration required"
+      - name: "Access type"
+        length : 2
+        namedValue:
+          1: "3GPP access"
+          2: "Non-3GPP access"
+          3: "3GPP access and non-3GPP access"
+
+  - name: "Service type"
+    pdu:
+      - name: "Service type value"
+        length: 4
+        namedValue:
+          0: "signalling"
+          1: "data"
+          2: "mobile terminated services"
+          3: "emergency services"
+          4: "emergency services fallback"
+          5: "high priority access"
+          6: "6signalling"
+          7: "7signalling"
+          8: "8signalling"
+          9: "9data"
+          10: "10data"
+          11: "11data"
+
+  - name: "Uplink data status"
+    pdu:
+      - name: "PSI7"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI6"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI5"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI4"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI3"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI2"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI1"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI0"
+        length: 1
+        namedValue:
+          0: "Spare"
+      - name: "PSI15"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI714"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI13"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI12"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI11"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI10"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI9"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+      - name: "PSI8"
+        length: 1
+        namedValue:
+          0: "indicates that no uplink data are pending for the corresponding PDU session identity"
+          1: "indicates that uplink data are pending for the corresponding PDU session identity"
+
+  - name: "PDU session status"
+    pdu:
+        - name: "PSI7"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI6"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI5"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI4"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI3"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI2"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI1"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI0"
+          length: 1
+          namedValue:
+            0: "Spare"
+        - name: "PSI15"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI714"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI13"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI12"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI11"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI10"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI9"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+        - name: "PSI8"
+          length: 1
+          namedValue:
+            0: "indicates that the 5GSM state of the corresponding PDU session is PDU SESSION INACTIVE"
+            1: "indicates that the 5GSM state of the corresponding PDU session is not PDU SESSION INACTIVE"
+
+  - name: "PDU session reactivation result"
+    pdu:
+      - name: "PSI7"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI6"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI5"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI4"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI3"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI2"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI1"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI0"
+        length: 1
+        namedValue:
+          0: "Spare"
+      - name: "PSI15"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI714"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI13"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI12"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI11"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI10"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI9"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+      - name: "PSI8"
+        length: 1
+        namedValue:
+          0: "PDU session was not requested in the Uplink data"
+          1: "PDU session was requested in the Uplink data"
+
+  - name: "Allowed PDU session status"
+    pdu:
+      - name: "PSI7"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI6"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI5"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI4"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI3"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI2"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI1"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI0"
+        length: 1
+        namedValue:
+          0: "Spare"
+      - name: "PSI15"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI714"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI13"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI12"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI11"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI10"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI9"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+      - name: "PSI8"
+        length: 1
+        namedValue:
+          0: "indicates that the user-plane resources of corresponding PDU session is not allowed to be re-established over 3GPP access"
+          1: "indicates that the user-plane resources of corresponding PDU session can be re-established over 3GPP access"
+
+
+  - name: "Service area list"
+    pdu:
+      - "@type": "MULTI"
+        name: "Partial service area list"
+        contentLength: "Length"
+        pdu:
+          - name: "Allowed type"
+            length: 1
+            namedValue:
+              0: "TAIs in the list are in the allowed area"
+              1: "TAIs in the list are in the non-allowed area"
+          - "@type": "CHOICE"
+            name: "Type of list"
+            field:
+              name: "Type of list value"
+              length: 2
+              namedValue:
+                  0: "list of TACs belonging to one PLMN, with non-consecutive TAC values"
+                  1: "list of TACs belonging to one PLMN, with consecutive TAC values"
+                  2: "list of TAIs belonging to different PLMNs"
+                  3: "All TAIs belonging to the PLMNs in the registration area are in the allowed area"
+            pdus:
+              - keys:
+                  - 0
+                  - 1
+                  - 2
+                  - 3
+                pdu:
+                  - "@type": "DIGITS"
+                    name: "Number of elements"
+                    length: 5
+                  - "@type": "DIGITS"
+                    name: "MCC digit 2"
+                    length: 4
+                  - "@type": "DIGITS"
+                    name: "MCC digit 1"
+                    length: 4
+                  - "@type": "DIGITS"
+                    name: "MNC digit 3"
+                    length: 4
+                  - "@type": "DIGITS"
+                    name: "MCC digit 3"
+                    length: 4
+                  - "@type": "DIGITS"
+                    name: "MNC digit 2"
+                    length: 4
+                  - "@type": "DIGITS"
+                    name: "MNC digit 1"
+                    length: 4
+                  - "@type": BIN
+                    name: "TAC"
+                    length: -1
+
+  - name: "GPRS timer 3"
+    pdu:
+      - name: "Unit"
+        length: 3
+        namedValue:
+          0: "value is incremented in multiples of 10 minutes"
+          1: "value is incremented in multiples of 1 hour"
+          2: "value is incremented in multiples of 10 hours"
+          3: "value is incremented in multiples of 2 seconds"
+          4: "value is incremented in multiples of 30 seconds"
+          5: "value is incremented in multiples of 1 minute"
+          6: "value is incremented in multiples of 320 hours"
+          7: "value indicates that the timer is deactivated"
+      - "@type": "DIGITS"
+        name: "Timer value"
+        length: 5
+
+  - name: "Payload container Optional"
+    pdu:
+      - "@type": "MULTI"
+        name: "Payload container entry"
+        contentLength: "Number"
+        pdu:
+          - "@type": "DIGITS"
+            name: "Number of entries"
+            length: 8
+          - "@type": "HEXA"
+            name: "Payload container entry content"
+
+  - name: "MICO indication"
+    pdu:
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 1
+        value: 0
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 1
+        value: 0
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 1
+        value: 0
+      - name: "RAAI"
+        length: 1
+        namedValue:
+          0: "all PLMN registration area not allocated"
+          1: "all PLMN registration area allocated"
+
+  - name: "UEs usage setting"
+    pdu:
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 7
+        value: 0
+      - name: "UEs usage setting"
+        length: 1
+        namedValue:
+          0: "voice centric"
+          1: "data centric"
+
+  - name: "5GS network feature support"
+    pdu:
+      - name: "MPSI"
+        length: 1
+        namedValue:
+          0: "Access identity 1 not valid in RPLMN or equivalent PLMN"
+          1: "Access identity 1 valid in RPLMN or equivalent PLMN"
+      - name: "IWK N26"
+        length: 1
+        namedValue:
+          0: "Interworking without N26 interface not supported"
+          1: "Interworking without N26 interface supported"
+      - name: "EMF"
+        length: 2
+        namedValue:
+          0: "Emergency services fallback not supported"
+          1: "Emergency services fallback supported in NR connected to 5GCN only"
+          2: "Emergency services fallback supported in E-UTRA connected to 5GCN only"
+          3: "Emergency services fallback supported in NR connected to 5GCN and E-UTRA connected to 5GCN"
+      - name: "EMC"
+        length: 2
+        namedValue:
+          0: "Emergency services not supported"
+          1: "Emergency services supported in NR connected to 5GCN only"
+          2: "Emergency services supported in E-UTRA connected to 5GCN only"
+          3: "Emergency services supported in NR connected to 5GCN and E-UTRA connected to 5GCN"
+      - name: "IMSVoPSN3GPP"
+        length: 1
+        namedValue:
+          0: "IMS voice over PS session not supported over non-3GPP access"
+          1: "IMS voice over PS session supported over non-3GPP access"
+      - name: "IMSVoPS3GPP"
+        length: 1
+        namedValue:
+          0: "IMS voice over PS session not supported over 3GPP access"
+          1: "IMS voice over PS session supported over 3GPP access"
+#      - "@type": "SPARE"
+#        name: "Spare"
+#        length: 6
+#        value: 0
+#      - name: "MCSI"
+#        length: 1
+#        namedValue:
+#          0: "Access identity 2 not valid in RPLMN or equivalent PLMN"
+#          1: "Access identity 2 valid in RPLMN or equivalent PLMN"
+#      - name: "EMCN"
+#        length: 1
+#        namedValue:
+#          0: "Emergency services not supported over non-3GPP access"
+#          1: "Emergency services supported over non-3GPP access"
+#      - name: "Spare"
+#        length: 8
+
+  - name: "NSSAI inclusion mode"
+    pdu:
+      - "@type": "SPARE"
+        name: "Spare"
+        length: 2
+        value: 0
+      - name: "NSSAI inclusion mode"
+        length: 2
+        namedValue:
+          0: "NSSAI inclusion mode A"
+          1: "NSSAI inclusion mode B"
+          2: "NSSAI inclusion mode C"
+          3: "NSSAI inclusion mode D"
+
+  - name: "GPRS timer 2"
+    pdu:
+      - "@type": "BIN"
+        name: "GPRS Timer 2 value"
+        length: -1
+
+
+

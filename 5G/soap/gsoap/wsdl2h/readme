@@ -1,0 +1,16 @@
+wsdl2h用作wsdl和.h文件的转换。soapcpp2用头文件生成客户端/服务端等开发需要的h和cpp文件。
+
+
+经常使用的一些指令如下：
+
+　　-o　filename.h　　　将wsdl转化为filename.h头文件。
+
+　　-s　　　　　　　　　不生成STL代码
+
+　　-c　　　　　　　　　生成纯C风格的头文件，这将去除C++的一些特性
+
+　　-n  name　　　　　 	使用name代替默认前缀ns
+
+　　-t　filename.dat　　使用filename.dat代替默认的typemap.dat文件
+
+　　-zX　　　　　　　　兼容之前的X版本

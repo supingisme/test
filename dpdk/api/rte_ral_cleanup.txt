@@ -1,0 +1,5 @@
+Shutdown and Cleanup
+
+During the initialization of EAL resources such as hugepage backed memory can be allocated by
+core components. The memory allocated during rte_eal_init() can be released by calling the
+rte_eal_cleanup() function. Refer to the API documentation for details.

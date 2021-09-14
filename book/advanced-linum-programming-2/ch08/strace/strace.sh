@@ -1,0 +1,3 @@
+
+
+strace hostname

@@ -1,0 +1,41 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:13:49 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:11:44 CST. 
+组合模式
+组合模式听说去很玄乎，其实也并不复杂。为什么?大家可以先想一下数据结构里面的
+二叉树是怎么回事。为什么就是这么一个简单的二叉树节点既可能是叶节点，也可能是父节
+点?
+那什么时候是叶子节点，其实就是left、right 为NULL 的时候。那么如果它们不是NULL
+呢，那么很明显此时它们已经是父节点了。那么，我们的这个组合模式是怎么一个情况
+呢？
+typedef struct _Object
+{
+	struct _Object** ppObject;
+	int number;
+	void (*operate)(struct _Object* pObject);
+}Object;
+就是这么一个简单的数据结构，是怎么实现子节点和父节点的差别呢。比如说，现在我
+们需要对一个父节点的operate 进行操作，此时的operate 函数应该怎么操作呢？
+void operate_of_parent(struct _Object* pObject)
+{
+	int index;
+	assert(NULL != pObject);
+	assert(NULL != pObject->ppObject && 0 != pObject->number);
+	for(index = 0; index < pObject->number; index ++)
+	{
+		pObject->ppObject[index]->operate(pObject->ppObject[index]);
+	}
+}
+当然，有了parent 的operate，也有child 的operate。至于是什么操作，那就看自己
+是怎么操作的了。
+void operate_of_child(struct _Object* pObject)
+{
+	assert(NULL != pObject);
+	printf("child node!\n");
+}
+父节点也好，子节点也罢，一切的一切都是最后的应用。其实，用户的调用也非常简单，
+就这么一个简单的函数。
+void process(struct Object* pObject)
+{
+	assert(NULL != pObject);
+	pObject->operate(pObject);
+}

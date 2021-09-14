@@ -1,0 +1,4 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:16 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 13日 星期三 08:53:57 CST. 
+internet 安全性（IPSec）是一种开放标准的框架结构，通过使用加密的安全服务以确保在internet协议（IP）网络上进行保密而安全的的通讯。
+

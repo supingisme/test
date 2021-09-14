@@ -1,0 +1,4 @@
+unzip
+功能说明：解压缩zip 文件
+语 法：unzip [-cflptuvz][-agCjLMnoqsVX][-P <密码>][.zip 文件][文件][-d <目录>][-x <文件>] 或 unzip [-Z]
+补充说明：unzip 为.zip 压缩文件的解压缩程序。

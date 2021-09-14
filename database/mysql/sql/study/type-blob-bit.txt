@@ -1,0 +1,9 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:56 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 16:09:52 CST. 
+
+
+数据类型		说 明
+BLOB			Blob最大长度为64 KB
+MEDIUMBLOB		Blob最大长度为16 MB
+LONGBLOB		Blob最大长度为4 GB
+TINYBLOB		Blob最大长度为255字节

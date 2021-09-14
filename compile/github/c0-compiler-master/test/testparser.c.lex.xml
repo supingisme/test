@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<root>
+  <token line="1" type="INT" string="int" />
+  <token line="1" type="ID" string="a" />
+  <token line="1" type="SEMI" string=";" />
+  <token line="2" type="INT" string="int" />
+  <token line="2" type="ID" string="b" />
+  <token line="2" type="SEMI" string=";" />
+  <token line="3" type="INT" string="int" />
+  <token line="3" type="ID" string="d" />
+  <token line="3" type="COMMA" string="," />
+  <token line="3" type="ID" string="e" />
+  <token line="3" type="COMMA" string="," />
+  <token line="3" type="ID" string="f" />
+  <token line="3" type="SEMI" string=";" />
+  <token line="5" type="VOID" string="void" />
+  <token line="5" type="ID" string="main" />
+  <token line="5" type="LPAREN" string="(" />
+  <token line="5" type="RPAREN" string=")" />
+  <token line="6" type="LBRACE" string="{" />
+  <token line="7" type="INT" string="int" />
+  <token line="7" type="ID" string="a" />
+  <token line="7" type="ASSIGN" string="=" />
+  <token line="7" type="NUMBER" string="0" />
+  <token line="7" type="SEMI" string=";" />
+  <token line="8" type="INT" string="int" />
+  <token line="8" type="ID" string="b" />
+  <token line="8" type="ASSIGN" string="=" />
+  <token line="8" type="NUMBER" string="2" />
+  <token line="8" type="SEMI" string=";" />
+  <token line="9" type="WHILE" string="while" />
+  <token line="9" type="LPAREN" string="(" />
+  <token line="9" type="ID" string="a" />
+  <token line="9" type="EQ" string="==" />
+  <token line="9" type="ID" string="b" />
+  <token line="9" type="RPAREN" string=")" />
+  <token line="10" type="INC_OP" string="++" />
+  <token line="10" type="ID" string="a" />
+  <token line="10" type="SEMI" string=";" />
+  <token line="11" type="RBRACE" string="}" />
+</root>

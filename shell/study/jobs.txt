@@ -1,0 +1,60 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:43 CST. 
+16.4.1 查看作业
+作业控制中的关键命令是jobs命令。 jobs命令允许查看shell当前正在处理的作业。
+$ cat test10.sh
+#!/bin/bash
+# Test job control
+#
+echo "Script Process ID: $$"
+#
+count=1
+while [ $count -le 10 ]
+do
+echo "Loop #$count"
+sleep 10
+count=$[ $count + 1 ]
+done
+#
+echo "End of script..."
+#
+$
+脚本用$$变量来显示Linux系统分配给该脚本的PID，然后进入循环，每次迭代都休眠10秒。
+可以从命令行中启动脚本，然后使用Ctrl+Z组合键来停止脚本。
+$ ./test10.sh
+Script Process ID: 1897
+Loop #1
+Loop #2
+^Z
+[1]+ Stopped ./test10.sh
+$
+还是使用同样的脚本，利用&将另外一个作业作为后台进程启动。出于简化的目的，脚本的
+输出被重定向到文件中，避免出现在屏幕上。
+$ ./test10.sh > test10.out &
+[2] 1917
+$
+jobs命令可以查看分配给shell的作业。 jobs命令会显示这两个已停止/运行中的作业，以及
+它们的作业号和作业中使用的命令。
+
+$ jobs
+[1]+ Stopped ./test10.sh
+[2]- Running ./test10.sh > test10.out &
+$
+要想查看作业的PID，可以在jobs命令中加入-l选项（小写的L）。
+$ jobs -l
+[1]+ 1897 Stopped ./test10.sh
+[2]- 1917 Running ./test10.sh > test10.out &
+$
+jobs命令使用一些不同的命令行参数，见表16-2。
+
+参 数 描 述
+-l 列出进程的PID以及作业号
+-n 只列出上次shell发出的通知后改变了状态的作业
+-p 只列出作业的PID
+-r 只列出运行中的作业
+-s 只列出已停止的作业
+
+
+
+
+
+

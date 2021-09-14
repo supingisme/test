@@ -1,0 +1,34 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:09 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 13日 星期三 08:53:53 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:07:30 CST. 
+flags for Argp Options
+The following ﬂags may be or’d together in the flags feld of a struct argp_option. These
+ﬂags control various aspects of how that option is parsed or displayed in help messages:
+OPTION_ARG_OPTIONAL
+The argument associated with this option is optional.
+OPTION_HIDDEN
+This option isn’t displayed in any help messages.
+OPTION_ALIAS
+This option is an alias for the closest previous non-alias option. This means
+that it will be displayed in the same help entry, and will inherit felds other
+than name and key from the option being aliased.
+OPTION_DOC
+This option isn’t actually an option and should be ignored by the actual option
+parser. It is an arbitrary section of documentation that should be displayed
+in much the same manner as the options. This is known as a documentation
+option.
+If this ﬂag is set, then the option name feld is displayed unmodifed (e.g., no
+		‘--’ prefx is added) at the left-margin where a short option would normally be
+displayed, and this documentation string is left in it’s usual place. For purposes
+of sorting, any leading whitespace and punctuation is ignored, unless the frst
+non-whitespace character is ‘-’. This entry is displayed after all options, after
+OPTION_DOC entries with a leading ‘-’, in the same group.
+OPTION_NO_USAGE
+This option shouldn’t be included in ‘long’ usage messages, but should still be
+included in other help messages. This is intended for options that are completely
+documented in an argp’s args_doc feld. See Section 25.3.3 [Specifying Argp
+Parsers], page 656. Including this option in the generic usage list would be
+redundant, and should be avoided.
+For instance, if args_doc is "FOO BAR\n-x BLAH", and the ‘-x’ option’s purpose
+is to distinguish these two cases, ‘-x’ should probably be marked OPTION_NO_
+USAGE.

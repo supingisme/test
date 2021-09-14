@@ -1,0 +1,90 @@
+comment {
+	文件描述：该文件用于配置VPP网络，具体配置根据实际情况而定
+	作者：荣涛
+	时间：2020年9月2日
+	网址：https://docs.fd.io/vpp/20.05/d5/d57/clicmd.html
+}
+
+comment { 设置网卡IP地址 }
+set interface ip address dpdk0 10.170.7.169/24 
+comment {
+set interface ip address dpdk1 10.170.6.169/24
+}
+
+comment { 设置网卡MAC地址 }
+comment {
+set interface mac address dpdk0 xx:xx:xx:xx:xx:xx
+}
+
+comment { 设置MTU-最大传输单元 }
+comment {
+set interface mtu [packet|ip4|ip6|mpls] value interface
+}
+
+comment { 设置接收模式 }
+comment {
+set interface rx-mode interface [queue n] [polling | interrupt | adaptive]
+}
+show interface rx-placement
+
+comment { 设置队列worker }
+comment {
+set interface rx-placement interface queue 1 worker 0
+}
+
+comment { 启动网卡 [up|down|punt|enable] }
+set interface state dpdk0 up
+set interface state dpdk1 up
+
+comment { 设置路由，根据实际情况决定 }
+ip route add 10.170.6.0/24 via 10.170.7.254
+
+comment { 开启混杂模式  }
+set interface promiscuous on dpdk0
+
+comment { 启动local0口 }
+comment {
+set interface state local0 up
+}
+
+comment { 创建环回地址 }
+comment {
+create loopback interface
+set interface ip address loop0 127.0.0.1/8
+set interface state loop0 up
+}
+
+comment { DPDK相关配置、查询 }
+comment {
+show dpdk buffer
+show dpdk physmem
+show dpdk version
+}
+
+comment { DPDK内存测试 }
+comment {
+test dpdk buffer allocate 1024
+test dpdk buffer
+test dpdk buffer free 1024
+}
+
+comment { 显示有用信息 }
+comment { show version }
+comment { 查看所有插件 }
+comment {
+show plugins
+}
+
+comment { 抓包 }
+comment {
+pcap trace status
+pcap trace tx max 35 intfc dpdk0 file dpdk0.pcap
+pcap trace status
+pcap trace off
+}
+
+
+
+
+
+

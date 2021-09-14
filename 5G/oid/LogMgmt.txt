@@ -1,0 +1,6 @@
+Device.LogMgmt.PeriodicUploadEnable
+Device.LogMgmt.URL
+Device.LogMgmt.Username
+Device.LogMgmt.Password
+Device.LogMgmt.PeriodicUploadInterval
+

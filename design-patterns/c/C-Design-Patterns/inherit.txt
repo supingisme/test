@@ -1,0 +1,31 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:13:49 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:11:44 CST. 
+
+C 语言和设计模式（继承、封装、多态）
+记得还在我们大学C++第一门课的时候，老师就告诉我们说，C++是一门面向对象的
+语言。C++有三个最重要的特点，即继承、封装、多态。等到后来随着编码的增多和工
+作经验的积累，我也慢慢明白了面向对象的含义。可是，等我工作以后，使用的编程语
+言更多的是C 语言，这时候我又想能不能把C 语言变成面向对象的语言呢？等到后来通
+过思考和实践，我发现其实C 语言也是可以面向对象的，也是可以应用设计模式的，关
+键就在于如何实现面向对象语言的三个重要属性。
+
+2.1 继承性
+typedef struct _parent
+{
+	int data_parent;
+}Parent;
+
+2.2 封装性
+struct _Data;
+typedef void (*process)(struct _Data* pData);
+typedef struct _Data
+{
+	int value;
+	process pProcess;
+}Data;
+封装性的意义在于，函数和数据是绑在一起的，数据和数据是绑在一起的。这样，
+我们就可以通过简单的一个结构指针访问到所有的数据，遍历所有的函数。封装性，这
+是类拥有的属性，当然也是数据结构体拥有的属性。
+
+2.3 多态
+TODO

@@ -1,0 +1,55 @@
+Array of strings containing the names of each of the RPC methods the recipient supports. The list of methods returned 
+by an ACS MUST always include “Inform”.
+
+For example, a CPE implementing only the baseline methods defined in this version of the specification would return 
+the following list when requested by an ACS:
+
+	"GetRPCMethods"
+	"SetParameterValues"
+	"GetParameterValues"
+	"GetParameterNames"
+	“SetParameterAttributes”
+	“GetParameterAttributes”
+	“AddObject”
+	“DeleteObject”
+	“Reboot”
+	“Download”
+
+As another example, an ACS implementing only the baseline methods defined in this version of the specification would 
+return the following list when requested by a CPE:
+
+	“Inform”
+	"GetRPCMethods"
+	“TransferComplete”
+
+SetParameterValues
+
+	This method MAY be used by an ACS to modify the value of one or more CPE Parameters.
+	The calling arguments for this method are defined in Table 15. The arguments in the response are defined in Table 16.
+	Table 15 – SetParameterValues arguments Argument Type Description
+	ParameterList
+	ParameterValueStruct[]
+	Array of name-value pairs as specified in Table 17. For each name-value pair, the CPE is instructed to set the 
+	Parameter specified by the name to the corresponding value.
+
+	This array MUST NOT contain more than one entry with the same Parameter name. If a given Parameter appears in this 
+	array more than once, the CPE MUST respond with fault 9003 (Invalid arguments).
+
+	If the length of this array is zero, then the CPE MUST set the ParameterKey to the value specified by the 
+	ParameterKey argument, but MUST NOT set any other Parameter values.
+	
+	Argument Type Description
+	ParameterKey
+	string(32)
+	The value to set the ParameterKey Parameter. The CPE MUST set ParameterKey to the value specified in this argument if 
+	and only if SetParameterValues completes successfully. If SetParameterValues does not complete successfully (implying 
+	that the Parameter value changes requested did not take effect), the value of ParameterKey MUST NOT be modified. 
+	ParameterKey provides the ACS a reliable and extensible means to track changes made by the ACS. The value of this 
+	argument is left to the discretion of the ACS, and MAY be left empty.
+
+	ParameterValueStruct definition Name Type Description
+	Name
+	string(256)
+	This is the name of a Parameter. The CPE
+
+	

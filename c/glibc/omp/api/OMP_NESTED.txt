@@ -1,0 +1,7 @@
+OMP_NESTED – Nested parallel regions
+Description:
+Enable or disable nested parallel regions, i.e., whether team members are allowed
+to create new teams. The value of this environment variable shall be
+TRUE or FALSE. If undefined, nested parallel regions are disabled by default.
+See also: Section 2.17 [omp set nested], page 10
+Reference: OpenMP specifications v3.0, section 4.4

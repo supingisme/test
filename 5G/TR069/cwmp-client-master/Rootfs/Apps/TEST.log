@@ -1,0 +1,280 @@
+Registered 'HTTP-GET-1.1' plugin
+stdsoap2.c(7664): malloc(280) = 0x226be00
+stdsoap2.c(7664): malloc(280) = 0x226bf50
+stdsoap2.c(7664): malloc(40) = 0x226c0a0
+stdsoap2.c(7664): malloc(88) = 0x226c100
+stdsoap2.c(7664): malloc(24) = 0x226c190
+stdsoap2.c(7664): malloc(32) = 0x226c1e0
+stdsoap2.c(7664): malloc(24) = 0x226c240
+stdsoap2.c(7664): malloc(24) = 0x226c290
+stdsoap2.c(7664): malloc(32) = 0x226c2e0
+stdsoap2.c(7664): malloc(24) = 0x226c340
+stdsoap2.c(7664): malloc(40) = 0x226c390
+stdsoap2.c(7664): malloc(24) = 0x226c3f0
+stdsoap2.c(7664): malloc(48) = 0x226c4c0
+stdsoap2.c(7664): malloc(88) = 0x226c530
+stdsoap2.c(7664): malloc(88) = 0x226c5c0
+stdsoap2.c(7664): malloc(64) = 0x226c650
+stdsoap2.c(7664): malloc(24) = 0x226c7c0
+stdsoap2.c(7664): malloc(72) = 0x226c810
+stdsoap2.c(7664): malloc(24) = 0x226c890
+stdsoap2.c(7664): malloc(72) = 0x226c8e0
+stdsoap2.c(7664): malloc(32) = 0x226c960
+stdsoap2.c(7664): malloc(72) = 0x226c9c0
+stdsoap2.c(7664): malloc(24) = 0x226ca40
+stdsoap2.c(7664): malloc(80) = 0x226ca90
+stdsoap2.c(7664): malloc(48) = 0x226cb20
+stdsoap2.c(7664): malloc(88) = 0x226cb90
+stdsoap2.c(7664): malloc(24) = 0x226cc20
+stdsoap2.c(7664): malloc(88) = 0x226cc70
+stdsoap2.c(7664): malloc(24) = 0x226cd00
+stdsoap2.c(7664): malloc(72) = 0x226cd50
+stdsoap2.c(7664): malloc(24) = 0x226cdd0
+stdsoap2.c(7664): malloc(72) = 0x226ce20
+stdsoap2.c(7664): malloc(56) = 0x226cea0
+stdsoap2.c(7664): malloc(24) = 0x226cf10
+stdsoap2.c(7664): malloc(32) = 0x226cf60
+stdsoap2.c(7664): malloc(24) = 0x226cfc0
+stdsoap2.c(7664): malloc(24) = 0x226d010
+stdsoap2.c(7664): malloc(40) = 0x226d060
+stdsoap2.c(7664): malloc(40) = 0x226d0c0
+stdsoap2.c(7664): malloc(56) = 0x226d120
+stdsoap2.c(7664): malloc(32) = 0x226d190
+stdsoap2.c(7664): malloc(24) = 0x226d1f0
+stdsoap2.c(7664): malloc(56) = 0x226d240
+stdsoap2.c(7664): malloc(40) = 0x226d2b0
+stdsoap2.c(7664): malloc(24) = 0x226d310
+stdsoap2.c(7664): malloc(48) = 0x226d360
+stdsoap2.c(7664): malloc(40) = 0x226d3d0
+stdsoap2.c(7664): malloc(88) = 0x226d430
+stdsoap2.c(7664): malloc(40) = 0x226d4c0
+stdsoap2.c(7664): malloc(64) = 0x226d520
+stdsoap2.c(7664): malloc(24) = 0x226d5a0
+stdsoap2.c(7664): malloc(40) = 0x226d5f0
+stdsoap2.c(7664): malloc(72) = 0x226d650
+stdsoap2.c(7664): malloc(24) = 0x226d6d0
+stdsoap2.c(7664): malloc(40) = 0x226d720
+stdsoap2.c(7664): malloc(72) = 0x226d780
+stdsoap2.c(7664): malloc(32) = 0x226d800
+stdsoap2.c(7664): malloc(40) = 0x226d860
+stdsoap2.c(7664): malloc(72) = 0x226d8c0
+stdsoap2.c(7664): malloc(24) = 0x226d940
+stdsoap2.c(7664): malloc(40) = 0x226d990
+stdsoap2.c(7664): malloc(80) = 0x226d9f0
+stdsoap2.c(7664): malloc(48) = 0x226da80
+stdsoap2.c(7664): malloc(40) = 0x226daf0
+stdsoap2.c(7664): malloc(88) = 0x226db50
+stdsoap2.c(7664): malloc(24) = 0x226dbe0
+stdsoap2.c(7664): malloc(40) = 0x226dc30
+stdsoap2.c(7664): malloc(88) = 0x226dc90
+stdsoap2.c(7664): malloc(24) = 0x226dd20
+stdsoap2.c(7664): malloc(40) = 0x226dd70
+stdsoap2.c(7664): malloc(72) = 0x226ddd0
+stdsoap2.c(7664): malloc(24) = 0x226de50
+Reinitializing context
+Free namespace stack
+Free any remaining temp blocks
+Free attribute storage
+stdsoap2.c(8538): free(0x226ac20)
+Free pointer hashtable
+Free ID hashtable
+Free namespace stack
+stdsoap2.c(9402): malloc(192) = 0x226ac20
+Begin count phase (socket=-1 mode=0x6018 count=0)
+Element begin tag='SOAP-ENV:Envelope' level='0' id='0' type=''
+Attribute 'xmlns:SOAP-ENV'='http://schemas.xmlsoap.org/soap/envelope/'
+Attribute 'xmlns:SOAP-ENC'='http://schemas.xmlsoap.org/soap/encoding/'
+Attribute 'xmlns:xsi'='http://www.w3.org/2001/XMLSchema-instance'
+Attribute 'xmlns:xsd'='http://www.w3.org/2001/XMLSchema'
+Attribute 'xmlns:cwmp'='urn:dslforum-org:cwmp-1-0'
+Element begin tag='SOAP-ENV:Body' level='1' id='0' type=''
+Element begin tag='cwmp:Inform' level='2' id='0' type=''
+Element begin tag='DeviceId' level='3' id='0' type=''
+Element begin tag='Manufacturer' level='4' id='0' type=''
+Element ending tag='Manufacturer'
+Element begin tag='OUI' level='4' id='0' type=''
+Element ending tag='OUI'
+Element begin tag='ProductClass' level='4' id='0' type=''
+Element ending tag='ProductClass'
+Element begin tag='SerialNumber' level='4' id='0' type=''
+Element ending tag='SerialNumber'
+Element ending tag='DeviceId'
+Element begin tag='Event' level='3' id='0' type='SOAP-ENC:Array'
+Attribute 'xsi:type'='SOAP-ENC:Array'
+Attribute 'SOAP-ENC:arrayType'='cwmp:EventStruct[2]'
+Element begin tag='EventStruct' level='4' id='0' type=''
+Element begin tag='EventCode' level='5' id='0' type=''
+Element ending tag='EventCode'
+Element begin tag='CommandKey' level='5' id='0' type=''
+Element ending tag='CommandKey'
+Element ending tag='EventStruct'
+Element begin tag='EventStruct' level='4' id='0' type=''
+Element begin tag='EventCode' level='5' id='0' type=''
+Element ending tag='EventCode'
+Element begin tag='CommandKey' level='5' id='0' type=''
+Element ending tag='CommandKey'
+Element ending tag='EventStruct'
+Element ending tag='Event'
+Element begin tag='MaxEnvelopes' level='3' id='-1' type=''
+Element ending tag='MaxEnvelopes'
+Element begin tag='CurrentTime' level='3' id='0' type=''
+Element ending tag='CurrentTime'
+Element begin tag='RetryCount' level='3' id='-1' type=''
+Element ending tag='RetryCount'
+Element begin tag='ParameterList' level='3' id='0' type='SOAP-ENC:Array'
+Attribute 'xsi:type'='SOAP-ENC:Array'
+Attribute 'SOAP-ENC:arrayType'='cwmp:ParameterValueStruct[8]'
+Element begin tag='ParameterValueStruct' level='4' id='0' type=''
+Element begin tag='Name' level='5' id='0' type=''
+Element ending tag='Name'
+Element begin tag='Value' level='5' id='0' type=''
+Element ending tag='Value'
+Element ending tag='ParameterValueStruct'
+Element begin tag='ParameterValueStruct' level='4' id='0' type=''
+Element begin tag='Name' level='5' id='0' type=''
+Element ending tag='Name'
+Element begin tag='Value' level='5' id='0' type=''
+Element ending tag='Value'
+Element ending tag='ParameterValueStruct'
+Element begin tag='ParameterValueStruct' level='4' id='0' type=''
+Element begin tag='Name' level='5' id='0' type=''
+Element ending tag='Name'
+Element begin tag='Value' level='5' id='0' type=''
+Element ending tag='Value'
+Element ending tag='ParameterValueStruct'
+Element begin tag='ParameterValueStruct' level='4' id='0' type=''
+Element begin tag='Name' level='5' id='0' type=''
+Element ending tag='Name'
+Element begin tag='Value' level='5' id='0' type=''
+Element ending tag='Value'
+Element ending tag='ParameterValueStruct'
+Element begin tag='ParameterValueStruct' level='4' id='0' type=''
+Element begin tag='Name' level='5' id='0' type=''
+Element ending tag='Name'
+Element begin tag='Value' level='5' id='0' type=''
+Element ending tag='Value'
+Element ending tag='ParameterValueStruct'
+Element begin tag='ParameterValueStruct' level='4' id='0' type=''
+Element begin tag='Name' level='5' id='0' type=''
+Element ending tag='Name'
+Element begin tag='Value' level='5' id='0' type=''
+Element ending tag='Value'
+Element ending tag='ParameterValueStruct'
+Element begin tag='ParameterValueStruct' level='4' id='0' type=''
+Element begin tag='Name' level='5' id='0' type=''
+Element ending tag='Name'
+Element begin tag='Value' level='5' id='0' type=''
+Element ending tag='Value'
+Element ending tag='ParameterValueStruct'
+Element begin tag='ParameterValueStruct' level='4' id='0' type=''
+Element begin tag='Name' level='5' id='0' type=''
+Element ending tag='Name'
+Element begin tag='Value' level='5' id='0' type=''
+Element ending tag='Value'
+Element ending tag='ParameterValueStruct'
+Element ending tag='ParameterList'
+Element ending tag='cwmp:Inform'
+Element ending tag='SOAP-ENV:Body'
+Element ending tag='SOAP-ENV:Envelope'
+End of count phase
+stdsoap2.c(7664): malloc(32) = 0x226ded0
+Connect/reconnect to 'http://127.0.0.1:30005' host='127.0.0.1' path='/' port=30005
+Opening socket=4 to host='127.0.0.1' port=30005
+Could not connect to host
+stdsoap2.c(7664): malloc(96) = 0x226df80
+stdsoap2.c(7664): malloc(48) = 0x226e020
+Close socket=4
+Free namespace stack
+Free any remaining temp blocks
+Free attribute storage
+stdsoap2.c(8538): free(0x226ac20)
+Free pointer hashtable
+Free ID hashtable
+Free all soap_malloc() data
+stdsoap2.c(7823): free(0x226e020)
+stdsoap2.c(7823): free(0x226df80)
+stdsoap2.c(7823): free(0x226ded0)
+stdsoap2.c(7823): free(0x226de50)
+stdsoap2.c(7823): free(0x226ddd0)
+stdsoap2.c(7823): free(0x226dd70)
+stdsoap2.c(7823): free(0x226dd20)
+stdsoap2.c(7823): free(0x226dc90)
+stdsoap2.c(7823): free(0x226dc30)
+stdsoap2.c(7823): free(0x226dbe0)
+stdsoap2.c(7823): free(0x226db50)
+stdsoap2.c(7823): free(0x226daf0)
+stdsoap2.c(7823): free(0x226da80)
+stdsoap2.c(7823): free(0x226d9f0)
+stdsoap2.c(7823): free(0x226d990)
+stdsoap2.c(7823): free(0x226d940)
+stdsoap2.c(7823): free(0x226d8c0)
+stdsoap2.c(7823): free(0x226d860)
+stdsoap2.c(7823): free(0x226d800)
+stdsoap2.c(7823): free(0x226d780)
+stdsoap2.c(7823): free(0x226d720)
+stdsoap2.c(7823): free(0x226d6d0)
+stdsoap2.c(7823): free(0x226d650)
+stdsoap2.c(7823): free(0x226d5f0)
+stdsoap2.c(7823): free(0x226d5a0)
+stdsoap2.c(7823): free(0x226d520)
+stdsoap2.c(7823): free(0x226d4c0)
+stdsoap2.c(7823): free(0x226d430)
+stdsoap2.c(7823): free(0x226d3d0)
+stdsoap2.c(7823): free(0x226d360)
+stdsoap2.c(7823): free(0x226d310)
+stdsoap2.c(7823): free(0x226d2b0)
+stdsoap2.c(7823): free(0x226d240)
+stdsoap2.c(7823): free(0x226d1f0)
+stdsoap2.c(7823): free(0x226d190)
+stdsoap2.c(7823): free(0x226d120)
+stdsoap2.c(7823): free(0x226d0c0)
+stdsoap2.c(7823): free(0x226d060)
+stdsoap2.c(7823): free(0x226d010)
+stdsoap2.c(7823): free(0x226cfc0)
+stdsoap2.c(7823): free(0x226cf60)
+stdsoap2.c(7823): free(0x226cf10)
+stdsoap2.c(7823): free(0x226cea0)
+stdsoap2.c(7823): free(0x226ce20)
+stdsoap2.c(7823): free(0x226cdd0)
+stdsoap2.c(7823): free(0x226cd50)
+stdsoap2.c(7823): free(0x226cd00)
+stdsoap2.c(7823): free(0x226cc70)
+stdsoap2.c(7823): free(0x226cc20)
+stdsoap2.c(7823): free(0x226cb90)
+stdsoap2.c(7823): free(0x226cb20)
+stdsoap2.c(7823): free(0x226ca90)
+stdsoap2.c(7823): free(0x226ca40)
+stdsoap2.c(7823): free(0x226c9c0)
+stdsoap2.c(7823): free(0x226c960)
+stdsoap2.c(7823): free(0x226c8e0)
+stdsoap2.c(7823): free(0x226c890)
+stdsoap2.c(7823): free(0x226c810)
+stdsoap2.c(7823): free(0x226c7c0)
+stdsoap2.c(7823): free(0x226c650)
+stdsoap2.c(7823): free(0x226c5c0)
+stdsoap2.c(7823): free(0x226c530)
+stdsoap2.c(7823): free(0x226c4c0)
+stdsoap2.c(7823): free(0x226c3f0)
+stdsoap2.c(7823): free(0x226c390)
+stdsoap2.c(7823): free(0x226c340)
+stdsoap2.c(7823): free(0x226c2e0)
+stdsoap2.c(7823): free(0x226c290)
+stdsoap2.c(7823): free(0x226c240)
+stdsoap2.c(7823): free(0x226c1e0)
+stdsoap2.c(7823): free(0x226c190)
+stdsoap2.c(7823): free(0x226c100)
+stdsoap2.c(7823): free(0x226c0a0)
+stdsoap2.c(7823): free(0x226bf50)
+stdsoap2.c(7823): free(0x226be00)
+Done with context
+Free namespace stack
+Free any remaining temp blocks
+Free attribute storage
+Free pointer hashtable
+Free ID hashtable
+Removing plugin 'HTTP-GET-1.1'
+stdsoap2.c(5205): free(0x226ad20)
+Free logfiles
+stdsoap2.c(5334): free(0x21d9650)
+stdsoap2.c(5334): free(0x2241710)
+stdsoap2.c(5334): free(0x22416f0)

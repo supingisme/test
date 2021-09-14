@@ -1,0 +1,44 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:06:53 CST. 
+32.11 speed
+	speed 命令用于测试库的性能。
+
+用法：
+	openssl speed [-engine id] [md2] [mdc2] [md5] [hmac] [sha1] [rmd160]
+					[idea-cbc] [rc2-cbc] [rc5-cbc] [bf-cbc] [des-cbc] [des-ede3] [rc4]
+					[rsa512] [rsa1024] [rsa2048] [rsa4096] [dsa512] [dsa1024] [dsa2048]
+					[idea] [rc2] [des] [rsa] [blowfish]
+选项：
+	-engine id
+	设置硬件引擎 id。
+	-elapsed
+	测量采用实时时间，不是所用 CPU 时间，两者时间差异较大。
+	-mr
+	生成机器可读显示。
+	-multi n
+	并行允许 n 个测试。
+	
+示例：
+	openssl speed md5
+
+
+
+			[root@localhost openssl-cmd]# openssl speed md5
+			Doing md5 for 3s on 16 size blocks: 10149504 md5's in 2.99s
+			Doing md5 for 3s on 64 size blocks: 7570832 md5's in 3.00s
+			Doing md5 for 3s on 256 size blocks: 4271548 md5's in 2.99s
+			Doing md5 for 3s on 1024 size blocks: 1584878 md5's in 3.00s
+			Doing md5 for 3s on 8192 size blocks: 232360 md5's in 2.99s
+			OpenSSL 1.0.2k-fips  26 Jan 2017
+			built on: reproducible build, date unspecified
+			options:bn(64,64) md2(int) rc4(16x,int) des(idx,cisc,16,int) aes(partial) idea(int) blowfish(idx) 
+			compiler: gcc -I. -I.. -I../include  -fPIC -DOPENSSL_PIC -DZLIB -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_D
+			LFCN_H -DKRB5_MIT -m64 -DL_ENDIAN -Wall -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-
+			strong --param=ssp-buffer-size=4 -grecord-gcc-switches   -m64 -mtune=generic -Wa,--noexecstack -DPURIFY -
+			DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DRC4_ASM -DSHA1_ASM -
+			DSHA256_ASM -DSHA512_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DWHIRLPOOL_ASM -DGHASH_ASM -
+			DECP_NISTZ256_ASMThe 'numbers' are in 1000s of bytes per second processed.
+
+			type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes
+			md5              54311.73k   161511.08k   365724.51k   540971.69k   636619.77k
+
+	

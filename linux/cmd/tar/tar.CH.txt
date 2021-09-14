@@ -1,0 +1,12 @@
+tar
+功能说明：tape archive，备份文件。
+语 法：tar [-ABcdgGhiklmMoOpPrRsStuUvwWxzZ] [-b <区块数目>] [-C <目的目录>] [-f <备份文件>] [-F
+<Script 文件>] [-K <文件>] [-L <媒体容量>] [-N <日期时间>] [-T <范本文件>] [-V <卷名称>] [-X <范本文件>]
+[-<设备编号><存储密度>] [--after-date=<日期时间>] [--atime-preserve] [--backuup=<备份方式>] [--checkpoint]
+[--concatenate] [--confirmation] [--delete] [--exclude=<范本样式>] [--force-local] [--group=<群名称>] [--help]
+[--ignore-failed-read] [--new-volume-script=<Script 文件>] [--newer-mtime=<日期时间>] [--no-recursion] [--null]
+[--numeric-owner] [--owner=< 用户名称>] [--posix] [--preserve] [--preserve-order] [--preserve-permissions]
+[--record-size=<区块数目>] [--recursive-unlink] [--remove-files] [--rsh-command=<执行指令>] [--same-owner]
+[--suffix=<备份字尾字符串>] [--totals] [--use-compress-program=<执行指令>] [--version] [--volno-file=<编号文
+件>] [文件或目录...]
+补充说明：tar 是用来建立，还原备份文件的工具程序，它可以加入，解开备份文件内的文件。

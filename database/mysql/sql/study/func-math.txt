@@ -1,0 +1,28 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:56 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 16:09:52 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 15:51:33 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 15:38:56 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 13:59:12 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 13:23:25 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 11:24:37 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 11:09:05 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 14日 星期四 10:12:28 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 13日 星期三 18:23:34 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:34:15 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:15:34 CST. 
+数值处理函数
+数值处理函数仅处理数值数据。这些函数一般主要用于代数、三角
+或几何运算，因此没有串或日期—时间处理函数的使用那么频繁。
+具有讽刺意味的是，在主要DBMS的函数中，数值函数是最一致最统
+一的函数。表11-3列出一些常用的数值处理函数。
+
+函 数 说 明
+Abs() 返回一个数的绝对值
+Cos() 返回一个角度的余弦
+Exp() 返回一个数的指数值
+Mod() 返回除操作的余数
+Pi() 返回圆周率
+Rand() 返回一个随机数
+Sin() 返回一个角度的正弦
+Sqrt() 返回一个数的平方根
+Tan() 返回一个角度的正切

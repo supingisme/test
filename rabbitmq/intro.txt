@@ -1,0 +1,13 @@
+rabbitmq-c是一个用于C语言的，与AMQP server进行交互的client库。
+AMQP协议为版本0-9-1。
+rabbitmq-c与server进行交互前需要首先进行login操作，在操作后，可以根据AMQP协议规范，执行一系列操作。
+
+https://www.rabbitmq.com/
+
+RabbitMQ是部署最广泛的开源消息代理。
+
+RabbitMQ有成千上万的用户，是最受欢迎的开源消息代理之一。从T-Mobile 到Runtastic，RabbitMQ在全球范围内的小型初创企业和大型企业中都得到使用。
+
+RabbitMQ轻巧，易于在内部和云中部署。它支持多种消息传递协议。RabbitMQ可以部署在分布式和联合配置中，以满足大规模，高可用性的要求。
+
+RabbitMQ可在许多操作系统和云环境上运行，并为大多数流行语言提供了广泛的开发人员工具。

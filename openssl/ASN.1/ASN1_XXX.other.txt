@@ -1,0 +1,9 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:11:35 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2020年 01月 16日 星期四 19:55:00 CST. 
+ASN1_UTCTIME：表示时间。
+ASN1_GENERALIZEDTIME：表示时间。
+ASN1_VISIBLESTRING：存放可见字符。
+ASN1_UTF8STRING：用于存放utf8字符串，存放汉字需要将汉字转换为utf8字符串。
+ASN1_TYPE：用于存放任意类型。
+
+

@@ -1,0 +1,40 @@
+从上面的介绍我们知道，Cache 一致性这个问题的最根本原因是处理器内部不止一个核，
+当两个或多个核访问内存中同一个Cache 行的内容时，就会因为多个Cache 同时缓存了该内
+容引起同步的问题。
+DPDK 与生俱来就是为了网络平台的高性能和高吞吐，并且总是需要部署在多核的环境
+下。因此，DPDK 必须提出好的解决方案，避免由于不必要的Cache 一致性开销而造成额外
+的性能损失。
+其实，DPDK 的解决方案很简单，首先就是避免多个核访问同一个内存地址或者数据结
+构。这样，每个核尽量都避免与其他核共享数据，从而减少因为错误的数据共享（cache line
+false sharing）导致的Cache 一致性的开销。
+
+以下是两个DPDK 为了避免Cache 一致性的例子。
+例子1 ：数据结构定义。DPDK 的应用程序很多情况下都需要多个核同时来处理事务，
+因而，对于某些数据结构，我们给每个核都单独定义一份，这样每个核都只访问属于自己核
+的备份。如下例所示：
+struct lcore_conf {
+	uint16_t n_rx_queue;
+	struct lcore_rx_queue rx_queue_list[MAX_RX_QUEUE_PER_LCORE];
+	uint16_t tx_queue_id[RTE_MAX_ETHPORTS];
+	struct mbuf_table tx_mbufs[RTE_MAX_ETHPORTS];
+	lookup_struct_t * ipv4_lookup_struct;
+	lookup_struct_t * ipv6_lookup_struct;
+} __rte_cache_aligned; //Cache 行对齐
+struct lcore_conf lcore[RTE_MAX_LCORE] __rte_cache_aligned;
+以上的数据结构“ struct lcore_conf”总是以Cache 行对齐，这样就不会出现该数据结
+构横跨两个Cache 行的问题。而定义的数组“ lcore[RTE_MAX_LCORE]”中RTE_MAX_
+LCORE 指一个系统中最大核的数量。DPDK 中对每个核都进行编号，这样核n 就只需要访
+问lcore[n]，核m 只需要访问lcore[m]，这样就避免了多个核访问同一个结构体。
+例子2 ：对网络端口的访问。在网络平台中，少不了访问网络设备，比如网卡。多核情
+况下，有可能多个核访问同一个网卡的接收队列/ 发送队列，也就是在内存中的一段内存结
+构。这样，也会引起Cache 一致性的问题。那么DPDK 是如何解决这个问题的呢？
+
+需要指出的是，网卡设备一般都具有多队列的能力，也就是说，一个网卡有多个接收队
+列和多个访问队列，其他章节会很详细讲到，本节不再赘述。
+DPDK 中，如果有多个核可能需要同时访问同一个网卡，那么DPDK 就会为每个核都准
+备一个单独的接收队列/ 发送队列。这样，就避免了竞争，也避免了Cache 一致性问题。
+图2-9 是四个核可能同时访问两个网络端口的图示。其中，网卡1 和网卡2 都有两个接
+收队列和四个发送队列；核0 到核3 每个都有自己的一个接收队列和一个发送队列。核0 从
+网卡1 的接收队列0 接收数据，可以发送到网卡1 的发送队列0 或者网卡2 的发送队列0 ；
+同理，核3 从网卡2 的接收队列1 接收数据，可以发送到网卡1 的发送队列3 或者网卡2 的
+发送队列3。

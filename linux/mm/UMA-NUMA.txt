@@ -1,0 +1,8 @@
+
+UMA
+		memory
+		/	\
+      CPU1	CPU2
+
+NUMA
+	

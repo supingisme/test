@@ -1,0 +1,2 @@
+thread specific data - 线程具体数据
+-- 参见 pthread_key_create, pthread_getspecific, pthread_setspecific

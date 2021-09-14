@@ -1,0 +1,100 @@
+WSDL2H(1)                                    General Commands Manual                                   WSDL2H(1)
+
+
+
+NAME
+       wsdl2h - the gSOAP WSDL parser for C and C++
+
+SYNOPSIS
+       wsdl2h [OPTIONS] SOURCE ...
+
+DESCRIPTION
+       Please see /usr/share/doc/gsoap-doc/soapdoc2.html for details.
+
+       Converts  a  WSDL  or  XSD  input file, or from an HTTP address, SOURCE to a declaration file that can be
+       parsed by soapcpp2(1). If no SOURCE argument is specified, read from standard input.
+
+OPTIONS
+       -a     Generate indexed struct names for local elements with anonymous types.
+
+       -b     Bi-directional operations (duplex ops) added to serve one-way responses.
+
+       -c     Generate C source code.
+
+       -d     Use DOM to populate xs:any, xs:anyType and xs:anyAttribute.
+
+       -e     Do not qualify enum names.
+
+       -f     Generate flat C++ class hierarchy.
+
+       -g     Generate global top-level element declarations.
+
+       -h     Display help info.
+
+       -Ipath Use path to find files.
+
+       -i     Do not import (advanced option).
+
+       -j     Do not generate SOAP_ENV__Header and SOAP_ENV__Detail definitions.
+
+       -k     Do not generate SOAP_ENV__Header mustUnderstand qualifiers.
+
+       -l     Display license information.
+
+       -m     Use xsd.h module to import primitive types.
+
+       -Nname Use name for service prefixes to produce a service for each binding.
+
+       -nname Use name as the base namespace prefix instead of ns.
+
+       -ofile Output to file file.
+
+       -P     Do not create polymorphic types inherited from xsd__anyType.
+
+       -p     Create polymorphic types inherited from base xsd__anyType.
+
+       -qname Use name for the C++ namespace of all declarations.
+
+       -R     Generate REST operations for REST bindings in the WSDL.
+
+       -rhost[:port[:uid:pwd]]
+              Connect via proxy host, port and proxy credentials.
+
+       -s     Do not generate STL code (no std::string and no std::vector).
+
+       -tfile Use type map file file instead of the default file typemap.dat.
+
+       -u     Do not generate unions.
+
+       -v     Verbose output.
+
+       -W     Suppress warnings.
+
+       -w     Always wrap response parameters in a response struct (<=1.1.4 behavior).
+
+       -x     Do not generate _XML any/anyAttribute extensibility elements.
+
+       -y     Generate typedef synonyms for structs and enums.
+
+       -z1    Compatibility with 2.7.6e: Generate pointer-based arrays.
+
+       -z2    Compatibility with 2.7.7 to 2.7.15: Qualify element/attribute references.
+
+       -z3    Compatibility with 2.7.16 to 2.8.7: Qualify element/attribute references.
+
+       -z4    Compatibility up to 2.8.11: Do not generate union structs in std::vector.
+
+       -z5    Compatibility up to 2.8.15.
+
+       -_     Do not generate _USCORE (replace with UNICODE _x005f).
+
+SEE ALSO
+       soapcpp2(1).
+
+AUTHOR
+       This manual page was written by Thomas Wana <greuff@debian.org>, for the Debian project (but may be  used
+       by others).
+
+
+
+                                                December 23, 2004                                      WSDL2H(1)

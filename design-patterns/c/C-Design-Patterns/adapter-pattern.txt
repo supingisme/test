@@ -1,0 +1,41 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:13:49 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:11:44 CST. 
+适配器模式
+现在的生活当中，我们离不开各种电子工具。什么笔记本电脑、手机、mp4 啊，都离
+不开充电。既然是充电，那么就需要用到充电器。其实从根本上来说，充电器就是一个个普
+通的适配器。什么叫适配器呢，就是把220v、50hz 的交流电压编程5~12v 的直流电压。充
+电器就干了这么一件事情。
+那么，这样的一个充电适配器，我们应该怎么用c++描述呢？
+class voltage_12v
+{
+	public:
+		voltage_12v() {}
+		virtual ~voltage_12v() {}
+		virtual void request() {}
+};
+class adapter: public voltage_12v
+{
+	v220_to_v12* pAdaptee;
+	public:
+	adapter() {}
+	~adapter() {}
+	void request()
+	{
+		pAdaptee->voltage_transform_process();
+	}
+};
+
+通过上面的代码，我们其实可以这样理解。类voltage_12v 表示我们的最终目的就是为
+了获得一个12v 的直流电压。当然获得12v 可以有很多的方法，利用适配器转换仅仅是其中
+的一个方法。adapter 表示适配器，它自己不能实现220v 到12v 的转换工作，所以需要调用
+类v220_to_v12 的转换函数。所以，我们利用adapter 获得12v 的过程，其实就是调用
+v220_to_v12 函数的过程。
+不过，既然我们的主题是用c 语言来编写适配器模式，那么我们就要实现最初的目
+标。这其实也不难，关键一步就是定义一个Adapter 的数据结构。然后把所有的Adapter 工
+作都由Adaptee 来做，就是这么简单。不知我说明白了没有？
+typdef struct _Adaptee
+{
+	void (*real_process)(struct _Adaptee* pAdaptee);
+}Adaptee;
+
+

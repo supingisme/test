@@ -1,0 +1,39 @@
+eval(3tcl)                                    Tcl Built-In Commands                                   eval(3tcl)
+
+
+
+________________________________________________________________________________________________________________
+
+NAME
+       eval - 求一个 Tcl 脚本的值
+
+总
+       eval arg ?arg ...?
+_________________________________________________________________
+
+
+描
+       Eval     接受一个或多个参数，它们一起组成一个包含一个或多个命令的     Tcl     脚本。Eval     用与    con‐
+       cat命令相同的方式连接(concatenate)它所有的参数，把连接后的字符串递归的传递给Tcl
+       解释器，并返回这次求值的结果(或它产生的任何错误)。
+
+
+关
+       concatenate, evaluate, script
+
+
+参
+       catch(n), concat(n), error(n), subs(n), tclvars(n)
+
+[中
+       寒
+
+[中
+       2001/07/10
+
+《
+       http://cmpp.linuxforum.net
+
+
+
+Tcl                                                                                                   eval(3tcl)

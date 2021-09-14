@@ -1,0 +1,46 @@
+IPTABLES-RESTORE(8)                                                                          IPTABLES-RESTORE(8)
+
+
+
+NAME
+       iptables-restore - 恢复 IP Tables
+
+总
+       iptables-restore [-c] [-n]
+
+描
+       iptables-restore 用来从 STDIN 给出的数据中恢复 IP Tables。 使用 shell 的 I/O 重定向功能来从文件中获取数据
+
+       -c, --counters
+              恢复所有报文和字节计数的值
+
+       -n, --noflush
+
+       不刷新表中从前的内容。如果没有指定，
+              iptables-restore 会刷新 (删除) 相应 IP Tables 中所有从前的内容
+
+BUGS
+       无
+
+作
+       Harald Welte <laforge@gnumonks.org>
+
+参
+       iptables-save(8), iptables(8)
+
+       iptables-HOWTO  记述了  iptables  用法的细节，  NAT-HOWTO  记述了  NAT  的细节，  netfilter-hacking-HOWTO
+       记述了内部实现的细节
+
+[中
+       杨
+       Poopy <email> (?)
+
+[中
+       2002.05.01
+
+《
+       http://cmpp.linuxforum.net
+
+
+
+                                                  Jan 04, 2001                               IPTABLES-RESTORE(8)

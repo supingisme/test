@@ -1,0 +1,78 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:26 CST. 
+
+wc < file.txt
+
+wc << EOF
+>aad
+>s
+>EOF
+2 2 4
+
+
+
+
+WC(1)                                            FSF                                           WC(1)
+
+
+
+NAME
+       wc - 输出文件中的行数、单词数、字节数
+
+
+SYNOPSIS 总
+       wc [选项列表]... [文件名列表]...
+
+
+DESCRIPTION 描
+       对每个文件输出行、单词、和字节统计数，如果指定了多于一个文件则还有一
+       个行数的总计。没有指定文件或指定的文件是 -，则读取标准输入。
+
+       -c, --bytes, --chars
+              输出字节统计数。
+
+       -l, --lines
+              输出换行符统计数。
+
+       -L, --max-line-length
+              输出最长的行的长度。
+
+       -w, --words
+              输出单词统计数。
+
+       --help 显示帮助并退出
+
+       --version
+              输出版本信息并退出
+
+
+AUTHOR 著
+       由 Paul Rubin 和 David MacKenzie 完成。
+
+
+REPORTING BUGS 报
+       向 <bug-textutils@gnu.org>报告缺陷。
+
+
+COPYRIGHT 版
+       Copyright © 1999 Free Software Foundation, Inc.
+       This is free software; see the source for copying conditions.  There is NO warranty; not even
+       for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+SEE ALSO 参
+       完整的    wc    文档是以    Texinfo    手册的形式维护的，如果   info   和   wc   在你的机器上
+       被正确的安装了，使用命令 info wc 就访问完整的文档了。
+
+
+[中
+       mhss<jijingzhisheng@up369.com>
+
+[中
+       2000/11/7
+
+《
+       http://cmpp.linuxforum.net
+
+
+
+GNU textutils 2.0a                          December 1999                                      WC(1)

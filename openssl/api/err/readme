@@ -1,0 +1,102 @@
+程序设计时，一般通过函数的返回值来判断是否调用成功。设计良好的函数以及好的错
+误处理能帮助调用者快速找到错误原因。错误处理应该尽可能多的包含各种信息，包括：
+􀂾 错误码；
+􀂾 出错文件以及行号；
+􀂾 错误原因；
+􀂾 出错函数；
+􀂾 出错库；
+􀂾 出错模块与类别信息；
+􀂾 错误堆栈信息等。
+并且，出错信息最好能支持多种输出。可以是输出在标准输出上，也可以是文件等形式。
+
+####### 数据结构
+
+openssl 中，通过unsigned long 类型来存放错误信息。它包含三部分内容：库代码、
+函数代码以及错误原因代码。其中，库代码在crypto/err.h 中定义，函数代码以及错误
+原因代码由各个功能模块定义（同类代码不能与其他的重复，也不能超过一定的大小）。
+比如err.h 中为BIO 定义如下库代码：
+
+######## 主要函数
+
+1) ERR_add_error_data
+在本层错误的err_data 元素中添加说明信息。该函数一般由各个模块调用，比
+如可以用它说明什么操作导致了错误。
+2） ERR_clear_error
+清除所有的错误信息。如果不清楚所有错误信息，可能会有其他无关错误遗留
+在ERR_STATE 表中。
+3） ERR_error_string/ ERR_error_string_n
+根据错误码获取具体的错误信息，包括出错的库、出错的函数以及错误原因。
+4) ERR_free_strings
+释放错误信息哈希表；通常在最后调用。
+5) ERR_func_error_string
+根据错误号，获取出错的函数信息。
+6） ERR_get_err_state_table
+获取存放错误的哈希表。
+7） ERR_get_error
+获取第一个错误号。
+8) ERR_get_error_line
+根据错误号，获取错误的行号。
+9) ERR_get_error_line_data
+根据错误号，获取出错信息。
+10) ERR_get_implementation
+获取错误处理函数，与哈希表操作相关。
+11）ERR_get_state
+获取 ERR_STATE 表。
+12）ERR_lib_error_string
+根据错误号，获取是哪个库出错。
+13）ERR_load_strings
+加载错误信息，由各个模块调用。
+14）ERR_load_ASN1_strings
+ERR_load_BIO_strings
+ERR_load_BN_strings
+ERR_load_BUF_strings
+ERR_load_COMP_strings
+ERR_load_CONF_strings
+ERR_load_CRYPTO_strings
+ERR_load_crypto_strings
+ERR_load_DH_strings
+ERR_load_DSA_strings
+ERR_load_DSO_strings
+ERR_load_EC_strings
+ERR_load_ENGINE_strings
+ERR_load_ERR_strings
+ERR_load_EVP_strings
+ERR_load_OBJ_strings
+ERR_load_OCSP_strings
+ERR_load_PEM_strings
+ERR_load_PKCS12_strings
+ERR_load_PKCS7_strings
+ERR_load_RAND_strings
+ERR_load_RSA_strings
+ERR_load_UI_strings
+ERR_load_X509_strings
+ERR_load_X509V3_strings
+各个模块实现的，加载各自错误信息。
+15）ERR_peek_error
+获取第一个错误号。
+16）ERR_peek_error_line
+获取第一个错误的出错行。
+17）ERR_peek_error_line_data
+获取第一个错误的行数和错误信息。
+18）ERR_peek_last_error
+获取最后一个错误号。
+19）ERR_peek_last_error_line
+获取最后一个错误的行号。
+20）ERR_peek_last_error_line_data
+获取最后一个错误的行号和错误信息。
+21）ERR_print_errors
+将错误信息输出到 bio 中。
+22）ERR_print_errors_cb
+根据用户设置的回调函数来打印错误信息。
+23）ERR_print_errors_fp
+将错误打印到 FILE 中。
+24) ERR_put_error
+将错误信息存放到ERR_STATE 表中top 指定的错误堆栈(最后的错误)。
+25) ERR_reason_error_string
+根据错误号得到错误原因。
+26) ERR_remove_state
+删除线程相关的错误信息。
+27) ERR_set_error_data
+将错误信息存放到ERR_STATE 表中top 指定的错误堆栈(最后的错误)。
+28) ERR_unload_strings
+从错误哈希表中删除相关信息。

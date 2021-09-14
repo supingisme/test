@@ -1,0 +1,11 @@
+# OpenSSL example configuration file.
+
+oid_section  = new_oids
+
+[ CA_default ]
+
+dir  = ./demoCA  # Where everything is kept
+
+certs  = $dir/certs  # Where the issued certs are kept
+
+default_days = 365  #注意，这里是一个数字

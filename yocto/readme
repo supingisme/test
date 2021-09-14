@@ -1,0 +1,11 @@
+Yocto ，是一个开源社区。它通过提供模版、工具和方法帮助开发者创建基于linux内核的定制系统，支持ARM, PPC, MIPS, x86 (32 & 64 bit)硬件体系架构。
+
+https://devarea.com/yocto-project-introduction/#.X3QWc2gzaUk
+
+构建嵌入式Linux系统是一项复杂的任务，您需要选择一个工具链，配置并构建Bootloader，内核，文件系统和应用程序。维护更多产品的过程变得更加复杂。
+
+要构建系统，您可以使用一些工具，例如buildroot，crosstool，busybox等。
+
+Yocto项目有助于解决问题
+
+

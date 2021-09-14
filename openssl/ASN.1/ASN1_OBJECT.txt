@@ -1,0 +1,6 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:11:35 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2020年 01月 16日 星期四 19:55:00 CST. 
+ASN1_OBJECT
+ASN1中的OBJECT表明来一个对象，每个对象有一个OID(object id)。例如：OU的OID
+为2.5.4.11。OBJECT对象在DER编码的时候通过计算将OID转换为另外一组数据(可用函数a2d_ASN1_OBJECTH函数)。
+用户编辑一个二进制文件，内容为：0x30 0x05 0x06 0x03 0x55 0x04 0x0A，用asn1view打开查看

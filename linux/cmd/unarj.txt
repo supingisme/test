@@ -1,0 +1,5 @@
+unarj
+功能说明：解压缩.arj 文件。
+语 法：unarj [eltx][.arj 压缩文件]
+补充说明：此为Red Hat Linux 才有的命令。arj 的压缩格式是当前常用的压缩格式之一，unarj 为.arj 压缩文件
+的解压缩程序。

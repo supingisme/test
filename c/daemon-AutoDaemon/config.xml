@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<config-root>
+    <executions>
+        <exe name="ls" args="-l">/usr/bin</exe>
+        <exe name="tree" args="/home">/usr/bin</exe>
+        <exe name="cat" args="config.xml">/usr/bin</exe>
+    </executions>
+</config-root>

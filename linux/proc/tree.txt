@@ -1,0 +1,24 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 17日 星期一 08:48:48 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 17日 星期一 08:13:19 CST. 
+/proc/
+├── 1
+├── 10
+├── 11
+├── 1114
+├── 112
+├── 11268
+├── 12
+├─...  -> lots of process ID
+├── acpi
+├── bus
+├── driver
+├── fs
+├── irq
+├── net -> self/net
+├── scsi
+├── self -> 87751
+├── sys
+├── sysvipc
+└── tty
+
+190 directories

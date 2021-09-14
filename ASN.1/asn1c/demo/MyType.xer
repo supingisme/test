@@ -1,0 +1,10 @@
+<MyTypes>
+    <myObjectId>1.3.6.1.4.1.9363.1.5.0</myObjectId>
+    <mySeqOf>
+        <MyInt>123</MyInt>
+        <MyInt>111222333</MyInt>
+    </mySeqOf>
+    <myBitString>
+        11
+    </myBitString>
+</MyTypes>

@@ -1,0 +1,10 @@
+# filename:lineno [module]function flags format
+init/main.c:774 [main]do_one_initcall_debug =p "initcall %pF returned %d after %lld usecs\012"
+init/main.c:767 [main]do_one_initcall_debug =p "calling  %pF @ %i\012"
+init/main.c:738 [main]initcall_blacklisted =p "initcall %s blacklisted\012"
+init/main.c:714 [main]initcall_blacklist =p "blacklisting initcall %s\012"
+arch/x86/events/intel/core.c:4708 [core]fixup_ht_bug =_ "failed to disable PMU erratum BJ122, BV98, HSD29 workaroun
+d\012"arch/x86/events/intel/pt.c:727 [pt]pt_topa_dump =_ "# entry @%p (%lx sz %u %c%c%c) raw=%16llx\012"
+arch/x86/events/intel/pt.c:718 [pt]pt_topa_dump =_ "# table @%p (%016Lx), off %llx size %zx\012"
+arch/x86/kernel/tboot.c:103 [tboot]tboot_probe =_ "tboot_size: 0x%x\012"
+arch/x86/kernel/tboot.c:102 [tboot]tboot_probe =_ "tboot_base: 0x%08x\012"

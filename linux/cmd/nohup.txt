@@ -1,0 +1,42 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:25 CST. 
+16.3 在非控制台下运行脚本
+有时你会想在终端会话中启动shell脚本，然后让脚本一直以后台模式运行到结束，即使你退
+出了终端会话。这可以用nohup命令来实现。
+nohup命令运行了另外一个命令来阻断所有发送给该进程的SIGHUP信号。这会在退出终端会
+话时阻止进程退出。
+nohup命令的格式如下：
+$ nohup ./test1.sh &
+[1] 3856
+$ nohup: ignoring input and appending output to 'nohup.out'
+$
+和普通后台进程一样， shell会给命令分配一个作业号， Linux系统会为其分配一个PID号。区
+别在于，当你使用nohup命令时，如果关闭该会话，脚本会忽略终端会话发过来的SIGHUP信号。
+由于nohup命令会解除终端与进程的关联，进程也就不再同STDOUT和STDERR联系在一起。
+为了保存该命令产生的输出， nohup命令会自动将STDOUT和STDERR的消息重定向到一个名为
+nohup.out的文件中。
+
+
+说明 如果使用nohup运行了另一个命令，该命令的输出会被追加到已有的nohup.out文件中。当
+运行位于同一个目录中的多个命令时一定要当心，因为所有的输出都会被发送到同一个
+nohup.out文件中，结果会让人摸不清头脑。
+
+nohup.out文件包含了通常会发送到终端显示器上的所有输出。在进程完成运行后，你可以查
+看nohup.out文件中的输出结果。
+$ cat nohup.out
+This is a test script
+Loop 1
+Loop 2
+Loop 3
+Loop 4
+Loop 5
+Loop 6
+Loop 7
+Loop 8
+Loop 9
+Loop 10
+This is the end of the test script
+$
+输出会出现在nohup.out文件中，就跟进程在命令行下运行时一样。
+
+
+

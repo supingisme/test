@@ -1,0 +1,18 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:06:53 CST. 
+32.10 version
+version 命令用来打印版本以及openssl 其他各种信息。
+用法：
+version -[avbofp]
+选项：
+-a
+打印所有信息。
+-v
+打印当前openssl 的版本信息。
+-b
+打印当前版本的openssl 是什么时候编译完成的。
+-o
+建立库时的各种与加密算法和机器字节有关的信息。
+-f
+编译openssl 的编译选项。
+-p
+平台信息。

@@ -1,0 +1,9 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:05:22 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 26日 星期二 09:02:56 CST. 
+
+
+initialize mutex					initialize semaphore to l
+
+pthread_mutex_lock(&mutex);			sem_wait(&sem);
+critical region ...					critical region ...
+pthread_mutex_unlock(&mutex);		sem_post(&sem);

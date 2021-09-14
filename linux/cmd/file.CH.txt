@@ -1,0 +1,9 @@
+file
+功能说明：辨识文件类型。
+语 法：file [-beLvz][-f <名称文件>][-m <魔法数字文件>...][文件或目录...]
+补充说明：通过file 指令，我们得以辨识该文件的类型。file 命令会尝试去辨别所指定的文件类型是什么。如
+果为文本文件，它会告诉用户是哪一类文本文件，如ASCII、English、International 等；如果为执行文件，它
+会告诉用户是那一种执行文件，如ELF、Bourne Shell Script 等；若为符号链接，它会显示该链接所指向的文
+件。其他诸如目录。特殊文件（Block、Character、Socket…）、图形文件（JPEG、GIF、BMP…）、备份文件
+或压缩文件（TAR、Gzip、Zip…）等等，只要该文件类型在魔法数字（Magic Number）文件内有记录数据，
+file 命令就会返回其类型的相关信息。

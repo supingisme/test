@@ -1,0 +1,7 @@
+[root@bash]# getfacl fstab 
+# file: fstab 
+# owner: rongtao 
+# group: rongtao 
+user::rw- 
+group::r-- 
+other::r--

@@ -1,0 +1,6 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:11:35 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2020年 01月 16日 星期四 19:55:00 CST. 
+ASN1_BOOLEAN
+表明了ASN1语法中的true和flase。用户以用UltraEdit等工具编辑一个二进制文件来查
+看，此二进制文件的内容为：0x30 0x03 0x01 0x01 0x00，然后用asn1view工具查看此文件内
+容.

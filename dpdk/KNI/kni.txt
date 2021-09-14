@@ -1,0 +1,10 @@
+21.	内核网络接口卡接口
+DPDK Kernel NIC Interface（KNI）允许用户空间应用程序访问Linux *控制面。
+
+使用DPDK KNI的好处是：
+	比现有的Linux TUN / TAP接口更快（通过消除系统调用和copy_to_user()/copy_from_user()操作）。
+	允许使用标准Linux网络工具（如ethtool，ifconfig和tcpdump）管理DPDK端口。
+	允许与内核网络堆栈的接口。
+
+使用DPDK内核NIC接口的应用程序的组件如图所示。
+

@@ -1,0 +1,114 @@
+
+TR069协议
+
+全称“Technical Report 069”是由DSL Forum（一个非盈利性的全球行业联盟,致力于发展宽带网络范，
+其成员包括通讯、设备、计算机、网络和服务提供商等行业的领先厂商，现已更名为“Broadband Forum”）修订一份技术规范，
+该规范是应用层的管理协议，命名为“CPE广域网管理协议（CPE WAN Management Protocol）”。
+
+TR069定义了一套全新的网管体系结构，包括管理模型，交互接口及基本的管理参数，能够有效地实施对家庭网络设备的管理。
+
+在TR069协议定义的网管模型中管理服务器称为自动配置服务器(ACS)，负责完成对用户终端设备(CPE)的管理。
+ACS与CPE之间的接口称为南向接口，ACS与运营商的其他网管系统、业务管理系统、计费系统(OSS/BSS)之间的接口称为北向接口，
+TR069协议主要定义南向接口的标准。TR069协议允许 ACS 给一个 CPE 或一组基于多种标准的CPE 提供服务。
+这个服务提供机制允许 CPE 既可以在刚刚连接到宽带接入网时，也可以在以后的任何时间来进行动态服务提供或重新配置。
+此机制包括支持在异步状况下 ACS 发起的服务。此协议包含的鉴权机制允许为每一台指定的 CPE 或基于相同的 CPE 供应商、型号、软件版本或其他标准的 CPE 组提供服务。
+同时也提供了一些可选的功能来管理那些有特殊级别安全需求的应用或业务，例如付费服务等。
+
+TR069协议网络拓扑如下图，ACS 是在网络中的服务器，根据预定制来管理设备，其左侧连接运营商的其他网管系统、业务管理系统等北向接口。 
+TR069协议主要定义了ACS和CPE间的南向接口，TR069协议可以用于理DSLB-NT以及其他类型的CPE,包括路由器和 LAN 侧的客户端设备。
+它被服务供应商用于基于跟设备已经建立的IP层链接的特殊媒体接入上。
+
+作者：老鼠AI大米_Java全栈
+链接：https://www.jianshu.com/p/f76691a6b80c
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+Table 5 provides a summary of all methods, and indicates the conditions under which implementation of each RPC method 
+defined in Annex A is REQUIRED or OPTIONAL.
+
+
+Table 5 – RPC message requirements Method name CPE requirement ACS requirement CPE methods Responding Calling
+GetRPCMethods
+REQUIRED
+OPTIONAL
+SetParameterValues
+REQUIRED
+REQUIRED
+GetParameterValues
+REQUIRED
+REQUIRED
+GetParameterNames
+REQUIRED
+REQUIRED
+SetParameterAttributes
+REQUIRED
+OPTIONAL
+GetParameterAttributes
+REQUIRED
+OPTIONAL
+AddObject
+REQUIRED
+OPTIONAL
+DeleteObject
+REQUIRED
+OPTIONAL
+Reboot
+REQUIRED
+OPTIONAL
+Download
+REQUIRED7
+REQUIRED7
+ScheduleDownload
+OPTIONAL
+OPTIONAL
+Upload
+OPTIONAL
+OPTIONAL
+FactoryReset
+OPTIONAL
+OPTIONAL
+GetQueuedTransfers (DEPRECATED)
+OPTIONAL8
+OPTIONAL
+GetAllQueuedTransfers
+OPTIONAL
+OPTIONAL
+CancelTransfer
+OPTIONAL
+OPTIONAL
+ScheduleInform
+OPTIONAL
+OPTIONAL
+ChangeDUState
+OPTIONAL
+OPTIONAL
+SetVouchers (DEPRECATED)
+OPTIONAL9
+OPTIONAL
+GetOptions (DEPRECATED)
+OPTIONAL9
+OPTIONAL ACS methods Calling Responding
+GetRPCMethods
+OPTIONAL
+REQUIRED
+Inform
+REQUIRED
+REQUIRED
+TransferComplete
+REQUIRED10
+REQUIRED11
+AutonomousTransferComplete
+OPTIONAL
+REQUIRED
+DUStateChangeComplete
+OPTIONAL12
+OPTIONAL13
+AutonomousDUStateChangeComplete
+OPTIONAL
+OPTIONAL
+RequestDownload
+OPTIONAL
+OPTIONAL
+Kicked (DEPRECATED)
+OPTIONAL
+OPTIONAL14

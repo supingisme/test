@@ -1,0 +1,4 @@
+# 获取真正的root权限
+#需要修改 Ulimits 权限
+
+docker run -d --privileged centos7-everything

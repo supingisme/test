@@ -1,0 +1,7 @@
+
+转换运算符： 舍弃一些限定
+
+const_cast<new_type>(expression)	抛弃cosnt属性限定
+static_cast<new_type>(expression)	
+reinterpret_cast<new_type>(expression)
+dynamic_cast<new_type>(expression)

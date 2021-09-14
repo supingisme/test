@@ -1,0 +1,43 @@
+# Comment Rong Tao @Sylincom Beijing, 2020年 01月 19日 星期日 17:06:53 CST. 
+32.26 errstr
+本命令用于查询错误代码。
+用法：
+openssl errstr [-stats] <errno>
+选项：
+-stats
+打印哈希表状态。
+errno
+错误号。
+举例：
+用户输入：
+openssl req -config no.txt
+有如下错误信息：
+2220:error:02001002:system library:
+openssl errstr 02001002
+openssl errstr -stats 02001002
+
+
+			[root@localhost openssl-cmd]# openssl errstr stats
+			stats: bad error code
+			usage: errstr [-stats] <errno> ...
+			[root@localhost openssl-cmd]# openssl errstr stats 1
+			stats: bad error code
+			usage: errstr [-stats] <errno> ...
+			error:00000001:lib(0):func(0):reason(1)
+			[root@localhost openssl-cmd]# openssl errstr stats 2
+			stats: bad error code
+			usage: errstr [-stats] <errno> ...
+			error:00000002:lib(0):func(0):system lib
+			[root@localhost openssl-cmd]# openssl errstr stats 3
+			stats: bad error code
+			usage: errstr [-stats] <errno> ...
+			error:00000003:lib(0):func(0):BN lib
+			[root@localhost openssl-cmd]# openssl errstr stats 4
+			stats: bad error code
+			usage: errstr [-stats] <errno> ...
+			error:00000004:lib(0):func(0):RSA lib
+			[root@localhost openssl-cmd]# openssl errstr stats 5
+			stats: bad error code
+			usage: errstr [-stats] <errno> ...
+			error:00000005:lib(0):func(0):DH lib
+

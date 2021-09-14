@@ -1,0 +1,3 @@
+编译 go 程序
+
+go build -o hello main.go

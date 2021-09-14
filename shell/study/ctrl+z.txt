@@ -1,0 +1,28 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:42 CST. 
+2. 暂停进程
+你可以在进程运行期间暂停进程，而无需终止它。尽管有时这可能会比较危险（比如，脚本
+打开了一个关键的系统文件的文件锁），但通常它可以在不终止进程的情况下使你能够深入脚本
+内部一窥究竟。
+Ctrl+Z组合键会生成一个SIGTSTP信号，停止shell中运行的任何进程。停止（stopping）进程
+跟终止（terminating）进程不同：停止进程会让程序继续保留在内存中，并能从上次停止的位置
+继续运行。在16.4节中，你会了解如何重启一个已经停止的进程。
+当用Ctrl+Z组合键时， shell会通知你进程已经被停止了。
+$ sleep 100
+^Z
+[1]+ Stopped sleep 100
+$
+
+
+可以用ps命令来查看已停止的作业。
+$ sleep 100
+^Z
+[1]+ Stopped sleep 100
+$
+$ ps -l
+F S UID PID PPID C PRI NI ADDR SZ WCHAN TTY TIME CMD
+0 S 501 2431 2430 0 80 0 - 27118 wait pts/0 00:00:00 bash
+0 T 501 2456 2431 0 80 0 - 25227 signal pts/0 00:00:00 sleep
+0 R 501 2458 2431 0 80 0 - 27034 - pts/0 00:00:00 ps
+$
+
+

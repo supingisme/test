@@ -1,0 +1,18 @@
+3.3.5.	cgroup控制
+以下是cgroup控件使用的简单示例，在同一个核心($CPU)上两个线程(t0 and t1)执行数据包I/O。 我们期望只有50%的CPU消耗在数据包IO操作上。 
+mkdir /sys/fs/cgroup/cpu/pkt_io
+
+mkdir /sys/fs/cgroup/cpuset/pkt_io
+
+echo $cpu > /sys/fs/cgroup/cpuset/cpuset.cpus
+
+echo $t0 > /sys/fs/cgroup/cpu/pkt_io/tasks
+echo $t0 > /sys/fs/cgroup/cpuset/pkt_io/tasks
+
+echo $t1 > /sys/fs/cgroup/cpu/pkt_io/tasks
+echo $t1 > /sys/fs/cgroup/cpuset/pkt_io/tasks
+
+cd /sys/fs/cgroup/cpu/pkt_io
+echo 100000 > pkt_io/cpu.cfs_period_us
+echo  50000 > pkt_io/cpu.cfs_quota_us
+

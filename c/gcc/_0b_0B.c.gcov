@@ -1,0 +1,25 @@
+        -:    0:Source:_0b_0B.c
+        -:    0:Graph:_0b_0B.gcno
+        -:    0:Data:_0b_0B.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: *	6.57 Binary constants using the ‘0b’ prefx
+        -:    3: *	Integer constants can be written as binary constants, consisting of a sequence of ‘0’ and ‘1’
+        -:    4: *	digits, prefxed by ‘0b’ or ‘0B’. This is particularly useful in environments that operate a
+        -:    5: *	lot on the bit-level (like microcontrollers).
+        -:    6: *	The following statements are identical:
+        -:    7: *	i = 42;
+        -:    8: *	i = 0x2a;
+        -:    9: *	i = 052;
+        -:   10: *	i = 0b101010;
+        -:   11: *	The type of these constants follows the same rules as for octal or hexadecimal integer
+        -:   12: *	constants, so sufxes like ‘L’ or ‘UL’ can be applied.
+        -:   13: */
+        -:   14:
+        -:   15:#include <stdio.h>
+        -:   16:
+        1:   17:int main()
+        -:   18:{
+        1:   19:	printf("%d\n", 0b00101);
+        1:   20:}

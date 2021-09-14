@@ -1,0 +1,116 @@
+IOPERM(2)                                   Linux Programmer's Manual                                  IOPERM(2)
+
+
+
+NAME
+       ioperm - set port input/output permissions
+
+SYNOPSIS
+       #include <unistd.h> /* for libc5 */
+       #include <sys/io.h> /* for glibc */
+
+       int ioperm(unsigned long from, unsigned long num, int turn_on);
+
+DESCRIPTION
+       ioperm()  sets  the  port  access  permission bits for the calling thread for num bits starting from port
+       address from.  If turn_on is nonzero, then permission for the specified bits is enabled; otherwise it  is
+       disabled.  If turn_on is nonzero, the calling thread must be privileged (CAP_SYS_RAWIO).
+
+       Before  Linux  2.6.8,  only the first 0x3ff I/O ports could be specified in this manner.  For more ports,
+       the iopl(2) system call had to be used (with a level argument of 3).  Since Linux 2.6.8, 65,536 I/O ports
+       can be specified.
+
+       Permissions are not inherited by the child created by fork(2); following a fork(2) the child must turn on
+       those permissions that it needs.  Permissions are preserved across execve(2); this is useful  for  giving
+       port access permissions to unprivileged programs.
+
+       This  call  is  mostly  for the i386 architecture.  On many other architectures it does not exist or will
+       always return an error.
+
+RETURN VALUE
+       On success, zero is returned.  On error, -1 is returned, and errno is set appropriately.
+
+ERRORS
+       EINVAL Invalid values for from or num.
+
+       EIO    (on PowerPC) This call is not supported.
+
+       ENOMEM Out of memory.
+
+       EPERM  The calling thread has insufficient privilege.
+
+CONFORMING TO
+       ioperm() is Linux-specific and should not be used in programs intended to be portable.
+
+NOTES
+       The /proc/ioports file shows the I/O ports that are currently allocated on the system.
+
+       Libc5 treats it as a system call and has a prototype in <unistd.h>.  Glibc1 does not  have  a  prototype.
+       Glibc2 has a prototype both in <sys/io.h> and in <sys/perm.h>.  Avoid the latter, it is available on i386
+       only.
+
+[root@localhost glibc]# cat /proc/ioports 
+0000-0cf7 : PCI Bus 0000:00
+0000-001f : dma1
+0020-0021 : pic1
+0040-0043 : timer0
+0050-0053 : timer1
+0060-0060 : keyboard
+0064-0064 : keyboard
+0070-0071 : rtc0
+0080-008f : dma page reg
+00a0-00a1 : pic2
+00c0-00df : dma2
+00f0-00ff : fpu
+0170-0177 : 0000:00:01.1
+0170-0177 : ata_piix
+01f0-01f7 : 0000:00:01.1
+01f0-01f7 : ata_piix
+0376-0376 : 0000:00:01.1
+0376-0376 : ata_piix
+03c0-03df : vga+
+03f2-03f2 : floppy
+03f4-03f5 : floppy
+03f6-03f6 : 0000:00:01.1
+03f6-03f6 : ata_piix
+03f7-03f7 : floppy
+0510-051b : QEMU0002:00
+0510-051b : fw_cfg_io
+0600-063f : 0000:00:01.3
+0600-0603 : ACPI PM1a_EVT_BLK
+0604-0605 : ACPI PM1a_CNT_BLK
+0608-060b : ACPI PM_TMR
+0700-070f : 0000:00:01.3
+0700-0708 : piix4_smbus
+0cf8-0cff : PCI conf1
+0d00-ffff : PCI Bus 0000:00
+1000-1fff : PCI Bus 0000:08
+2000-2fff : PCI Bus 0000:07
+3000-3fff : PCI Bus 0000:06
+4000-4fff : PCI Bus 0000:05
+5000-5fff : PCI Bus 0000:04
+5000-503f : 0000:04:01.0
+6000-6fff : PCI Bus 0000:03
+7000-7fff : PCI Bus 0000:02
+7000-703f : 0000:02:01.0
+7040-707f : 0000:02:02.0
+8000-8fff : PCI Bus 0000:01
+9000-903f : 0000:00:0b.0
+9040-905f : 0000:00:01.2
+9040-905f : uhci_hcd
+9060-907f : 0000:00:0c.0
+9080-908f : 0000:00:01.1
+9080-908f : ata_piix
+afe0-afe3 : ACPI GPE0_BLK
+
+
+SEE ALSO
+       iopl(2), outb(2), capabilities(7)
+
+COLOPHON
+       This page is part of release 3.53 of the Linux man-pages project.  A  description  of  the  project,  and
+       information about reporting bugs, can be found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                                              2013-03-12                                          IOPERM(2)

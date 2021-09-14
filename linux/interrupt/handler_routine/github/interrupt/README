@@ -1,0 +1,17 @@
+make:
+    make ARCH=arm  -C /lib/modules/3.0.4-x3/build M=$(pwd) modules
+
+
+以下内容如果加入Makefile，会导致make出来的ko文件版本错误(3.0.4, 而不是3.0.4-x3)，原因不明
+
+all: gpio_interrupt.c
+	make ARCH=arm  -C /lib/modules/3.0.4-x3/build M=$(pwd) modules
+
+clean:
+	rm *.ko *.o Module.symvers *.mod.*
+
+TODO
+    Bug: irq type is set to be falling edge triggered but low level triggered indeed
+    Answer: real test shows 
+                            when fixed to GND the interrupt wasn't produced
+                            when touched GND frequently the interrupts were produced simultaneously

@@ -1,0 +1,129 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:25 CST. 
+#!/bin/bash 
+#RongTao 2018.12.25
+
+function usage()
+{
+echo "Usage:"
+echo "	\"$0 clean\" / \"$0 rm\"  to clean all the ue folders"
+echo "else"
+echo "	\"$0 [id] [ipv4] [port]\" to connect to cell"
+echo "else"
+echo "	\"$0 -k [id]\" to terminate UE"
+}
+
+
+function clean()
+{
+echo "Clean!"
+rm -rf ue_*
+echo "Done!"
+exit
+}
+
+function kill_ue_by_name()
+{
+ps -e | grep $1 | awk '{print $1}' | xargs kill -9
+}
+
+
+#parameters of UE
+BASE_IP=10.21.255.255
+DEFAULT_FOLDER=default
+UE_SIMU_PHY_CFG=cfg_ue_simu_phy
+CONFIG_LTE=config_lte.txt
+UE=lteue
+UE_SIMU_PHY=ue_simu_phy
+uePortDefault=13000
+ueSimuPhyPortDefault=12000
+enodeBSimuPhyPortDefault=10810
+imsiDefault1="0x3,0x3,0x2,0x5,0x4,0x7,0x6,0x9,0x8,0x2,0x1,0x4,0x2,0x0,0x0"
+imsiDefault="0x3,0x3,0x2,0x5,0x4,0x7,0x6,0x9,0x8,0x2,0x1,0x4,0x2,0x0"
+
+
+if [ $# -eq 0 ]; then
+	usage
+	exit
+fi 
+
+if [ $# -eq 1 ]; then
+	#if [ $1 = "clean" ]; then
+	#	clean
+	#fi
+	case $1 in
+	"clean")
+	clean
+	exit
+	;;"rm")
+	clean
+	exit
+	;;
+	*)
+	echo "$0 clean/rm"
+	#exit
+	;;
+	esac
+fi
+
+if [ $# -eq 2 ]; then
+	case $1 in
+	"-k")
+	kill_ue_by_name $UE$3
+	kill_ue_by_name $UE_SIMU_PHY$3
+	exit
+	;;
+	*)
+	echo "$0 $1 $2"
+	;;
+	esac
+fi
+
+
+if [ $# -lt 3 ]; then
+	echo "Usage: $0 [id] [ipv4] [port]"
+	exit
+fi
+
+id=$1
+ipv4=$2
+port=$3
+
+echo "Execute: $0 $id $ipv4 $port"
+
+#copy a new ue folder
+cellfolder=ue_$id
+#if [ -f $cellfolder ]; then
+	rm -rf $cellfolder
+	#mkdir $cellfolder
+#fi
+cp -a $DEFAULT_FOLDER $cellfolder
+mv $cellfolder/$UE $cellfolder/$UE$id
+mv $cellfolder/$UE_SIMU_PHY $cellfolder/$UE_SIMU_PHY$id
+
+
+#alter the parameters of configuration
+sed -i "s/$BASE_IP/$ipv4/g" $cellfolder/$UE_SIMU_PHY_CFG
+((uePort=$uePortDefault+$id))
+((ueSimuPhyPort=$ueSimuPhyPortDefault+$id))
+echo "alter uePort = $uePort"
+echo "alter ueSimuPhyPort = $ueSimuPhyPort"
+sed -i "s/$uePortDefault/$uePort/g" $cellfolder/$UE_SIMU_PHY_CFG
+sed -i "s/$ueSimuPhyPortDefault/$ueSimuPhyPort/g" $cellfolder/$UE_SIMU_PHY_CFG
+sed -i "s/$enodeBSimuPhyPortDefault/$port/g" $cellfolder/$UE_SIMU_PHY_CFG
+
+# alter config_lte.txt 
+imsi=$imsiDefault,0x$id
+echo "alter imsi = $imsi"
+
+sed -i "s/$ueSimuPhyPortDefault/$ueSimuPhyPort/g" $cellfolder/$CONFIG_LTE
+sed -i "s/$uePortDefault/$uePort/g" $cellfolder/$CONFIG_LTE
+sed -i "s/$BASE_IP/$ipv4/g" $cellfolder/$CONFIG_LTE
+sed -i "s/$imsiDefault1/$imsi/g" $cellfolder/$CONFIG_LTE
+
+
+#execute the ue_simu_phy file
+chmod +x $cellfolder/$UE_SIMU_PHY$id $cellfolder/$UE$id
+
+cd $cellfolder; ./$UE_SIMU_PHY$id &
+sleep 1
+cd $cellfolder; ./$UE$id &

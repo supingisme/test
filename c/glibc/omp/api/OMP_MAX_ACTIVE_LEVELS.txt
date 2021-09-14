@@ -1,0 +1,8 @@
+OMP_MAX_ACTIVE_LEVELS – Set the maximal number of
+nested parallel regions
+Description:
+Specifies the initial value for the maximal number of nested parallel regions.
+The value of this variable shall be positive integer. If undefined, the number of
+active levels is unlimited.
+See also: Section 2.16 [omp set max active levels], page 10
+Reference: OpenMP specifications v3.0, section 4.7

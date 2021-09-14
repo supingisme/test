@@ -1,0 +1,21 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 06月 14日 星期五 09:06:55 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 15日 星期五 08:51:22 CST. 
+ Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 15日 星期五 08:51:14 CST. 
+IPv6 Transition: 6to4
+The 6to4 transition mechanism, fully described in "Connection of IPv6 Domains via IPv4 Clouds" (RFC 3056 [Carpenter and Moore 2001]), is a method of dynamically creating the tunnels shown in Figure B.2(See 11.3). Unlike previously designed dynamic tunnel mechanisms, which required that each host involved have an IPv4 address and be aware of the tunneling mechanism, 6to4 only involves routers in the tunneling process. This allows for simpler configuration and a central location to enforce security policy. It also permits colocation of 6to4 functionality with the common NAT/firewall function that is often at the edge of a network (e.g., a small NAT/firewall device at the customer's end of a DSL or cable-modem connection).
+6to4 addresses are in the range 2002/16. The IPv4 address follows in the next four bytes of the address, as shown in Figure B.3; the 16-bit 2002 prefix and the 32-bit IPv4 address create a 48-bit public topology identifier. This leaves two bytes for the subnet ID before the 64-bit interface ID. For example, the 6to4 prefix corresponding to our host freebsd, with IPv4 address 12.106.32.254, is 2002:c6a:20fe/48.
+
+
+			
+					6to4 addresses.
+  +---------+-----------------+---------+------------------------------------------+
+  | 2002    |  Ipv4 address   |subnet ID|               interface ID               |
+  +---------+-----------------+---------+------------------------------------------+
+  |<----public topology ----->|<-site ->|<-----------interface identifier -------->|
+                              | topology|                  
+
+
+
+The advantage of 6to4 over the 6bone is that the tunnels making up the 6to4 infrastructure are built automatically; there is no prearranged configuration required. A site using 6to4 configures a default router using a well-known IPv4 anycast address, 192.88.99.1 (RFC 3068 [Huitema 2001]). This corresponds to the IPv6 address 2002:c058:6301::. Routers in the native IPv6 infrastructure that are willing to act as 6to4 gateways advertise a route to 2002/16 and encapsulate any traffic to the IPv4 address embedded in the 6to4 address. Such routers can be local to a site, regional, or global, depending on the scope of their route advertisements.
+The goal for these virtual networks is that over time, as intermediate routers gain the required functionality (e.g., IPv6 routing in terms of the 6bone and other IPv6 transition mechanisms), the virtual networks will disappear.
+

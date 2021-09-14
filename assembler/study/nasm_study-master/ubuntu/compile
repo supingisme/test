@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+	echo "usage: $0 <xxx.asm>"
+	exit
+fi
+
+if [ -f a.out ]; then
+	rm a.out
+fi
+
+nasm -o $1.o -f elf64 $1
+ld $1.o -o a.out
+
+rm $1.o

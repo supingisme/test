@@ -1,0 +1,15 @@
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:15:34 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:07:48 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:07:12 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:05:15 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 15:01:40 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 14:43:22 CST. 
+# Copyright (C) Rong Tao @Sylincom Beijing, 2019年 03月 12日 星期二 14:11:11 CST. 
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+	echo "Usage: $ $0 <file.sql>"
+	exit
+fi
+
+mysql -uroot -p'root ' < $1
