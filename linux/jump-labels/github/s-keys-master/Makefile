@@ -8,4 +8,4 @@ main: main.c jump_label.c jump_label_x86.c
 
 .PHONY: clean
 clean:
-	rm -f main *.o *.s
+	rm -f main *.o *.s basic*
