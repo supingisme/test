@@ -1,0 +1,27 @@
+Demonstrations of kvmpagefault, the Linux bpftrace/eBPF version.
+
+This prints bash commands from all running bash shells on the system. For
+example:
+
+# ./kvmpagefault.bt 
+Attaching 3 probes...
+Tracing KVM page fault... Hit Ctrl-C to end.
+PID    COMM             FaultAddr          ERRCode
+71752  CPU 1/KVM        0x37f598cc           3457
+^C
+
+@[
+    handle_ept_violation+353
+    handle_ept_violation+353
+    vcpu_enter_guest+2716
+    kvm_arch_vcpu_ioctl_run+202
+    kvm_vcpu_ioctl+554
+    do_vfs_ioctl+164
+    ksys_ioctl+96
+    __x64_sys_ioctl+22
+    do_syscall_64+91
+    entry_SYSCALL_64_after_hwframe+101
+, 
+    ioctl+11
+, CPU 1/KVM, 71752]: 1
+

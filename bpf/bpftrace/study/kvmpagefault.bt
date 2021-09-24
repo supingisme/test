@@ -21,6 +21,7 @@ BEGIN
 
 tracepoint:kvm:kvm_page_fault
 {
+	@[kstack, ustack, comm, pid] = count();
 	printf("%-6d %-16s 0x%-018lx %-3d\n", pid, comm, args->fault_address, args->error_code);
 }
 
