@@ -1,0 +1,39 @@
+#!/usr/bin/env bpftrace
+/*
+ * kvmentersnoop.bt	Trace kvm:kvm_entry.
+ *		For Linux, uses bpftrace and eBPF.
+ *
+ * Also a basic example of bpftrace.
+ *
+ * USAGE: kvmentersnoop.bt
+ *
+ * Copyright 2021 CESTC, Inc.
+ * Licensed under the GPL License, Version 2.0 (the "License")
+ *
+ * 
+ */
+
+BEGIN
+{
+	printf("Tracing kvm:kvm_entry... Hit Ctrl-C to end.\n");
+//	printf("%-6s %-16s %4s %3s %s\n", "PID", "COMM", "FD", "ERR", "PATH");
+}
+
+tracepoint:kvm:kvm_entry
+{
+	@start[tid] = nsecs;
+	$vcpu = args->vcpu_id;
+	@[kstack, ustack, comm, pid, $vcpu] = count();
+}
+
+tracepoint:kvm:kvm_exit
+{
+	$duration_us = (nsecs - @start[tid])/1000;
+	@us[pid, comm] = hist($duration_us);
+}
+
+END
+{
+	delete(@start[tid]);
+	delete(@us[pid, comm]);
+}

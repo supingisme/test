@@ -1,0 +1,39 @@
+#!/usr/bin/bpftrace
+
+//统计 kvm_vm_ioctl 次数
+//执行： sudo bpftrace kvm_vm_ioctl.bt
+//作者：荣涛
+//创建时间 2021年9月24日
+
+#include <linux/kvm.h>
+#include <linux/fs.h>
+#include <uapi/linux/kvm.h>
+
+BEGIN
+{
+	printf("Tracing kvm vm ioctl. Ctrl-C end.\n");
+
+//	@ops2str[KVM_CREATER_VCPU]	= "KVM_CREATER_VCPU";
+	printf("%-16s\n", "IOCTL");
+}
+
+kprobe:kvm_vm_ioctl
+{
+	@start[tid] = nsecs;
+	$file = (struct file *)arg0;
+	$ioctl = arg1;
+	printf("0x%-016lx\n", $ioctl);
+} 
+
+kretprobe:kvm_vm_ioctl
+/@start[tid]/
+{
+	$duration_us = (nsecs - @start[tid])/1000;
+	@us[pid, comm] = hist($duration_us);
+	delete(@start[tid]);
+}
+
+END
+{
+	delete(@us[pid, comm]);
+}
