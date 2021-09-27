@@ -1,0 +1,36 @@
+#!/usr/bin/bpftrace
+
+//统计 kvm_sched_yeild
+//执行： sudo bpftrace kvm_sched_yield.bt
+//作者：荣涛
+//创建时间 2021年9月27日
+
+#include <linux/kvm.h>
+#include <linux/fs.h>
+#include <uapi/linux/kvm.h>
+
+BEGIN
+{
+	printf("Tracing kvm sched yield. Ctrl-C end.\n");
+}
+
+kprobe:kvm_sched_yield
+{
+	@start[tid] = nsecs;
+	//$file = (struct file *)arg0;
+	//$ioctl = arg1;
+	//printf("0x%-016lx\n", $ioctl);
+} 
+
+kretprobe:kvm_sched_yield
+{
+	$duration_us = (nsecs - @start[tid])/1000;
+	//@us[pid, comm] = hist($duration_us);
+	//delete(@start[tid]);
+	printf("KVM yield use %d us.\n", $duration_us);
+}
+
+END
+{
+	//delete(@us[pid, comm]);
+}
