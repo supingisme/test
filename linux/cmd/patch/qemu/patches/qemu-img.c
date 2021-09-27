@@ -2,11 +2,13 @@
 #include <unistd.h>
 
 void hello_world();
+void test1();
 
 static int img_bench()
 {
 	printf("img_bench be hacked.\n");
 	hello_world();
+	test1();
 	return 1234;
 }
 

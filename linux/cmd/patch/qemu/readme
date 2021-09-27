@@ -2,4 +2,6 @@
 荣涛 日期：2021年9月26日 创建
 
 
-2021年9月27日	添加 include config-host.mak (荣涛)
+2021年9月27日
+ 1. 添加 include config-host.mak (荣涛)
+ 2. 添加 CC=$(mycc) 在 config-host.mak，请配合[libcare-patch-make](https://gitee.com/rtoax/libcareplus/commit/a6f209891dd35995a11afd4e5145e710012c793a)使用, 但是添加了 $(mycc)并不能解决这个问题 (荣涛)

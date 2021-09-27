@@ -2,10 +2,12 @@
 #include <unistd.h>
 
 void hello_world();
+void test1();
 
 static int img_bench()
 {
 	hello_world();
+	test1();
 	return 1234;
 }
 
