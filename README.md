@@ -78,7 +78,7 @@
 * `grub`: `grub2-mkconfig -o grub.cfg`
 * `gSOAP`: 简单开发SOAP/XML Web服务
 * `gtest`: 谷歌的Google TEST
-* `hadoop`: Hadoop[大数据]
+* `hadoop`: Hadoop 大数据
 * `HarmonyOS`: 鸿蒙系统
 * `hash`: 哈希
 * `high-performance`: 高性能Linux服务器
@@ -97,6 +97,8 @@
 * `latex`: 写作
 * `leetcode`: 力扣算法[rtoax](https://leetcode-cn.com/u/rtoax/)
 * `libaio`: 异步IO库
+* `libcare`: 用户态热补丁 [GitHub](https://github.com/cloudlinux/libcare/)
+* `libcareplus`: 用户态热补丁 [Gitee](https://gitee.com/openeuler/libcareplus), [demo](https://gitee.com/openeuler/docs/blob/stable2-20.03_LTS_SP1/docs/zh/docs/Virtualization/LibcarePlus.md)
 * `libcgroup`: cgroup UserSpace API Library
 * `libco`: 腾讯开源的携程库
 * `libconfig`: 配置文件加载读取输出
@@ -140,7 +142,7 @@
 * `openbfdd`: 
 * `opencv`: 基于BSD许可（开源）发行的跨平台计算机视觉库
 * `openldap`: OpenLDAP轻量级的文件夹访问协议
-* `openmp`: OpenMP多线程[see also hpc]
+* `openmp`: OpenMP多线程 see also hpc
 * `openssl`: 安全套接字
 * `openstack`: 云计算开源框架
 * `openvswitch`: OVS虚拟交换机
@@ -154,6 +156,7 @@
 * `proxy`: 代理
 * `ptmalloc`: PTMalloc内存分配器
 * `python`: Python语言
+* `qemu`: Qemu [qemu.org](https://www.qemu.org/), [docs](https://qemu-project.gitlab.io/qemu/)
 * `rabbitmq`: 部署最广泛的开源消息代理
 * `ram`: 随机存储器
 * `rapidxml`: XML解析工具
