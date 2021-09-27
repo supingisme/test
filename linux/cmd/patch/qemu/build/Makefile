@@ -1,6 +1,8 @@
 
 all: qemu-img
 
+include config-host.mak
+
 qemu-img: qemu-img.o qdev-monitor.o
 	@echo -e "\033[1;32m >>>>> CC=$(CC) <<<<< \033[m"
 	$(CC) qemu-img.o qdev-monitor.o -o $@

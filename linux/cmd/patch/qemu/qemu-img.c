@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <unistd.h>
+
+void hello_world();
 
 static int img_bench()
 {
