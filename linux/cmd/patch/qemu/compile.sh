@@ -13,5 +13,5 @@ diff -up qemu-img.c patches/qemu-img.c > qemu-img.patch
 diff -up softmmu/qdev-monitor.c patches/qdev-monitor.c > qdev-monitor.patch 
 
 press_any_key "compile"
-/home/rongtao/libcareplus/src/libcare-patch-make --clean *.patch
+/home/rongtao/libcareplus/src/libcare-patch-make $* qemu-img.patch qdev-monitor.patch 
 
