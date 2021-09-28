@@ -1,0 +1,3 @@
+#!/bin/bash 
+
+KPATCH_STAGE=original KPCC_DEBUG=1 /home/rongtao/libcareplus/src/libcare-cc -fdiagnostics-color=auto -pipe -Wall -Winvalid-pch -std=gnu11 -O2 -g -pthread -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -m64 -mcx16 -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -Wstrict-prototypes -Wredundant-decls -Wundef -Wwrite-strings -Wmissing-prototypes -fno-strict-aliasing -fno-common -fwrapv -Wold-style-declaration -Wold-style-definition -Wtype-limits -Wformat-security -Wformat-y2k -Winit-self -Wignored-qualifiers -Wempty-body -Wnested-externs -Wendif-labels -Wexpansion-to-defined -Wimplicit-fallthrough=2 -Wno-missing-include-dirs -Wno-shift-negative-value -Wno-psabi -fstack-protector-strong -fPIE  ../qemu-img.c -c -time -v
