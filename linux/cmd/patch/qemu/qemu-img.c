@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void hello_world();
+int hello_world();
 void test1();
 
 static int img_bench()
