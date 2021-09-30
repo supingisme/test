@@ -10,4 +10,5 @@ gcc test.c -S -o test.s
 
 .cfi_startproc - 每个函数入口处
 .cfi_endproc - 函数结尾处，与 .cfi_startproc 对应
-	
+
+> 更多内容查看 test.asm 文件
