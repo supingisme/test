@@ -1,0 +1,52 @@
+LIBUNWIND-SETJMP(3)                                Programming Library                                LIBUNWIND-SETJMP(3)
+
+NAME
+       libunwind-setjmp -- libunwind-based non-local gotos
+
+SYNOPSIS
+       #include <setjmp.h>
+
+       int setjmp(jmp_buf env);
+       void longjmp(jmp_buf env, int val);
+       int _setjmp(jmp_buf env);
+       void _longjmp(jmp_buf env, int val);
+       int sigsetjmp(sigjmp_buf env, int savemask);
+       void siglongjmp(sigjmp_buf env, int val);
+
+DESCRIPTION
+       The  unwind-setjmp  library  offers  a  libunwind-based  implementation of non-local gotos. This implementation is
+       intended to be a drop-in replacement for the normal, system-provided routines of the same name. The main advantage
+       of  using  the  unwind-setjmp library is that setting up a non-local goto via one of the setjmp() routines is very
+       fast. Typically, just 2 or 3 words need to be saved in the jump-buffer (plus one call to  sigprocmask(2),  in  the
+       case  of sigsetjmp).  On the other hand, executing a non-local goto by calling one of the longjmp() routines tends
+       to be much slower than with the system-provided routines. In fact, the time spent on a longjmp() will  be  propor‐
+       tional  to  the  number of call frames that exist between the points where setjmp() and longjmp() were called. For
+       this reason, the unwind-setjmp library is beneficial primarily in applications that frequently call  setjmp()  but
+       only rarely call longjmp().
+
+CAVEATS
+       *      The correct operation of this library depends on the presence of correct unwind information. On newer plat‐
+              forms, this is rarely an issue. On older platforms, care needs to be taken to ensure that each of the func‐
+              tions  whose  stack  frames  may  have to be unwound during a longjmp() have correct unwind information (on
+              those platforms, there is usually a compiler-switch, such as -funwind-tables, to request the generation  of
+              unwind information).
+
+       *      The contents of jmp_buf and sigjmp_buf as setup and used by these routines is completely different from the
+              ones  used  by  the  system-provided  routines.  Thus,  a  jump-buffer  created  by   the   libunwind-based
+              setjmp()/_setjmp  may  only  be  used in a call to the libunwind-based longjmp()/_longjmp().  The analogous
+              applies for sigjmp_buf with sigsetjmp() and siglongjmp().
+
+FILES
+       -lunwind-setjmp
+               The library an application should be linked against to ensure it uses the libunwind-based  non-local  goto
+              routines.
+
+SEE ALSO
+       libunwind(3), setjmp(3), longjmp(3), _setjmp(3), _longjmp(3), sigsetjmp(3), siglongjmp(3)
+
+AUTHOR
+       David Mosberger-Tang
+       Email: dmosberger@gmail.com
+       WWW: http://www.nongnu.org/libunwind/.
+
+Programming Library                                   16 August 2007                                  LIBUNWIND-SETJMP(3)
