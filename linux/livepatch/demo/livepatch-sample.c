@@ -70,14 +70,13 @@ static struct klp_patch patch = {
 static int livepatch_init(void)
 {
 	int ret;
-#if 0
+
 	ret = klp_register_patch(&patch);
 	if (ret)
 		return ret;
-#endif
 	ret = klp_enable_patch(&patch);
 	if (ret) {
-		//WARN_ON(klp_unregister_patch(&patch));
+		WARN_ON(klp_unregister_patch(&patch));
 		return ret;
 	}
 	return 0;
@@ -85,11 +84,7 @@ static int livepatch_init(void)
 
 static void livepatch_exit(void)
 {
-#if 0
 	WARN_ON(klp_unregister_patch(&patch));
-#else
-	//klp_disable_patch(&patch);
-#endif
 }
 
 module_init(livepatch_init);
