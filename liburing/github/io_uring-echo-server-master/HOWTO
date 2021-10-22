@@ -1,0 +1,22 @@
+First clone this repository, then
+# cd io_uring-echo-server/liburing
+# make
+# cd ..
+# make
+
+Test io_uring_echo_server:
+  1, run server in one terminal:
+  port is 10000, support 128 client connections, message length is 128 and
+  with fixed files support enabled.
+  # sudo ./io_uring_echo_server -p 10000 -f -n 128 -l 128
+
+  2, run client in another terminal:
+  # ./echo -addr 127.0.0.1:10000 -n 128 -size 128
+
+Test epoll_echo_server:
+  1, run server in a terminal:
+  port is 10001, support 128 client connections, message length is 128
+  # sudo ./epoll_echo_server -p 10001  -n 128 -l 128
+
+  2, run client in another terminal terminal:
+  # ./echo -addr 127.0.0.1:10001 -n 128 -size 128
