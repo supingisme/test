@@ -38,5 +38,8 @@ int main()
 	if(s && strlen(s) > 0)
 		printf("%d\n", strlen(s));
 
+	char *str3 = "hello";
+	printf("strlen(%s) = %d\n", str3, strlen(str3));
+
     return 0;
 }   
