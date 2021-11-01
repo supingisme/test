@@ -1,0 +1,26 @@
+#!/usr/bin/bpftrace
+
+BEGIN
+{
+	printf("Tracing init_module syscall. Hit Ctrl-C end.\n");
+    printf("%-6s %-16s %3s\n", "PID", "COMM", "ERR");
+}
+
+tracepoint:syscalls:sys_enter_init_module,
+tracepoint:syscalls:sys_enter_finit_module
+{
+	//printf("init_module/finit_module called.\n");
+} 
+
+tracepoint:syscalls:sys_exit_init_module,
+tracepoint:syscalls:sys_exit_finit_module
+{
+	$ret = args->ret;
+	$errno = $ret >= 0 ? 0 : - $ret;
+    printf("%-6d %-16s %3d\n", pid, comm, $errno);
+}
+
+END
+{
+	printf("Bye.\n");
+}
