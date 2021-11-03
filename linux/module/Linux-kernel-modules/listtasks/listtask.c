@@ -2,6 +2,7 @@
 #include <linux/module.h>
 #include <linux/sched.h>
 #include <linux/rcupdate.h>
+#include <linux/init_task.h>
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Slava Imameev ReCode by [RToax]");
@@ -38,7 +39,7 @@ void list_from_task(struct task_struct *task)
 		do
 		{
 			struct list_head*  next;
-			long               state = p->state; // the value is volatile and will be accessed twice, make a copy for consistency
+			long               state = p->__state;
 
 			printk(KERN_INFO "[RToax]%17s %6d %6d %3d %4d %4d %2ld(%9s)\n", 
                                 p->comm, p->pid, p->tgid,
@@ -58,7 +59,7 @@ void list_tasks(void)
 	list_from_task(&init_task);
 }
 
-static int __init _init(void)
+static int __init listtask_init(void)
 {
 	printk(KERN_INFO "[RToax]Hi from init\n");
 
@@ -67,10 +68,10 @@ static int __init _init(void)
 	return 0;
 }
 
-static void __exit _exit(void)
+static void __exit listtask_exit(void)
 {
 	printk(KERN_INFO "[RToax]Bye!\n");
 }
 
-module_init(_init)
-module_exit(_exit)
+module_init(listtask_init)
+module_exit(listtask_exit)
