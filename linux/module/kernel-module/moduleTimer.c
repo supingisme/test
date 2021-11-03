@@ -5,22 +5,29 @@
 
 #include <linux/kernel.h>
 
-struct timer_list stimer;
+static void
+time_handler(struct timer_list* data);
+
+//struct timer_list stimer;
+DEFINE_TIMER(stimer, time_handler);
 
 static void 
-time_handler(unsigned long data)
+time_handler(struct timer_list* data)
 {
 	mod_timer(&stimer, jiffies + HZ);
 	printk("[RToax]current jiffies is %ld\n", jiffies);
 }
 
+
 static int __init timer_init(void)
 {
 	printk("[RToax]My module worked!\n");
+#if 0
 	init_timer(&stimer);
 	stimer.data = 0;
 	stimer.expires = jiffies + HZ;
 	stimer.function = time_handler;
+#endif
 	add_timer(&stimer);
 	return 0;
 }

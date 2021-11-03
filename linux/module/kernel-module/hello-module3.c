@@ -20,3 +20,4 @@ hello_3_exit(void)
 
 module_init(hello_3_init);
 module_exit(hello_3_exit);
+MODULE_LICENSE("GPL");
