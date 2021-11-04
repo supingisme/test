@@ -13,18 +13,18 @@ MODULE_LICENSE("GPL"); //许可证声明
 MODULE_AUTHOR("zwj");//作者声明
 MODULE_DESCRIPTION("This time_mod is used for timer_clock"); //模块功能说明
 
-void my_timer_function(unsigned long data)
+void my_timer_function(struct timer_list * data)
 {
     printk(KERN_INFO "after 5 seconds,time come\n");
 }
+
+DEFINE_TIMER(my_timer, my_timer_function);
 
 //加载模块时调用此函数
 static int func_init(void)
 {
     static struct timer_list my_timer; //定义一个定时器
-    init_timer(&my_timer); //初始化定时器
     my_timer.expires = jiffies + 5000; //定时器朝时5秒后运行
-    my_timer.data = 0;
     my_timer.function = my_timer_function; //超时调用次函数
     add_timer(&my_timer); //激活定时器
     printk(KERN_INFO "timer_mod initing.....ok\n");
