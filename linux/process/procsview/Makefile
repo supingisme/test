@@ -1,13 +1,13 @@
 obj-m += procsview.o
 
-#KERNEL_VERSION="3.10.0-693.el7.x86_64"
-
 KDIR := /lib/modules/$(shell uname -r)/build
-#KDIR := /lib/modules/$(KERNEL_VERSION)/build
 PWD := $(shell pwd)
 
-default:
-	$(MAKE) -C $(KDIR) SUBDIRS=$(PWD) modules
+all:
+	$(MAKE) -C $(KDIR) M=$(PWD) modules
+
+clean:
+	$(MAKE) -C $(KDIR) M=$(PWD) clean
 
 run:
 	clear

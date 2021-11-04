@@ -105,7 +105,8 @@ static loff_t dev_seek(struct file *file, loff_t offset, int whence)
 	struct pci_char *pchar = file->private_data;
 	loff_t new_pos;
 
-	mutex_lock(&inode->i_mutex);
+	//mutex_lock(&inode->i_mutex);
+	down_read(&inode->i_rwsem);
 	switch (whence) {
 	case SEEK_SET: /* SEEK_SET = 0 */
 		new_pos = offset;
@@ -116,7 +117,8 @@ static loff_t dev_seek(struct file *file, loff_t offset, int whence)
 	default:
 		new_pos = -EINVAL;
 	}
-	mutex_unlock(&inode->i_mutex);
+	//mutex_unlock(&inode->i_mutex);
+	up_read(&inode->i_rwsem);
 
 	if (new_pos % 4)
 		return -EINVAL; /* Only allow 4 byte alignment */
@@ -350,6 +352,7 @@ static char *pci_char_devnode(struct device *dev, umode_t *mode)
 
 static int __init pci_init(void)
 {
+	printk(KERN_INFO "Hello.\n");
 	int err;
 	char *p, *id;
 
@@ -406,6 +409,7 @@ failure_register_driver:
 
 static void __exit pci_exit(void)
 {
+	printk(KERN_INFO "bye.\n");
 	pci_unregister_driver(&pchar_driver);
 	class_destroy(pchar_class);
 }
