@@ -47,6 +47,7 @@ test:
 	
 clean distclean:
 	@echo "clean"
+	make -C $(KERNEL_DIR) M=$(MODULEDIR) clean
 	@rm -rf *.o *.mod.c .*.*.cmd *.ko *.out
 	@rm -rf .tmp_versions *.symvers *.order
 #endif

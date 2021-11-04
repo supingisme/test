@@ -14,7 +14,7 @@ int main(void)
     seccomp_load(ctx);
     char * str = "/bin/sh";
     write(1,"hello worldn",12);
-    syscall(59,str,NULL,NULL);//execve
+    syscall(__NR_execve, str, NULL, NULL);//execve
     return 0;
 }
 

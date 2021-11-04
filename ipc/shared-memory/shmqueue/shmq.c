@@ -9,6 +9,7 @@
 #include <linux/kernel.h>
 #include <linux/types.h>
 #include <linux/fs.h>
+#include <linux/cdev.h>
 #include <linux/init.h>
 #include <linux/delay.h>
 #include <linux/syscalls.h>
@@ -25,7 +26,8 @@
 #include <linux/kthread.h>
 #include <asm/uaccess.h>
 
-#include <acpi/platform/acenv.h> //va_list
+//#include <acpi/platform/acenv.h> //va_list
+#include <linux/acpi.h>
 
 #include "shmq.h"
 
