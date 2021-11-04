@@ -178,6 +178,7 @@ static int hrtimer_test_init(void)
 
 	setup_timer(&priv->stat_timer, hrtimer_test_stat_cb,
 			(unsigned long)priv);
+//	timer_setup(&priv->stat_timer, hrtimer_test_stat_cb, 0);	
 	mod_timer(&priv->stat_timer, jiffies + (1 * HZ));
 
 	return 0;
