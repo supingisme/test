@@ -36,6 +36,9 @@ struct task_arg {
     char *cpu_list;
 };
 
+void select_add_fd(struct select_context *ctx, int evt_fd);
+int select_context_init(struct select_context *ctx);
+
 
 int epoll_context_init(struct epoll_context *ctx);
 void epoll_add_fd(struct epoll_context *ctx, int fd);

@@ -6,5 +6,5 @@ for src in $SRCS
 do
 	exe=${src%.*}.out
 	echo "Compile $src -> $exe"
-	gcc common.c -pthread $src -o $exe
+	gcc common.c -pthread $src -o $exe -D_GNU_SOURCE
 done
