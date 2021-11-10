@@ -146,6 +146,7 @@
 * `openssl`: 安全套接字
 * `openstack`: 云计算开源框架
 * `openvswitch`: OVS虚拟交换机
+* `ostree`: OSTree 是基于 Linux 的操作系统的升级系统
 * `ovs`: 见上
 * `perf-tools`: brendangregg/[perf-tools](https://github.com/brendangregg/perf-tools)
 * `perl`: Perl语言

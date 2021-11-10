@@ -1,0 +1,38 @@
+https://ostreedev.github.io/ostree/introduction/
+
+您可以使用init以下命令创建新的 OSTree 存储库：
+
+$ ostree --repo=repo init
+
+这将创建一个repo包含您的存储库的新目录。随意检查它。
+
+现在，让我们准备一些要添加到 repo 的数据：
+
+$ mkdir tree
+$ echo "Hello world!" > tree/hello.txt
+
+我们现在可以tree/使用以下commit 命令导入我们的目录：
+
+$ ostree --repo=repo commit --branch=foo tree/
+
+这将创建一个新分支，foo指向从tree/. 事实上，tree/如果我们愿意，我们现在可以删除。
+
+要检查我们现在确实有一个foo分支，您可以使用以下 refs命令：
+
+$ ostree --repo=repo refs
+foo
+
+我们还可以使用ls和cat 命令检查文件系统树：
+
+$ ostree --repo=repo ls foo
+d00775 1000 1000      0 /
+-00664 1000 1000     13 /hello.txt
+
+$ ostree --repo=repo cat foo /hello.txt
+Hello world!
+
+最后，我们可以从存储库中查看我们的树：
+
+$ ostree --repo=repo checkout foo tree-checkout/
+$ cat tree-checkout/hello.txt
+Hello world!
