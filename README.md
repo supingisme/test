@@ -1,9 +1,9 @@
 # test
 
-1. [https://github.com/Rtoax/test](https://github.com/Rtoax/test) "自2021年9月14日停更"
-2. [https://gitee.com/rtoax/test](https://gitee.com/rtoax/test) "自2021年9月14日停更"
-3. [https://gitee.com/rtoax/tolstoy](https://gitee.com/rtoax/tolstoy) "new repo 自2021年9月14日创建"
-4. [https://gitee.com/rtoax/test-linux](https://gitee.com/rtoax/test-linux) "Linux相关将在这个项目更新"
+* [GitHub test](https://github.com/Rtoax/test)
+* [Gitee test](https://gitee.com/rtoax/test) 
+* [GitHub test-linux](https://github.com/rtoax/test-linux) 更新Linux内核相关
+* [Gitee test-linux](https://gitee.com/rtoax/test-linux) 更新Linux内核相关
 
 ```
         _____________
